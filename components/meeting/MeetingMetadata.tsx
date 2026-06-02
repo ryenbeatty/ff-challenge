@@ -25,7 +25,7 @@ export default function MeetingMetadata({
       )}
     >
       <div className="flex items-center gap-2">
-        <UserAvatar name={ownerName} ownerName={ownerName} size="sm" />
+        <UserAvatar name={ownerName} ownerName={ownerName} size="xs" />
         <span className="font-medium text-slate-700">{ownerName}</span>
       </div>
       <div className="flex items-center gap-1.5">

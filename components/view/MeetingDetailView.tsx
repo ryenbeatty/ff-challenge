@@ -180,8 +180,8 @@ export default function MeetingDetailView({
 
                 return (
                 <div key={assignee}>
-                  <div className="flex items-center gap-2">
-                    <UserAvatar name={assigneeLabel} email={assignee} size="sm" />
+                  <div className="flex items-start gap-2">
+                    <UserAvatar name={assigneeLabel} email={assignee} size="xs" />
                     <a
                       href={`mailto:${assignee}`}
                       className="text-base font-medium text-blue-600 hover:text-blue-700 hover:underline"

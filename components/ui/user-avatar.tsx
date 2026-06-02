@@ -7,11 +7,13 @@ import { getUserAvatarSrc, getUserAvatarSrcByName } from "@/lib/shared/user-avat
 import { cn } from "@/lib/shared/utils";
 
 const SIZE_CLASSES = {
+  xs: "h-6 w-6 text-xs",
   sm: "h-7 w-7 text-xs",
   md: "h-9 w-9 text-sm",
 } as const;
 
 const SIZE_PX = {
+  xs: 24,
   sm: 28,
   md: 36,
 } as const;

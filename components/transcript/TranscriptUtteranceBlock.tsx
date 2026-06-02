@@ -31,12 +31,12 @@ export default function TranscriptUtteranceBlock({
         highlighted && "bg-violet-50/80 ring-1 ring-violet-200/80",
       )}
     >
-      <div className="flex gap-3">
+      <div className="flex items-center gap-2">
         <UserAvatar
           name={utterance.speakerName}
           src={getUserAvatarSrcForSpeaker(speakers, utterance.speakerId)}
           themeClass={getSpeakerThemeClass(speakers, utterance.speakerId)}
-          size="sm"
+          size="xs"
         />
         <div className="min-w-0 flex-1">
           <div className="flex items-center justify-between gap-2">

@@ -1,6 +1,6 @@
 import type { Speaker } from "@/lib/meetings/types";
 
-export const TRANSCRIPT_TEXT_INDENT_CLASS = "ml-10";
+export const TRANSCRIPT_TEXT_INDENT_CLASS = "ml-8";
 
 const SPEAKER_THEME_CLASSES = [
   "bg-emerald-100 text-emerald-800",
