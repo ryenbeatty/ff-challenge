@@ -36,6 +36,37 @@ function DropdownMenuContent({
   );
 }
 
+function DropdownMenuLabel({
+  className,
+  inset,
+  ...props
+}: React.ComponentProps<typeof DropdownMenuPrimitive.Label> & {
+  inset?: boolean;
+}) {
+  return (
+    <DropdownMenuPrimitive.Label
+      className={cn(
+        "px-2 py-1.5 text-xs font-medium text-slate-900",
+        inset && "pl-8",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+function DropdownMenuSeparator({
+  className,
+  ...props
+}: React.ComponentProps<typeof DropdownMenuPrimitive.Separator>) {
+  return (
+    <DropdownMenuPrimitive.Separator
+      className={cn("-mx-1 my-1 h-px bg-slate-200", className)}
+      {...props}
+    />
+  );
+}
+
 function DropdownMenuItem({
   className,
   inset,
@@ -55,4 +86,11 @@ function DropdownMenuItem({
   );
 }
 
-export { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger };
+export {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+};

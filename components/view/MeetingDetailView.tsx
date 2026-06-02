@@ -5,6 +5,7 @@ import MeetingViewSidebar from "@/components/view/MeetingViewSidebar";
 import LoadingText from "@/components/states/LoadingText";
 import MeetingNotFoundState from "@/components/states/MeetingNotFoundState";
 import { Button } from "@/components/ui/button";
+import { UserAvatar } from "@/components/ui/user-avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,6 +18,7 @@ import {
   groupActionItemsByAssignee,
 } from "@/lib/meetings/action-items";
 import { copyText } from "@/lib/shared/clipboard";
+import { getUserByEmail } from "@/lib/shared/user-avatars";
 import { useMeetingQuery } from "@/lib/meetings/query";
 import {
   SUMMARY_LIST_CLASS,
@@ -172,14 +174,21 @@ export default function MeetingDetailView({
             </div>
 
             <div className="mt-4 space-y-3">
-              {actionItemsByAssignee.map(([assignee, items]) => (
+              {actionItemsByAssignee.map(([assignee, items]) => {
+                const assigneeUser = getUserByEmail(assignee);
+                const assigneeLabel = assigneeUser?.name ?? assignee;
+
+                return (
                 <div key={assignee}>
-                  <a
-                    href={`mailto:${assignee}`}
-                    className="text-base font-medium text-blue-600 hover:text-blue-700 hover:underline"
-                  >
-                    {assignee}
-                  </a>
+                  <div className="flex items-center gap-2">
+                    <UserAvatar name={assigneeLabel} email={assignee} size="sm" />
+                    <a
+                      href={`mailto:${assignee}`}
+                      className="text-base font-medium text-blue-600 hover:text-blue-700 hover:underline"
+                    >
+                      {assignee}
+                    </a>
+                  </div>
                   <ul className={SUMMARY_NESTED_LIST_CLASS}>
                     {items.map((item) => (
                       <li key={item.id}>
@@ -194,7 +203,8 @@ export default function MeetingDetailView({
                     ))}
                   </ul>
                 </div>
-              ))}
+              );
+              })}
             </div>
           </section>
         </div>

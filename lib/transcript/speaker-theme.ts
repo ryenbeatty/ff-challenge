@@ -1,7 +1,6 @@
 import type { Speaker } from "@/lib/meetings/types";
 
-export const TRANSCRIPT_AVATAR_SIZE_CLASS = "h-8 w-8";
-export const TRANSCRIPT_TEXT_INDENT_CLASS = "ml-11";
+export const TRANSCRIPT_TEXT_INDENT_CLASS = "ml-10";
 
 const SPEAKER_THEME_CLASSES = [
   "bg-emerald-100 text-emerald-800",
@@ -10,15 +9,6 @@ const SPEAKER_THEME_CLASSES = [
 ] as const;
 
 const FALLBACK_SPEAKER_THEME_CLASS = "bg-slate-100 text-slate-700";
-
-export function getSpeakerInitial(name: string): string {
-  const trimmed = name.trim();
-  if (!trimmed) {
-    return "?";
-  }
-
-  return trimmed.charAt(0).toUpperCase();
-}
 
 export function getSpeakerIndex(speakers: Speaker[], speakerId: string): number {
   return speakers.findIndex((speaker) => speaker.id === speakerId);

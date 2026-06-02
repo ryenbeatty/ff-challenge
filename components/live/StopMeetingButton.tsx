@@ -8,6 +8,7 @@ import { AnimatedEllipsis } from "@/components/ui/animated-ellipsis";
 import { delay } from "@/lib/shared/delay";
 import { getViewMeetingHref } from "@/lib/meetings/routes";
 import { useStopMeetingMutation } from "@/lib/meetings/query";
+import { SHELL_ICON_BUTTON_PRESS_CLASS } from "@/components/shell/constants";
 import { cn } from "@/lib/shared/utils";
 
 type StopMeetingButtonProps = {
@@ -69,7 +70,8 @@ export default function StopMeetingButton({
       onClick={handleStop}
       disabled={isProcessing || stopMeetingMutation.isPending}
       className={cn(
-        "inline-flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full border border-slate-300 bg-white text-slate-800 shadow-sm transition-all duration-150 ease-out hover:border-slate-400 hover:bg-slate-100 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100",
+        "inline-flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full border border-slate-300 bg-white text-slate-800 shadow-sm hover:border-slate-400 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100",
+        SHELL_ICON_BUTTON_PRESS_CLASS,
         className,
       )}
     >

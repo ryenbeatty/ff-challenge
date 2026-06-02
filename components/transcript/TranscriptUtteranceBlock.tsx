@@ -1,10 +1,11 @@
 "use client";
 
 import CopyTranscriptLinkButton from "@/components/transcript/CopyTranscriptLinkButton";
-import TranscriptSpeakerAvatar from "@/components/transcript/TranscriptSpeakerAvatar";
+import { UserAvatar } from "@/components/ui/user-avatar";
 import { formatSecondsToTimestamp } from "@/lib/formatting/transcript-time";
 import type { TranscriptUtterance } from "@/lib/transcript/group-utterances";
-import { TRANSCRIPT_TEXT_INDENT_CLASS } from "@/lib/transcript/speaker-theme";
+import { getSpeakerThemeClass, TRANSCRIPT_TEXT_INDENT_CLASS } from "@/lib/transcript/speaker-theme";
+import { getUserAvatarSrcForSpeaker } from "@/lib/shared/user-avatars";
 import type { Speaker } from "@/lib/meetings/types";
 import { cn } from "@/lib/shared/utils";
 
@@ -31,10 +32,11 @@ export default function TranscriptUtteranceBlock({
       )}
     >
       <div className="flex gap-3">
-        <TranscriptSpeakerAvatar
-          speakerId={utterance.speakerId}
-          speakerName={utterance.speakerName}
-          speakers={speakers}
+        <UserAvatar
+          name={utterance.speakerName}
+          src={getUserAvatarSrcForSpeaker(speakers, utterance.speakerId)}
+          themeClass={getSpeakerThemeClass(speakers, utterance.speakerId)}
+          size="sm"
         />
         <div className="min-w-0 flex-1">
           <div className="flex items-center justify-between gap-2">

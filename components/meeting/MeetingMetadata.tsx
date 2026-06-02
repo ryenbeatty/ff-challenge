@@ -1,5 +1,6 @@
-import { CalendarDays, Globe, UserCircle2 } from "lucide-react";
+import { CalendarDays, Globe } from "lucide-react";
 
+import { UserAvatar } from "@/components/ui/user-avatar";
 import { formatMeetingMetadataDate } from "@/lib/formatting/date-formatters";
 import { cn } from "@/lib/shared/utils";
 
@@ -24,7 +25,7 @@ export default function MeetingMetadata({
       )}
     >
       <div className="flex items-center gap-2">
-        <UserCircle2 className="h-4 w-4 text-slate-500" aria-hidden="true" />
+        <UserAvatar name={ownerName} ownerName={ownerName} size="sm" />
         <span className="font-medium text-slate-700">{ownerName}</span>
       </div>
       <div className="flex items-center gap-1.5">

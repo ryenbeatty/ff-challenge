@@ -14,6 +14,7 @@ import { useAppShell } from "@/components/shell/AppShellProvider";
 import { SHELL_HEADER_HEIGHT_CLASS } from "@/components/shell/constants";
 import { getBreadcrumbItems } from "@/components/shell/route-config";
 import Breadcrumbs from "@/components/shell/Breadcrumbs";
+import UserAccountMenu from "@/components/shell/UserAccountMenu";
 import { isLiveMeetingPath } from "@/lib/meetings/routes";
 import { useMeetingQuery } from "@/lib/meetings/query";
 import { PanelLeft } from "lucide-react";
@@ -80,6 +81,7 @@ export default function AppHeader() {
             </>
           ) : null}
           <CaptureMeetingDialog open={isCaptureOpen} onOpenChange={setIsCaptureOpen} />
+          <UserAccountMenu />
         </div>
       </div>
     </header>
