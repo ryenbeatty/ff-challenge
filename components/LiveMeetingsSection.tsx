@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import RecordingBadge from "@/components/RecordingBadge";
 import StopMeetingButton from "@/components/StopMeetingButton";
+import { AnimatedEllipsis } from "@/components/ui/animated-ellipsis";
 import { Button } from "@/components/ui/button";
 import { getMeetingHref } from "@/lib/get-meeting-href";
 import type { Meeting } from "@/lib/meetings-types";
@@ -21,7 +22,10 @@ function LiveMeetingRow({ meeting }: { meeting: Meeting }) {
         </div>
         <div className="flex shrink-0 items-center gap-2">
           <Button variant="outline" size="sm" asChild>
-            <Link href={getMeetingHref(meeting)}>Live notes</Link>
+            <Link href={getMeetingHref(meeting)}>
+              <AnimatedEllipsis size="sm" />
+              Live notes
+            </Link>
           </Button>
           <StopMeetingButton meetingId={meeting.id} redirectToViewOnStop />
         </div>

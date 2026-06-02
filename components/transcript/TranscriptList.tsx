@@ -19,6 +19,7 @@ type TranscriptListProps = {
   className?: string;
   variant?: "default" | "live";
   activeSentenceId?: string;
+  showSearchBar?: boolean;
 };
 
 function scrollUtteranceIntoContainer(
@@ -40,6 +41,7 @@ export default function TranscriptList({
   className,
   variant = "default",
   activeSentenceId,
+  showSearchBar = true,
 }: TranscriptListProps) {
   const searchParams = useSearchParams();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -95,18 +97,20 @@ export default function TranscriptList({
 
   return (
     <div className={cn("flex h-full min-h-0 flex-col", className)}>
-      <div className="relative my-4 shrink-0">
-        <Search
-          className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400"
-          aria-hidden="true"
-        />
-        <Input
-          type="search"
-          placeholder="Find or replace"
-          aria-label="Find or replace in transcript"
-          className="pl-9"
-        />
-      </div>
+      {showSearchBar ? (
+        <div className="relative my-4 shrink-0">
+          <Search
+            className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400"
+            aria-hidden="true"
+          />
+          <Input
+            type="search"
+            placeholder="Find or replace"
+            aria-label="Find or replace in transcript"
+            className="pl-9"
+          />
+        </div>
+      ) : null}
       <div
         ref={scrollContainerRef}
         className="h-full min-h-0 flex-1 overflow-y-auto overscroll-contain pr-1"

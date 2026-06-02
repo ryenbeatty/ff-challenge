@@ -30,3 +30,19 @@ body {
     font-weight: 400;
   }
 }
+
+@keyframes ellipsis-bounce {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+  }
+
+  30% {
+    transform: translateY(-40%);
+  }
+}
+
+@utility animate-ellipsis-bounce {
+  animation: ellipsis-bounce 1.2s ease-in-out infinite;
+}

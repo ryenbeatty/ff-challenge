@@ -6,12 +6,20 @@ import { formatElapsedTime } from "@/lib/format-elapsed-time";
 
 type LiveMeetingTimerProps = {
   startedAt: string;
+  isProcessing?: boolean;
 };
 
-export default function LiveMeetingTimer({ startedAt }: LiveMeetingTimerProps) {
+export default function LiveMeetingTimer({
+  startedAt,
+  isProcessing = false,
+}: LiveMeetingTimerProps) {
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
 
   useEffect(() => {
+    if (isProcessing) {
+      return;
+    }
+
     const startedAtMs = new Date(startedAt).getTime();
 
     function updateElapsed() {
@@ -23,7 +31,15 @@ export default function LiveMeetingTimer({ startedAt }: LiveMeetingTimerProps) {
     const intervalId = window.setInterval(updateElapsed, 1000);
 
     return () => window.clearInterval(intervalId);
-  }, [startedAt]);
+  }, [isProcessing, startedAt]);
+
+  if (isProcessing) {
+    return (
+      <span className="text-sm font-medium text-slate-700" aria-live="polite">
+        Summarising meeting...
+      </span>
+    );
+  }
 
   return (
     <span

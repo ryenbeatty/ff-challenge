@@ -2,6 +2,10 @@
 
 import { useParams, usePathname } from "next/navigation";
 import { useMemo, useState } from "react";
+import {
+  LIVE_MEETING_STOP_DELAY_MS,
+  useLiveMeetingStop,
+} from "@/lib/live-meeting-stop-context";
 import CaptureMeetingDialog from "@/components/CaptureMeetingDialog";
 import LiveMeetingTimer from "@/components/LiveMeetingTimer";
 import RecordingBadge from "@/components/RecordingBadge";
@@ -23,8 +27,15 @@ export default function AppHeader() {
   const [isCaptureOpen, setIsCaptureOpen] = useState(false);
 
   const isLiveRoute = pathname.startsWith("/live/");
+  const { isStoppingMeeting, setIsStoppingMeeting } = useLiveMeetingStop();
   const isLiveRecording =
     isLiveRoute && Boolean(meetingId) && meeting?.status === "live";
+  const showLiveHeaderControls =
+    isLiveRoute &&
+    Boolean(meetingId) &&
+    meeting &&
+    isLiveRecording &&
+    !isStoppingMeeting;
 
   const breadcrumbItems = useMemo(
     () => getBreadcrumbItems(pathname, meeting?.title),
@@ -52,14 +63,19 @@ export default function AppHeader() {
           ) : null}
           <div className="flex min-w-0 items-center gap-2.5">
             <Breadcrumbs items={breadcrumbItems} />
-            {isLiveRecording ? <RecordingBadge /> : null}
+            {isLiveRecording && !isStoppingMeeting ? <RecordingBadge /> : null}
           </div>
         </div>
         <div className="flex shrink-0 items-center gap-2.5">
-          {isLiveRecording && meeting ? (
+          {showLiveHeaderControls ? (
             <>
               <LiveMeetingTimer startedAt={meeting.createdAt} />
-              <StopMeetingButton meetingId={meetingId} redirectToViewOnStop />
+              <StopMeetingButton
+                meetingId={meetingId}
+                redirectToViewOnStop
+                processingDelayMs={LIVE_MEETING_STOP_DELAY_MS}
+                onProcessingChange={setIsStoppingMeeting}
+              />
             </>
           ) : null}
           <CaptureMeetingDialog open={isCaptureOpen} onOpenChange={setIsCaptureOpen} />

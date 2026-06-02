@@ -1,5 +1,6 @@
 "use client";
 
+import MeetingHeader from "@/components/meeting/MeetingHeader";
 import MeetingViewSidebar from "@/components/MeetingViewSidebar";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,13 +12,7 @@ import {
 import { useMeetingQuery } from "@/lib/meetings-query";
 import { resolveActionItemAssignee } from "@/lib/resolve-action-item-assignee";
 import type { ActionItem } from "@/lib/meetings-types";
-import {
-  CalendarDays,
-  ChevronDown,
-  Copy,
-  Globe,
-  UserCircle2,
-} from "lucide-react";
+import { ChevronDown, Copy } from "lucide-react";
 import { useMemo, useState } from "react";
 
 type MeetingDetailViewProps = {
@@ -136,38 +131,12 @@ export default function MeetingDetailView({
     <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
       <article className="min-h-0 flex-1 overflow-y-auto">
         <div className="mx-auto w-full max-w-3xl space-y-8 px-5 py-8 pb-[120px] sm:px-8 lg:px-12">
-          <header>
-            <h1 className="text-3xl font-normal leading-9 tracking-[-0.2px] text-slate-900">
-              {meeting.title}
-            </h1>
-            <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-slate-600">
-              <div className="flex items-center gap-2">
-                <UserCircle2 className="h-4 w-4 text-slate-500" />
-                <span className="font-medium text-slate-700">
-                  {meeting.ownerName}
-                </span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <CalendarDays className="h-4 w-4 text-slate-500" />
-                <span>{new Date(meeting.createdAt).toLocaleString()}</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <Globe className="h-4 w-4 text-slate-500" />
-                <span>{meeting.meetingLanguage}</span>
-              </div>
-            </div>
-
-            {/* <div className="mt-5 flex flex-wrap gap-2">
-              {meeting.summary.keywords.map((keyword) => (
-                <span
-                  key={keyword}
-                  className="rounded-full bg-violet-50 px-2.5 py-0.5 text-xs font-medium text-violet-700"
-                >
-                  {keyword}
-                </span>
-              ))}
-            </div> */}
-          </header>
+          <MeetingHeader
+            title={meeting.title}
+            ownerName={meeting.ownerName}
+            createdAt={meeting.createdAt}
+            meetingLanguage={meeting.meetingLanguage}
+          />
 
           <div className="space-y-4">
             {meeting.summary.overview.trim() ? (

@@ -15,6 +15,7 @@ import {
   SIDEBAR_WIDTH_EXPANDED,
 } from "@/components/app-shell/constants";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { LiveMeetingStopProvider } from "@/lib/live-meeting-stop-context";
 import { cn } from "@/lib/utils";
 
 type AppShellProps = {
@@ -101,9 +102,11 @@ function AppShellInner({ children }: AppShellProps) {
 export default function AppShell({ children }: AppShellProps) {
   return (
     <AppShellProvider>
-      <TooltipProvider delayDuration={200}>
-        <AppShellInner>{children}</AppShellInner>
-      </TooltipProvider>
+      <LiveMeetingStopProvider>
+        <TooltipProvider delayDuration={200}>
+          <AppShellInner>{children}</AppShellInner>
+        </TooltipProvider>
+      </LiveMeetingStopProvider>
     </AppShellProvider>
   );
 }

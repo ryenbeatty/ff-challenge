@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronDown, CircleCheck } from "lucide-react";
 
+import { AnimatedEllipsis } from "@/components/ui/animated-ellipsis";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -176,6 +177,7 @@ function CaptureDialogConfirmedStep({
           onClick={onLiveNotes}
           disabled={!createdMeetingId}
         >
+          <AnimatedEllipsis size="sm" />
           Live notes
         </Button>
       </div>
