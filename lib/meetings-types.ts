@@ -15,11 +15,15 @@ export type ParticipantActionItems = {
 export type Meeting = {
   id: string;
   title: string;
+  ownerName: string;
+  meetingLanguage: string;
   status: MeetingStatus;
   createdAt: string;
   stoppedAt: string | null;
   durationLabel: string;
   summary: string;
+  executiveSummary: string[];
+  notes: string[];
   transcript: TranscriptSegment[];
   actionItemsByParticipant: ParticipantActionItems[];
 };

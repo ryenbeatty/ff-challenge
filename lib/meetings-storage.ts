@@ -1,6 +1,8 @@
 import {
   DASHBOARD_ACTION_ITEMS,
   DASHBOARD_SUMMARY,
+  EXECUTIVE_SUMMARY_POINTS,
+  MEETING_NOTES_POINTS,
   createDummyTranscript,
 } from "./meetings-data";
 import { Meeting } from "./meetings-types";
@@ -23,17 +25,24 @@ function parseMeetings(raw: string | null): Meeting[] {
     }
 
     return parsed.map((meeting) => {
-      if (
-        !Array.isArray(meeting.actionItemsByParticipant) ||
-        !meeting.actionItemsByParticipant.length
-      ) {
-        return {
-          ...meeting,
-          actionItemsByParticipant: DASHBOARD_ACTION_ITEMS,
-        };
-      }
-
-      return meeting;
+      return {
+        ...meeting,
+        ownerName: meeting.ownerName ?? "Max Musterman",
+        meetingLanguage: meeting.meetingLanguage ?? "English (Global)",
+        executiveSummary:
+          Array.isArray(meeting.executiveSummary) && meeting.executiveSummary.length
+            ? meeting.executiveSummary
+            : EXECUTIVE_SUMMARY_POINTS,
+        notes:
+          Array.isArray(meeting.notes) && meeting.notes.length
+            ? meeting.notes
+            : MEETING_NOTES_POINTS,
+        actionItemsByParticipant:
+          Array.isArray(meeting.actionItemsByParticipant) &&
+          meeting.actionItemsByParticipant.length
+            ? meeting.actionItemsByParticipant
+            : DASHBOARD_ACTION_ITEMS,
+      };
     });
   } catch {
     return [];
@@ -74,11 +83,15 @@ export function createMeeting(): Meeting {
   const meeting: Meeting = {
     id,
     title: createMeetingTitle(createdAt),
+    ownerName: "Max Musterman",
+    meetingLanguage: "English (Global)",
     status: "live",
     createdAt,
     stoppedAt: null,
     durationLabel: "Live",
     summary: DASHBOARD_SUMMARY,
+    executiveSummary: EXECUTIVE_SUMMARY_POINTS,
+    notes: MEETING_NOTES_POINTS,
     transcript: createDummyTranscript(id),
     actionItemsByParticipant: DASHBOARD_ACTION_ITEMS,
   };

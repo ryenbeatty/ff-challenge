@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useMeetingQuery } from "@/lib/meetings-query";
-import { ChevronDown, Copy } from "lucide-react";
+import { CalendarDays, ChevronDown, Copy, Globe, UserCircle2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -37,7 +37,9 @@ export default function MeetingDetailView({ meetingId }: MeetingDetailViewProps)
   if (!meeting) {
     return (
       <section className="rounded-xl border border-slate-200 bg-white p-6">
-        <h1 className="text-xl font-semibold text-slate-900">Meeting not found</h1>
+        <h1 className="text-xl font-normal leading-7 tracking-[-0.2px] text-slate-900">
+          Meeting not found
+        </h1>
         <p className="mt-2 text-sm text-slate-600">
           This meeting does not exist in local storage.
         </p>
@@ -73,14 +75,40 @@ export default function MeetingDetailView({ meetingId }: MeetingDetailViewProps)
   return (
     <section className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_350px]">
       <article className="rounded-xl border border-slate-200 bg-white p-6">
-        <p className="text-xs uppercase tracking-wide text-slate-500">Meeting summary</p>
-        <h1 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">{meeting.title}</h1>
-        <p className="mt-2 text-sm text-slate-600">
-          {new Date(meeting.createdAt).toLocaleString()} · {meeting.durationLabel}
-        </p>
-        <p className="mt-6 text-sm leading-7 text-slate-800">{meeting.summary}</p>
+        <h1 className="text-2xl font-normal leading-8 tracking-[-0.2px] text-slate-900">
+          {meeting.title}
+        </h1>
+        <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-slate-600">
+          <div className="flex items-center gap-2">
+            <UserCircle2 className="h-4 w-4 text-slate-500" />
+            <span className="font-medium text-slate-700">{meeting.ownerName}</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <CalendarDays className="h-4 w-4 text-slate-500" />
+            <span>{new Date(meeting.createdAt).toLocaleString()}</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <Globe className="h-4 w-4 text-slate-500" />
+            <span>{meeting.meetingLanguage}</span>
+          </div>
+        </div>
 
-        <section className="mt-6 rounded-lg border border-slate-200 bg-slate-50/60 p-4">
+        <ul className="mt-6 list-disc space-y-2 pl-5 text-base leading-7 text-slate-700">
+          {meeting.executiveSummary.map((point) => (
+            <li key={point}>{point}</li>
+          ))}
+        </ul>
+
+        <section className="mt-6">
+          <h2 className="text-sm font-semibold text-slate-900">Notes</h2>
+          <ul className="mt-3 list-disc space-y-2 pl-5 text-base leading-7 text-slate-700">
+            {meeting.notes.map((point) => (
+              <li key={point}>{point}</li>
+            ))}
+          </ul>
+        </section>
+
+        <section className="mt-6">
           <div className="flex items-center justify-between gap-3">
             <h2 className="text-sm font-semibold text-slate-900">Action items</h2>
             <div className="flex items-center gap-2">
@@ -120,7 +148,7 @@ export default function MeetingDetailView({ meetingId }: MeetingDetailViewProps)
                 <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
                   {group.participant}
                 </p>
-                <ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-slate-700">
+                <ul className="mt-1 list-disc space-y-1 pl-5 text-base leading-7 text-slate-700">
                   {group.items.map((item) => (
                     <li key={item}>{item}</li>
                   ))}
@@ -140,7 +168,7 @@ export default function MeetingDetailView({ meetingId }: MeetingDetailViewProps)
                 <span className="font-medium text-slate-700">{segment.speaker}</span> ·{" "}
                 {segment.timestamp}
               </p>
-              <p className="mt-1 text-sm leading-6 text-slate-800">{segment.text}</p>
+              <p className="mt-1 text-base leading-7 text-slate-800">{segment.text}</p>
             </li>
           ))}
         </ul>

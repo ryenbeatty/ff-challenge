@@ -36,7 +36,7 @@ export default function MeetingList() {
               className="block rounded-xl border border-slate-200/90 bg-white px-4 py-3.5 transition hover:border-violet-200 hover:bg-violet-50/30"
             >
               <div className="flex items-center justify-between gap-3">
-                <h2 className="text-[15px] font-medium text-slate-900">{meeting.title}</h2>
+                <h2 className="text-base font-medium text-slate-900">{meeting.title}</h2>
                 <span
                   className={`rounded-md px-2 py-0.5 text-xs font-medium ${
                     meeting.status === "live"

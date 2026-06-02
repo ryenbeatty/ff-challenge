@@ -18,7 +18,9 @@ export default function LiveMeetingView({ meetingId }: LiveMeetingViewProps) {
   if (!meeting) {
     return (
       <section className="rounded-xl border border-slate-200 bg-white p-6">
-        <h1 className="text-xl font-semibold text-slate-900">Meeting not found</h1>
+        <h1 className="text-xl font-normal leading-7 tracking-[-0.2px] text-slate-900">
+          Meeting not found
+        </h1>
         <p className="mt-2 text-sm text-slate-600">
           This meeting does not exist in local storage.
         </p>
@@ -31,7 +33,9 @@ export default function LiveMeetingView({ meetingId }: LiveMeetingViewProps) {
       <div className="rounded-xl border border-slate-200 bg-white p-6">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-slate-900">{meeting.title}</h1>
+            <h1 className="text-2xl font-normal leading-8 tracking-[-0.2px] text-slate-900">
+              {meeting.title}
+            </h1>
             <p className="mt-2 text-sm text-slate-600">
               Status:{" "}
               <span
@@ -64,7 +68,7 @@ export default function LiveMeetingView({ meetingId }: LiveMeetingViewProps) {
                 <span className="font-medium text-slate-700">{segment.speaker}</span> ·{" "}
                 {segment.timestamp}
               </p>
-              <p className="mt-1.5 text-sm leading-6 text-slate-800">{segment.text}</p>
+              <p className="mt-1.5 text-base leading-7 text-slate-800">{segment.text}</p>
             </li>
           ))}
         </ul>

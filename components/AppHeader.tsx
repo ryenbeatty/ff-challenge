@@ -75,7 +75,7 @@ export default function AppHeader() {
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-5 py-3 sm:px-6">
         <Link
           href="/"
-          className="text-[15px] font-semibold tracking-tight text-slate-900"
+          className="text-base font-semibold tracking-tight text-slate-900"
         >
           fireflies.ai
         </Link>
