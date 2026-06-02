@@ -12,6 +12,12 @@ export type ParticipantActionItems = {
   items: string[];
 };
 
+export type CreateMeetingInput = {
+  customTitle?: string;
+  meetingLanguage?: string;
+  userEmail?: string;
+};
+
 export type Meeting = {
   id: string;
   title: string;

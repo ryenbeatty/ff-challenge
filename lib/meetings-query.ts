@@ -8,6 +8,7 @@ import {
   getMeetingById,
   stopMeeting,
 } from "./meetings-storage";
+import type { CreateMeetingInput } from "./meetings-types";
 
 export const meetingsQueryKey = ["meetings"] as const;
 
@@ -34,7 +35,7 @@ export function useCreateMeetingMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async () => createMeeting(),
+    mutationFn: async (input: CreateMeetingInput = {}) => createMeeting(input),
     onSuccess: (meeting) => {
       queryClient.setQueryData(meetingQueryKey(meeting.id), meeting);
       queryClient.invalidateQueries({ queryKey: meetingsQueryKey });

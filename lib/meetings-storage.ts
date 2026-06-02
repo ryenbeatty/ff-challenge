@@ -5,7 +5,8 @@ import {
   MEETING_NOTES_POINTS,
   createDummyTranscript,
 } from "./meetings-data";
-import { Meeting } from "./meetings-types";
+import { buildMeetingTitle } from "./build-meeting-title";
+import { CreateMeetingInput, Meeting } from "./meetings-types";
 
 const STORAGE_KEY = "offline-meetings";
 
@@ -72,19 +73,19 @@ export function getMeetingById(meetingId: string): Meeting | undefined {
   return getAllMeetings().find((meeting) => meeting.id === meetingId);
 }
 
-function createMeetingTitle(createdAtIso: string): string {
-  const date = new Date(createdAtIso);
-  return `Dashboard planning ${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
-}
-
-export function createMeeting(): Meeting {
+export function createMeeting(input: CreateMeetingInput = {}): Meeting {
   const id = `meeting-${Date.now()}`;
   const createdAt = new Date().toISOString();
+  const createdDate = new Date(createdAt);
   const meeting: Meeting = {
     id,
-    title: createMeetingTitle(createdAt),
+    title: buildMeetingTitle({
+      userEmail: input.userEmail,
+      createdAt: createdDate,
+      customTitle: input.customTitle,
+    }),
     ownerName: "Max Musterman",
-    meetingLanguage: "English (Global)",
+    meetingLanguage: input.meetingLanguage ?? "English (Global)",
     status: "live",
     createdAt,
     stoppedAt: null,

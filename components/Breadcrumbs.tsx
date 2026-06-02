@@ -17,7 +17,7 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
 
   return (
     <nav aria-label="Breadcrumb">
-      <ol className="flex items-center gap-2 text-xs text-slate-500">
+      <ol className="flex items-center gap-2 text-sm text-slate-500">
         {items.map((item, index) => {
           const isCurrent = index === items.length - 1 || !item.href;
           let content: ReactNode = (
