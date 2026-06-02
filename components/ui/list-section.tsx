@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { cn } from "@/lib/shared/utils";
 
 type ListSectionProps = {
-  title: ReactNode;
+  title?: ReactNode;
   icon?: ReactNode;
   titleClassName?: string;
   listClassName?: string;
@@ -20,16 +20,18 @@ export default function ListSection({
   className,
 }: ListSectionProps) {
   return (
-    <section className={cn("space-y-3", className)}>
-      <h2
-        className={cn(
-          icon ? "flex items-center gap-2 text-sm text-slate-500" : "text-sm text-slate-900",
-          titleClassName,
-        )}
-      >
-        {icon}
-        {title}
-      </h2>
+    <section className={cn(title ? "space-y-3" : undefined, className)}>
+      {title ? (
+        <h2
+          className={cn(
+            icon ? "flex items-center gap-2 text-sm text-slate-500" : "text-sm text-slate-900",
+            titleClassName,
+          )}
+        >
+          {icon}
+          {title}
+        </h2>
+      ) : null}
       <ul className={cn("space-y-2.5", listClassName)}>{children}</ul>
     </section>
   );

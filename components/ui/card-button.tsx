@@ -25,10 +25,9 @@ export function CardButton({
       onClick={onClick}
       className={cn(
         "flex w-full min-w-0 cursor-pointer items-center gap-3 rounded-lg border border-slate-200 bg-white px-4 py-3 text-left",
-        "shadow-[0_1px_3px_rgba(15,23,42,0.06)]",
-        "transition-[transform,box-shadow,border-color] duration-500 ease-silk motion-reduce:transition-none motion-reduce:hover:translate-y-0",
-        "hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-[0_8px_24px_rgba(15,23,42,0.1)]",
-        "active:translate-y-0 active:border-slate-200 active:shadow-[0_1px_3px_rgba(15,23,42,0.06)] active:duration-300",
+        "card-button-lift shadow-sm",
+        "hover:border-slate-300 hover:shadow-sm",
+        "active:translate-y-0 active:border-slate-200 active:shadow-sm",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/35",
         className,
       )}

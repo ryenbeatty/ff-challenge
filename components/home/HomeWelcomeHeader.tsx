@@ -13,12 +13,21 @@ export default function HomeWelcomeHeader() {
   const greeting = getTimeOfDayGreeting();
 
   return (
-    <header className="w-full bg-gradient-to-b from-violet-100 via-fuchsia-50/80 to-white">
-      <div
-        className={cn(
-          "mx-auto flex w-full max-w-6xl flex-col gap-4 px-5 pt-8 pb-10 sm:px-6",
-        )}
-      >
+    <header className="relative w-full overflow-hidden">
+      <div className="relative">
+        <div className="home-welcome-sunset" aria-hidden="true">
+          <div className="home-welcome-sunset__sky" />
+          <div className="home-welcome-sunset__blue" />
+          <div className="home-welcome-sunset__warm" />
+          <div className="home-welcome-sunset__clouds" />
+          <div className="home-welcome-sunset__feather" />
+        </div>
+
+        <div
+          className={cn(
+            "relative z-10 mx-auto flex w-full max-w-6xl flex-col gap-3 px-5 pt-6 pb-7 sm:px-6 sm:pb-8",
+          )}
+        >
         <h1 className="text-4xl font-light tracking-tight text-slate-900">
           {greeting}, {firstName}
         </h1>
@@ -38,7 +47,7 @@ export default function HomeWelcomeHeader() {
           <span className="text-sm text-slate-700">Share feedback</span>
         </button>
 
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-3 gap-3 pt-1">
           <CardButton
             icon={<ListChecks className="h-5 w-5" />}
             iconClassName="bg-emerald-50 text-emerald-600"
@@ -56,6 +65,7 @@ export default function HomeWelcomeHeader() {
             primaryLabel="5 contacts"
           />
         </div>
+      </div>
       </div>
     </header>
   );

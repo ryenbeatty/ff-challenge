@@ -14,7 +14,7 @@ export default function LiveMeetingsSection({ meetings }: LiveMeetingsSectionPro
   }
 
   return (
-    <ListSection title="Live meetings">
+    <ListSection>
       {meetings.map((meeting) => (
         <LiveMeetingRow key={meeting.id} meeting={meeting} />
       ))}
