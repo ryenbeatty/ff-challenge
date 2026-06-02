@@ -12,12 +12,14 @@ type TranscriptUtteranceBlockProps = {
   utterance: TranscriptUtterance;
   speakers: Speaker[];
   highlighted?: boolean;
+  isInProgress?: boolean;
 };
 
 export default function TranscriptUtteranceBlock({
   utterance,
   speakers,
   highlighted = false,
+  isInProgress = false,
 }: TranscriptUtteranceBlockProps) {
   return (
     <article
@@ -48,6 +50,12 @@ export default function TranscriptUtteranceBlock({
       </div>
       <p className={cn(TRANSCRIPT_TEXT_INDENT_CLASS, "mt-2 text-base leading-7 text-slate-800")}>
         {utterance.text}
+        {isInProgress ? (
+          <span
+            className="ml-0.5 inline-block h-4 w-0.5 animate-pulse bg-slate-400 align-middle"
+            aria-hidden="true"
+          />
+        ) : null}
       </p>
     </article>
   );

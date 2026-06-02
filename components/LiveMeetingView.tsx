@@ -6,6 +6,7 @@ import TranscriptList from "@/components/transcript/TranscriptList";
 import TranscriptListSlot from "@/components/transcript/TranscriptListSlot";
 import { useMeetingQuery } from "@/lib/meetings-query";
 import { TRANSCRIPT_PANEL_HEIGHT_CLASS } from "@/lib/transcript-layout";
+import { useSimulatedTranscript } from "@/lib/use-simulated-transcript";
 
 type LiveMeetingViewProps = {
   meetingId: string;
@@ -17,6 +18,12 @@ function TranscriptListFallback() {
 
 export default function LiveMeetingView({ meetingId }: LiveMeetingViewProps) {
   const { data: meeting, isLoading } = useMeetingQuery(meetingId);
+  const isLive = meeting?.status === "live";
+  const { streamedTranscript, activeSentenceId } = useSimulatedTranscript({
+    transcript: meeting?.transcript ?? [],
+    anchorTime: meeting?.createdAt ?? new Date().toISOString(),
+    enabled: isLive,
+  });
 
   if (isLoading) {
     return <p className="text-sm text-slate-500">Loading meeting...</p>;
@@ -43,9 +50,11 @@ export default function LiveMeetingView({ meetingId }: LiveMeetingViewProps) {
       <TranscriptListSlot className="mt-4">
         <Suspense fallback={<TranscriptListFallback />}>
           <TranscriptList
-            transcript={meeting.transcript}
+            transcript={isLive ? streamedTranscript : meeting.transcript}
             speakers={meeting.speakers}
             className="h-full min-h-0"
+            variant={isLive ? ("live" as const) : ("default" as const)}
+            activeSentenceId={activeSentenceId}
           />
         </Suspense>
       </TranscriptListSlot>

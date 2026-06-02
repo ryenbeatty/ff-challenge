@@ -17,6 +17,8 @@ type TranscriptListProps = {
   transcript: TranscriptSentence[];
   speakers: Speaker[];
   className?: string;
+  variant?: "default" | "live";
+  activeSentenceId?: string;
 };
 
 function scrollUtteranceIntoContainer(
@@ -36,6 +38,8 @@ export default function TranscriptList({
   transcript,
   speakers,
   className,
+  variant = "default",
+  activeSentenceId,
 }: TranscriptListProps) {
   const searchParams = useSearchParams();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -76,6 +80,19 @@ export default function TranscriptList({
     };
   }, [searchParams, utterances]);
 
+  useEffect(() => {
+    if (variant !== "live") {
+      return;
+    }
+
+    const container = scrollContainerRef.current;
+    if (!container) {
+      return;
+    }
+
+    container.scrollTo({ top: container.scrollHeight, behavior: "smooth" });
+  }, [transcript, variant]);
+
   return (
     <div className={cn("flex h-full min-h-0 flex-col", className)}>
       <div className="relative my-4 shrink-0">
@@ -98,6 +115,8 @@ export default function TranscriptList({
           transcript={transcript}
           speakers={speakers}
           highlightedUtteranceId={highlightedUtteranceId}
+          variant={variant}
+          activeSentenceId={activeSentenceId}
         />
       </div>
     </div>
