@@ -2,9 +2,10 @@
 
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ChevronDown, CircleCheck } from "lucide-react";
+import { CircleCheck, Video } from "lucide-react";
 
 import LiveNotesButton from "@/components/meeting/LiveNotesButton";
+import HeaderTooltip from "@/components/shell/HeaderTooltip";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -258,16 +259,18 @@ export default function CaptureMeetingDialog({
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className="border-violet-200 bg-violet-600 text-white hover:bg-violet-700 hover:text-white"
-        >
-          Capture
-          <ChevronDown className="h-3.5 w-3.5 opacity-90" />
-        </Button>
-      </DialogTrigger>
+      <HeaderTooltip label="Capture live meeting">
+        <DialogTrigger asChild>
+          <Button
+            variant="outline"
+            size="sm"
+            className="border-violet-200 bg-violet-600 text-white hover:bg-violet-700 hover:text-white"
+          >
+            <Video className="h-4 w-4" aria-hidden="true" />
+            Capture
+          </Button>
+        </DialogTrigger>
+      </HeaderTooltip>
       <DialogContent>
         {step === "form" ? (
           <CaptureDialogFormStep
