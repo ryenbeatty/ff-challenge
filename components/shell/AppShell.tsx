@@ -66,15 +66,11 @@ function AppShellInner({ children }: AppShellProps) {
             isViewRoute ? "flex flex-col overflow-hidden" : "overflow-y-auto",
           )}
         >
-          <div
-            className={cn(
-              isViewRoute
-                ? "flex min-h-0 flex-1 flex-col"
-                : "mx-auto w-full max-w-6xl px-5 py-6 sm:px-6",
-            )}
-          >
-            {children}
-          </div>
+          {isViewRoute ? (
+            <div className="flex min-h-0 flex-1 flex-col">{children}</div>
+          ) : (
+            children
+          )}
         </main>
       </div>
 
