@@ -1,17 +1,24 @@
 "use client";
 
-import { useMemo, useState } from "react";
 import MeetingViewSidebar from "@/components/MeetingViewSidebar";
 import { Button } from "@/components/ui/button";
-import { useMeetingQuery } from "@/lib/meetings-query";
-import type { ActionItem } from "@/lib/meetings-types";
-import { CalendarDays, ChevronDown, Copy, Globe, UserCircle2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useMeetingQuery } from "@/lib/meetings-query";
+import { resolveActionItemAssignee } from "@/lib/resolve-action-item-assignee";
+import type { ActionItem } from "@/lib/meetings-types";
+import {
+  CalendarDays,
+  ChevronDown,
+  Copy,
+  Globe,
+  UserCircle2,
+} from "lucide-react";
+import { useMemo, useState } from "react";
 
 type MeetingDetailViewProps = {
   meetingId: string;
@@ -21,9 +28,10 @@ function formatActionItemsForCopy(actionItems: ActionItem[]): string {
   const groups = new Map<string, ActionItem[]>();
 
   for (const item of actionItems) {
-    const existing = groups.get(item.assigneeName) ?? [];
+    const assignee = resolveActionItemAssignee(item);
+    const existing = groups.get(assignee) ?? [];
     existing.push(item);
-    groups.set(item.assigneeName, existing);
+    groups.set(assignee, existing);
   }
 
   return Array.from(groups.entries())
@@ -37,7 +45,9 @@ function formatActionItemsForCopy(actionItems: ActionItem[]): string {
     .join("\n\n");
 }
 
-export default function MeetingDetailView({ meetingId }: MeetingDetailViewProps) {
+export default function MeetingDetailView({
+  meetingId,
+}: MeetingDetailViewProps) {
   const { data: meeting, isLoading } = useMeetingQuery(meetingId);
   const [copyMenuOpen, setCopyMenuOpen] = useState(false);
 
@@ -55,16 +65,21 @@ export default function MeetingDetailView({ meetingId }: MeetingDetailViewProps)
 
     const groups = new Map<string, ActionItem[]>();
     for (const item of meeting.summary.actionItems) {
-      const existing = groups.get(item.assigneeName) ?? [];
+      const assignee = resolveActionItemAssignee(item);
+      const existing = groups.get(assignee) ?? [];
       existing.push(item);
-      groups.set(item.assigneeName, existing);
+      groups.set(assignee, existing);
     }
 
     return Array.from(groups.entries());
   }, [meeting]);
 
   if (isLoading) {
-    return <p className="px-5 py-6 text-sm text-slate-500 sm:px-6">Loading meeting...</p>;
+    return (
+      <p className="px-5 py-6 text-sm text-slate-500 sm:px-6">
+        Loading meeting...
+      </p>
+    );
   }
 
   if (!meeting) {
@@ -95,11 +110,12 @@ export default function MeetingDetailView({ meetingId }: MeetingDetailViewProps)
       return;
     }
 
-    const bulletSection = meeting.summary.bulletGist.map((point) => `- ${point}`).join("\n");
+    const overviewText = meeting.summary.overview.trim();
+    const bulletSection = meeting.summary.bulletGist
+      .map((point) => `- ${point}`)
+      .join("\n");
     const payload = [
-      "Overview",
-      meeting.summary.overview,
-      "",
+      ...(overviewText ? ["Overview", overviewText, ""] : []),
       "Key takeaways",
       bulletSection,
       "",
@@ -119,7 +135,7 @@ export default function MeetingDetailView({ meetingId }: MeetingDetailViewProps)
   return (
     <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
       <article className="min-h-0 flex-1 overflow-y-auto">
-        <div className="mx-auto w-full max-w-3xl space-y-8 px-5 py-8 sm:px-8 lg:px-12">
+        <div className="mx-auto w-full max-w-3xl space-y-8 px-5 py-8 pb-[120px] sm:px-8 lg:px-12">
           <header>
             <h1 className="text-3xl font-normal leading-9 tracking-[-0.2px] text-slate-900">
               {meeting.title}
@@ -127,7 +143,9 @@ export default function MeetingDetailView({ meetingId }: MeetingDetailViewProps)
             <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-slate-600">
               <div className="flex items-center gap-2">
                 <UserCircle2 className="h-4 w-4 text-slate-500" />
-                <span className="font-medium text-slate-700">{meeting.ownerName}</span>
+                <span className="font-medium text-slate-700">
+                  {meeting.ownerName}
+                </span>
               </div>
               <div className="flex items-center gap-1.5">
                 <CalendarDays className="h-4 w-4 text-slate-500" />
@@ -139,7 +157,7 @@ export default function MeetingDetailView({ meetingId }: MeetingDetailViewProps)
               </div>
             </div>
 
-            <div className="mt-5 flex flex-wrap gap-2">
+            {/* <div className="mt-5 flex flex-wrap gap-2">
               {meeting.summary.keywords.map((keyword) => (
                 <span
                   key={keyword}
@@ -148,11 +166,15 @@ export default function MeetingDetailView({ meetingId }: MeetingDetailViewProps)
                   {keyword}
                 </span>
               ))}
-            </div>
+            </div> */}
           </header>
 
           <div className="space-y-4">
-            <p className="text-base leading-7 text-slate-700">{meeting.summary.overview}</p>
+            {meeting.summary.overview.trim() ? (
+              <p className="text-base leading-7 text-slate-700">
+                {meeting.summary.overview}
+              </p>
+            ) : null}
             <ul className="list-disc space-y-2 pl-5 text-base leading-7 text-slate-700">
               {meeting.summary.bulletGist.map((point) => (
                 <li key={point}>{point}</li>
@@ -161,14 +183,13 @@ export default function MeetingDetailView({ meetingId }: MeetingDetailViewProps)
           </div>
 
           <section>
-            <h2 className="text-xs font-medium uppercase tracking-wide text-slate-500">
-              Outline
-            </h2>
+            <h2 className="text-lg text-slate-900">Outline</h2>
             <div className="mt-3 space-y-4">
               {meeting.summary.outline.map((section) => (
                 <div key={`${section.timestamp}-${section.title}`}>
                   <p className="text-sm font-medium text-slate-900">
-                    <span className="text-slate-500">{section.timestamp}</span> · {section.title}
+                    <span className="text-slate-500">{section.timestamp}</span>{" "}
+                    · {section.title}
                   </p>
                   {section.bullets?.length ? (
                     <ul className="mt-1 list-disc space-y-1 pl-5 text-base leading-7 text-slate-700">
@@ -183,7 +204,7 @@ export default function MeetingDetailView({ meetingId }: MeetingDetailViewProps)
           </section>
 
           <section>
-            <h2 className="text-xs font-medium uppercase tracking-wide text-slate-500">Notes</h2>
+            <h2 className="text-lg text-slate-900">Notes</h2>
             <ul className="mt-3 list-disc space-y-2 pl-5 text-base leading-7 text-slate-700">
               {meeting.summary.notes.map((point) => (
                 <li key={point}>{point}</li>
@@ -193,15 +214,21 @@ export default function MeetingDetailView({ meetingId }: MeetingDetailViewProps)
 
           <section>
             <div className="flex items-center justify-between gap-3">
-              <h2 className="text-xs font-medium uppercase tracking-wide text-slate-500">
-                Action items
-              </h2>
+              <h2 className="text-lg text-slate-900">Action items</h2>
               <div className="flex items-center gap-1">
-                <Button type="button" variant="ghost" size="sm" className="h-8 px-3 text-xs">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 px-3 text-xs"
+                >
                   Edit
                 </Button>
 
-                <DropdownMenu open={copyMenuOpen} onOpenChange={setCopyMenuOpen}>
+                <DropdownMenu
+                  open={copyMenuOpen}
+                  onOpenChange={setCopyMenuOpen}
+                >
                   <DropdownMenuTrigger asChild>
                     <Button
                       type="button"
@@ -229,15 +256,21 @@ export default function MeetingDetailView({ meetingId }: MeetingDetailViewProps)
             <div className="mt-4 space-y-3">
               {actionItemsByAssignee.map(([assignee, items]) => (
                 <div key={assignee}>
-                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  <a
+                    href={`mailto:${assignee}`}
+                    className="text-base font-medium text-blue-600 hover:text-blue-700 hover:underline"
+                  >
                     {assignee}
-                  </p>
+                  </a>
                   <ul className="mt-1 list-disc space-y-1 pl-5 text-base leading-7 text-slate-700">
                     {items.map((item) => (
                       <li key={item.id}>
                         {item.text}
                         {item.timestamp ? (
-                          <span className="text-slate-500"> ({item.timestamp})</span>
+                          <span className="text-slate-500">
+                            {" "}
+                            ({item.timestamp})
+                          </span>
                         ) : null}
                       </li>
                     ))}
@@ -249,7 +282,10 @@ export default function MeetingDetailView({ meetingId }: MeetingDetailViewProps)
         </div>
       </article>
 
-      <MeetingViewSidebar transcript={meeting.transcript} speakers={meeting.speakers} />
+      <MeetingViewSidebar
+        transcript={meeting.transcript}
+        speakers={meeting.speakers}
+      />
     </div>
   );
 }
