@@ -35,11 +35,6 @@ function normalizeStoredMeeting(raw: Partial<Meeting> & Record<string, unknown>)
         ? String(raw.durationLabel)
         : COMPLETED_DURATION_LABEL;
 
-  const hasNewSummary =
-    raw.summary !== null &&
-    typeof raw.summary === "object" &&
-    !Array.isArray(raw.summary);
-
   const placeholder = buildCanonicalMeetingContent(id);
 
   return applyCanonicalMeetingContent({
@@ -51,9 +46,9 @@ function normalizeStoredMeeting(raw: Partial<Meeting> & Record<string, unknown>)
     createdAt: String(raw.createdAt ?? new Date().toISOString()),
     stoppedAt: raw.stoppedAt ? String(raw.stoppedAt) : null,
     durationLabel,
-    speakers: Array.isArray(raw.speakers) ? raw.speakers : placeholder.speakers,
-    summary: hasNewSummary ? (raw.summary as Meeting["summary"]) : placeholder.summary,
-    transcript: Array.isArray(raw.transcript) ? raw.transcript : placeholder.transcript,
+    speakers: placeholder.speakers,
+    summary: placeholder.summary,
+    transcript: placeholder.transcript,
   });
 }
 

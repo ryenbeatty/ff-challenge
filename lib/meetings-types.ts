@@ -3,6 +3,7 @@ export type MeetingStatus = "live" | "completed";
 export type Speaker = {
   id: string;
   name: string;
+  email: string;
 };
 
 export type TranscriptSentence = {
@@ -24,7 +25,7 @@ export type OutlineSection = {
 export type ActionItem = {
   id: string;
   text: string;
-  assigneeName: string;
+  assigneeEmail: string;
   timestamp?: string;
 };
 

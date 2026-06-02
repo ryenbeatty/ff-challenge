@@ -8,9 +8,12 @@ import type {
 
 export const CANONICAL_OWNER_NAME = "Maya Chen";
 
+export const MAYA_EMAIL = "maya.chen@fireflies.ai";
+export const JORDAN_EMAIL = "jordan.park@fireflies.ai";
+
 export const CANONICAL_SPEAKERS: Speaker[] = [
-  { id: "speaker-1", name: "Maya Chen" },
-  { id: "speaker-2", name: "Jordan Park" },
+  { id: "speaker-1", name: "Maya Chen", email: MAYA_EMAIL },
+  { id: "speaker-2", name: "Jordan Park", email: JORDAN_EMAIL },
 ];
 
 const MAYA_ID = "speaker-1";
@@ -293,8 +296,9 @@ const CANONICAL_SUMMARY: MeetingSummary = {
     "segment filters",
     "weekly snapshot",
   ],
-  overview:
-    "Maya Chen and Jordan Park aligned on an MVP analytics dashboard for Fireflies.ai users focused on activation, retention, and seat-based expansion. They agreed on a default hero layout with week-over-week deltas, per-user segment filters for enterprise, mid-market, and self-serve, and a weekly CSV snapshot workflow. Phase two will add annotations, alerting, and custom metrics after read-only widgets ship in two sprints.",
+  // Intentionally blank: this dummy data should render the "general summary"
+  // as ONLY bullet points (the `bulletGist` list).
+  overview: "",
   gist: "The team scoped a leadership-friendly analytics dashboard MVP with core growth metrics, segment filters, and weekly exports.",
   bulletGist: [
     "North-star metrics: activation, retention, and seat growth displayed in a three-card hero row with default week-over-week deltas.",
@@ -362,43 +366,43 @@ const CANONICAL_SUMMARY: MeetingSummary = {
     {
       id: "action-1",
       text: "Share Figma flows for hero row, segment filters, and weekly snapshot export.",
-      assigneeName: "Jordan Park",
+      assigneeEmail: JORDAN_EMAIL,
       timestamp: "04:47",
     },
     {
       id: "action-2",
       text: "Publish technical RFC on metrics pipeline and warehouse source-of-truth tables.",
-      assigneeName: "Jordan Park",
+      assigneeEmail: JORDAN_EMAIL,
       timestamp: "04:55",
     },
     {
       id: "action-3",
       text: "Confirm with data engineering which warehouse tables back activation and retention.",
-      assigneeName: "Jordan Park",
+      assigneeEmail: JORDAN_EMAIL,
       timestamp: "05:01",
     },
     {
       id: "action-4",
       text: "Add instrumentation for weekly active dashboard viewers and time-to-first-filter.",
-      assigneeName: "Jordan Park",
+      assigneeEmail: JORDAN_EMAIL,
       timestamp: "04:22",
     },
     {
       id: "action-5",
       text: "Schedule leadership review for the analytics dashboard MVP on Monday.",
-      assigneeName: "Maya Chen",
+      assigneeEmail: MAYA_EMAIL,
       timestamp: "04:55",
     },
     {
       id: "action-6",
       text: "Document phase-two scope (annotations, Slack alerts, custom metrics) in the product roadmap.",
-      assigneeName: "Maya Chen",
+      assigneeEmail: MAYA_EMAIL,
       timestamp: "03:48",
     },
     {
       id: "action-7",
       text: "Finalize MVP success criteria: under thirty seconds to first actionable insight.",
-      assigneeName: "Maya Chen",
+      assigneeEmail: MAYA_EMAIL,
       timestamp: "04:17",
     },
   ] satisfies ActionItem[],
