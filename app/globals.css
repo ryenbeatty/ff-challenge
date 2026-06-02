@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f8fafc;
+  --background: #ffffff;
   --foreground: #0f172a;
   --surface: #ffffff;
   --muted-foreground: #64748b;
@@ -23,4 +23,10 @@ body {
   line-height: 1.4;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+@layer base {
+  .text-sm {
+    font-weight: 400;
+  }
 }

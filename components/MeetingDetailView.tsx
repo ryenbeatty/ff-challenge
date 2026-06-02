@@ -156,7 +156,7 @@ export default function MeetingDetailView({ meetingId }: MeetingDetailViewProps)
         </ul>
 
         <section className="mt-6">
-          <h2 className="text-sm font-semibold text-slate-900">Outline</h2>
+          <h2 className="text-sm text-slate-900">Outline</h2>
           <div className="mt-3 space-y-4">
             {meeting.summary.outline.map((section) => (
               <div key={`${section.timestamp}-${section.title}`}>
@@ -176,7 +176,7 @@ export default function MeetingDetailView({ meetingId }: MeetingDetailViewProps)
         </section>
 
         <section className="mt-6">
-          <h2 className="text-sm font-semibold text-slate-900">Notes</h2>
+          <h2 className="text-sm text-slate-900">Notes</h2>
           <ul className="mt-3 list-disc space-y-2 pl-5 text-base leading-7 text-slate-700">
             {meeting.summary.notes.map((point) => (
               <li key={point}>{point}</li>
@@ -186,7 +186,7 @@ export default function MeetingDetailView({ meetingId }: MeetingDetailViewProps)
 
         <section className="mt-6">
           <div className="flex items-center justify-between gap-3">
-            <h2 className="text-sm font-semibold text-slate-900">Action items</h2>
+            <h2 className="text-sm text-slate-900">Action items</h2>
             <div className="flex items-center gap-2">
               <button
                 type="button"

@@ -29,7 +29,7 @@ function AppShellInner({ children }: AppShellProps) {
   } as CSSProperties;
 
   return (
-    <div className="flex h-dvh overflow-hidden bg-slate-50 text-slate-900" style={shellStyle}>
+    <div className="flex h-dvh overflow-hidden bg-white text-slate-900" style={shellStyle}>
       <a
         href="#main-content"
         className="sr-only z-50 rounded-md bg-white px-3 py-2 text-sm text-slate-900 focus:not-sr-only focus:absolute focus:left-3 focus:top-3"
