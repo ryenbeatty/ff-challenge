@@ -1,17 +1,60 @@
-import {
-  DASHBOARD_ACTION_ITEMS,
-  DASHBOARD_SUMMARY,
-  EXECUTIVE_SUMMARY_POINTS,
-  MEETING_NOTES_POINTS,
-  createDummyTranscript,
-} from "./meetings-data";
+import { applyCanonicalMeetingContent } from "./apply-canonical-meeting-content";
+import { buildCanonicalMeetingContent, CANONICAL_OWNER_NAME } from "./canonical-meeting-content";
 import { buildMeetingTitle } from "./build-meeting-title";
 import { CreateMeetingInput, Meeting } from "./meetings-types";
 
-const STORAGE_KEY = "offline-meetings";
+const STORAGE_KEY = "fireflies-meetings-v2";
+const LEGACY_STORAGE_KEY = "offline-meetings";
+
+const COMPLETED_DURATION_LABEL = "5 min";
 
 function hasWindow() {
   return typeof window !== "undefined";
+}
+
+function readRawMeetings(): string | null {
+  if (!hasWindow()) {
+    return null;
+  }
+
+  const current = window.localStorage.getItem(STORAGE_KEY);
+  if (current) {
+    return current;
+  }
+
+  return window.localStorage.getItem(LEGACY_STORAGE_KEY);
+}
+
+function normalizeStoredMeeting(raw: Partial<Meeting> & Record<string, unknown>): Meeting {
+  const id = String(raw.id ?? `meeting-${Date.now()}`);
+  const status = raw.status === "live" ? "live" : "completed";
+  const durationLabel =
+    status === "live"
+      ? "Live"
+      : raw.durationLabel && raw.durationLabel !== "Live"
+        ? String(raw.durationLabel)
+        : COMPLETED_DURATION_LABEL;
+
+  const hasNewSummary =
+    raw.summary !== null &&
+    typeof raw.summary === "object" &&
+    !Array.isArray(raw.summary);
+
+  const placeholder = buildCanonicalMeetingContent(id);
+
+  return applyCanonicalMeetingContent({
+    id,
+    title: String(raw.title ?? "Untitled meeting"),
+    ownerName: String(raw.ownerName ?? CANONICAL_OWNER_NAME),
+    meetingLanguage: String(raw.meetingLanguage ?? "English (Global)"),
+    status,
+    createdAt: String(raw.createdAt ?? new Date().toISOString()),
+    stoppedAt: raw.stoppedAt ? String(raw.stoppedAt) : null,
+    durationLabel,
+    speakers: Array.isArray(raw.speakers) ? raw.speakers : placeholder.speakers,
+    summary: hasNewSummary ? (raw.summary as Meeting["summary"]) : placeholder.summary,
+    transcript: Array.isArray(raw.transcript) ? raw.transcript : placeholder.transcript,
+  });
 }
 
 function parseMeetings(raw: string | null): Meeting[] {
@@ -25,26 +68,7 @@ function parseMeetings(raw: string | null): Meeting[] {
       return [];
     }
 
-    return parsed.map((meeting) => {
-      return {
-        ...meeting,
-        ownerName: meeting.ownerName ?? "Max Musterman",
-        meetingLanguage: meeting.meetingLanguage ?? "English (Global)",
-        executiveSummary:
-          Array.isArray(meeting.executiveSummary) && meeting.executiveSummary.length
-            ? meeting.executiveSummary
-            : EXECUTIVE_SUMMARY_POINTS,
-        notes:
-          Array.isArray(meeting.notes) && meeting.notes.length
-            ? meeting.notes
-            : MEETING_NOTES_POINTS,
-        actionItemsByParticipant:
-          Array.isArray(meeting.actionItemsByParticipant) &&
-          meeting.actionItemsByParticipant.length
-            ? meeting.actionItemsByParticipant
-            : DASHBOARD_ACTION_ITEMS,
-      };
-    });
+    return parsed.map((raw) => normalizeStoredMeeting(raw));
   } catch {
     return [];
   }
@@ -56,6 +80,7 @@ function writeMeetings(meetings: Meeting[]) {
   }
 
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(meetings));
+  window.localStorage.removeItem(LEGACY_STORAGE_KEY);
 }
 
 export function getAllMeetings(): Meeting[] {
@@ -63,7 +88,7 @@ export function getAllMeetings(): Meeting[] {
     return [];
   }
 
-  const meetings = parseMeetings(window.localStorage.getItem(STORAGE_KEY));
+  const meetings = parseMeetings(readRawMeetings());
   return meetings.sort((a, b) => {
     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
   });
@@ -77,25 +102,25 @@ export function createMeeting(input: CreateMeetingInput = {}): Meeting {
   const id = `meeting-${Date.now()}`;
   const createdAt = new Date().toISOString();
   const createdDate = new Date(createdAt);
-  const meeting: Meeting = {
+  const canonical = buildCanonicalMeetingContent(id);
+
+  const meeting: Meeting = applyCanonicalMeetingContent({
     id,
     title: buildMeetingTitle({
       userEmail: input.userEmail,
       createdAt: createdDate,
       customTitle: input.customTitle,
     }),
-    ownerName: "Max Musterman",
+    ownerName: CANONICAL_OWNER_NAME,
     meetingLanguage: input.meetingLanguage ?? "English (Global)",
     status: "live",
     createdAt,
     stoppedAt: null,
     durationLabel: "Live",
-    summary: DASHBOARD_SUMMARY,
-    executiveSummary: EXECUTIVE_SUMMARY_POINTS,
-    notes: MEETING_NOTES_POINTS,
-    transcript: createDummyTranscript(id),
-    actionItemsByParticipant: DASHBOARD_ACTION_ITEMS,
-  };
+    speakers: canonical.speakers,
+    summary: canonical.summary,
+    transcript: canonical.transcript,
+  });
 
   const meetings = getAllMeetings();
   meetings.unshift(meeting);
@@ -111,18 +136,16 @@ export function stopMeeting(meetingId: string): Meeting | undefined {
     return target;
   }
 
-  const stoppedAt = new Date().toISOString();
-  const startedTime = new Date(target.createdAt).getTime();
-  const stoppedTime = new Date(stoppedAt).getTime();
-  const durationMinutes = Math.max(
-    1,
-    Math.round((stoppedTime - startedTime) / (1000 * 60)),
-  );
-
   target.status = "completed";
-  target.stoppedAt = stoppedAt;
-  target.durationLabel = `${durationMinutes} min`;
+  target.stoppedAt = new Date().toISOString();
+  target.durationLabel = COMPLETED_DURATION_LABEL;
+
+  const updated = applyCanonicalMeetingContent(target);
+  const index = meetings.findIndex((meeting) => meeting.id === meetingId);
+  if (index !== -1) {
+    meetings[index] = updated;
+  }
 
   writeMeetings(meetings);
-  return target;
+  return updated;
 }

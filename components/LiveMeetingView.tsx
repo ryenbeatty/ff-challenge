@@ -1,6 +1,7 @@
 "use client";
 
 import { useMeetingQuery } from "@/lib/meetings-query";
+import { formatSecondsToTimestamp } from "@/lib/format-transcript-time";
 
 type LiveMeetingViewProps = {
   meetingId: string;
@@ -31,13 +32,16 @@ export default function LiveMeetingView({ meetingId }: LiveMeetingViewProps) {
       <h2 className="text-base font-semibold text-slate-900">Live transcript feed</h2>
 
       <ul className="mt-4 space-y-2.5">
-        {meeting.transcript.map((segment) => (
-          <li key={segment.id} className="rounded-md border border-slate-200 bg-slate-50/70 px-3.5 py-3">
+        {meeting.transcript.map((sentence) => (
+          <li
+            key={sentence.id}
+            className="rounded-md border border-slate-200 bg-slate-50/70 px-3.5 py-3"
+          >
             <p className="text-xs text-slate-500">
-              <span className="font-medium text-slate-700">{segment.speaker}</span> ·{" "}
-              {segment.timestamp}
+              <span className="font-medium text-slate-700">{sentence.speakerName}</span> ·{" "}
+              {formatSecondsToTimestamp(sentence.startTime)}
             </p>
-            <p className="mt-1.5 text-base leading-7 text-slate-800">{segment.text}</p>
+            <p className="mt-1.5 text-base leading-7 text-slate-800">{sentence.text}</p>
           </li>
         ))}
       </ul>

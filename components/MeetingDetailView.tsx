@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from "react";
 import { useMeetingQuery } from "@/lib/meetings-query";
+import { formatSecondsToTimestamp } from "@/lib/format-transcript-time";
+import type { ActionItem } from "@/lib/meetings-types";
 import { CalendarDays, ChevronDown, Copy, Globe, UserCircle2 } from "lucide-react";
 import {
   DropdownMenu,
@@ -14,20 +16,50 @@ type MeetingDetailViewProps = {
   meetingId: string;
 };
 
+function formatActionItemsForCopy(actionItems: ActionItem[]): string {
+  const groups = new Map<string, ActionItem[]>();
+
+  for (const item of actionItems) {
+    const existing = groups.get(item.assigneeName) ?? [];
+    existing.push(item);
+    groups.set(item.assigneeName, existing);
+  }
+
+  return Array.from(groups.entries())
+    .map(([assignee, items]) => {
+      const lines = items.map((item) => {
+        const suffix = item.timestamp ? ` (${item.timestamp})` : "";
+        return `- ${item.text}${suffix}`;
+      });
+      return `${assignee}\n${lines.join("\n")}`;
+    })
+    .join("\n\n");
+}
+
 export default function MeetingDetailView({ meetingId }: MeetingDetailViewProps) {
   const { data: meeting, isLoading } = useMeetingQuery(meetingId);
   const [copyMenuOpen, setCopyMenuOpen] = useState(false);
+
   const actionItemsContent = useMemo(() => {
     if (!meeting) {
       return "";
     }
+    return formatActionItemsForCopy(meeting.summary.actionItems);
+  }, [meeting]);
 
-    return meeting.actionItemsByParticipant
-      .map((group) => {
-        const lines = group.items.map((item) => `- ${item}`).join("\n");
-        return `${group.participant}\n${lines}`;
-      })
-      .join("\n\n");
+  const actionItemsByAssignee = useMemo(() => {
+    if (!meeting) {
+      return [];
+    }
+
+    const groups = new Map<string, ActionItem[]>();
+    for (const item of meeting.summary.actionItems) {
+      const existing = groups.get(item.assigneeName) ?? [];
+      existing.push(item);
+      groups.set(item.assigneeName, existing);
+    }
+
+    return Array.from(groups.entries());
   }, [meeting]);
 
   if (isLoading) {
@@ -62,7 +94,18 @@ export default function MeetingDetailView({ meetingId }: MeetingDetailViewProps)
       return;
     }
 
-    const payload = `Summary\n${meeting.summary}\n\nAction items\n${actionItemsContent}`;
+    const bulletSection = meeting.summary.bulletGist.map((point) => `- ${point}`).join("\n");
+    const payload = [
+      "Overview",
+      meeting.summary.overview,
+      "",
+      "Key takeaways",
+      bulletSection,
+      "",
+      "Action items",
+      actionItemsContent,
+    ].join("\n");
+
     try {
       await navigator.clipboard.writeText(payload);
     } catch {
@@ -93,16 +136,49 @@ export default function MeetingDetailView({ meetingId }: MeetingDetailViewProps)
           </div>
         </div>
 
+        <div className="mt-5 flex flex-wrap gap-2">
+          {meeting.summary.keywords.map((keyword) => (
+            <span
+              key={keyword}
+              className="rounded-full bg-violet-50 px-2.5 py-0.5 text-xs font-medium text-violet-700"
+            >
+              {keyword}
+            </span>
+          ))}
+        </div>
+
+        <p className="mt-6 text-base leading-7 text-slate-700">{meeting.summary.overview}</p>
+
         <ul className="mt-6 list-disc space-y-2 pl-5 text-base leading-7 text-slate-700">
-          {meeting.executiveSummary.map((point) => (
+          {meeting.summary.bulletGist.map((point) => (
             <li key={point}>{point}</li>
           ))}
         </ul>
 
         <section className="mt-6">
+          <h2 className="text-sm font-semibold text-slate-900">Outline</h2>
+          <div className="mt-3 space-y-4">
+            {meeting.summary.outline.map((section) => (
+              <div key={`${section.timestamp}-${section.title}`}>
+                <p className="text-sm font-medium text-slate-900">
+                  <span className="text-slate-500">{section.timestamp}</span> · {section.title}
+                </p>
+                {section.bullets?.length ? (
+                  <ul className="mt-1 list-disc space-y-1 pl-5 text-base leading-7 text-slate-700">
+                    {section.bullets.map((bullet) => (
+                      <li key={bullet}>{bullet}</li>
+                    ))}
+                  </ul>
+                ) : null}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-6">
           <h2 className="text-sm font-semibold text-slate-900">Notes</h2>
           <ul className="mt-3 list-disc space-y-2 pl-5 text-base leading-7 text-slate-700">
-            {meeting.notes.map((point) => (
+            {meeting.summary.notes.map((point) => (
               <li key={point}>{point}</li>
             ))}
           </ul>
@@ -143,14 +219,19 @@ export default function MeetingDetailView({ meetingId }: MeetingDetailViewProps)
           </div>
 
           <div className="mt-4 space-y-3">
-            {meeting.actionItemsByParticipant.map((group) => (
-              <div key={group.participant}>
+            {actionItemsByAssignee.map(([assignee, items]) => (
+              <div key={assignee}>
                 <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  {group.participant}
+                  {assignee}
                 </p>
                 <ul className="mt-1 list-disc space-y-1 pl-5 text-base leading-7 text-slate-700">
-                  {group.items.map((item) => (
-                    <li key={item}>{item}</li>
+                  {items.map((item) => (
+                    <li key={item.id}>
+                      {item.text}
+                      {item.timestamp ? (
+                        <span className="text-slate-500"> ({item.timestamp})</span>
+                      ) : null}
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -162,13 +243,16 @@ export default function MeetingDetailView({ meetingId }: MeetingDetailViewProps)
       <aside className="rounded-xl border border-slate-200 bg-white p-6">
         <h2 className="text-base font-semibold text-slate-900">Full transcript</h2>
         <ul className="mt-4 space-y-2.5">
-          {meeting.transcript.map((segment) => (
-            <li key={segment.id} className="rounded-md border border-slate-200 bg-slate-50/70 px-3 py-2.5">
+          {meeting.transcript.map((sentence) => (
+            <li
+              key={sentence.id}
+              className="rounded-md border border-slate-200 bg-slate-50/70 px-3 py-2.5"
+            >
               <p className="text-xs text-slate-500">
-                <span className="font-medium text-slate-700">{segment.speaker}</span> ·{" "}
-                {segment.timestamp}
+                <span className="font-medium text-slate-700">{sentence.speakerName}</span> ·{" "}
+                {formatSecondsToTimestamp(sentence.startTime)}
               </p>
-              <p className="mt-1 text-base leading-7 text-slate-800">{segment.text}</p>
+              <p className="mt-1 text-base leading-7 text-slate-800">{sentence.text}</p>
             </li>
           ))}
         </ul>

@@ -17,7 +17,10 @@ export default function RecentMeetingsList() {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const sortedMeetings = useMemo(
-    () => (meetings ? sortMeetingsByNewest(meetings) : []),
+    () =>
+      meetings
+        ? sortMeetingsByNewest(meetings.filter((meeting) => meeting.status !== "live"))
+        : [],
     [meetings],
   );
 
@@ -25,7 +28,7 @@ export default function RecentMeetingsList() {
     return <p className="text-sm text-slate-500">Loading meetings...</p>;
   }
 
-  if (!sortedMeetings.length) {
+  if (!meetings?.length) {
     return (
       <div className="rounded-xl border border-dashed border-slate-300 bg-white p-8 text-center">
         <p className="text-base text-slate-800">No meetings yet.</p>
@@ -35,6 +38,10 @@ export default function RecentMeetingsList() {
         </p>
       </div>
     );
+  }
+
+  if (!sortedMeetings.length) {
+    return null;
   }
 
   const visibleMeetings = isExpanded
