@@ -3,9 +3,10 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { LucideIcon } from "lucide-react";
-import { Home } from "lucide-react";
+import { CalendarDays, Home } from "lucide-react";
 
 import type { SidebarVariant } from "@/components/app-shell/AppShellProvider";
+import { HOME_PATH, MEETINGS_PATH } from "@/components/app-shell/route-config";
 import { SHELL_HEADER_HEIGHT_CLASS } from "@/components/app-shell/constants";
 import {
   Tooltip,
@@ -18,10 +19,32 @@ type LeftSidebarProps = {
   displayVariant: Extract<SidebarVariant, "collapsed" | "expanded">;
 };
 
+type NavItemConfig = {
+  href: string;
+  label: string;
+  icon: LucideIcon;
+  isActive: (pathname: string) => boolean;
+};
+
+const NAV_ITEMS: NavItemConfig[] = [
+  {
+    href: HOME_PATH,
+    label: "Home",
+    icon: Home,
+    isActive: (pathname) => pathname === HOME_PATH,
+  },
+  {
+    href: MEETINGS_PATH,
+    label: "Meetings",
+    icon: CalendarDays,
+    isActive: (pathname) => pathname === MEETINGS_PATH,
+  },
+];
+
 function SidebarBrand({ isCollapsed }: { isCollapsed: boolean }) {
   const brand = (
     <Link
-      href="/"
+      href={HOME_PATH}
       className={cn(
         "block font-semibold tracking-tight text-violet-600 transition hover:text-violet-700",
         isCollapsed ? "text-center text-sm leading-none" : "text-base",
@@ -93,7 +116,6 @@ function SidebarNavItem({
 
 export default function LeftSidebar({ displayVariant }: LeftSidebarProps) {
   const pathname = usePathname();
-  const isHomeActive = pathname === "/";
   const isCollapsed = displayVariant === "collapsed";
 
   return (
@@ -111,14 +133,17 @@ export default function LeftSidebar({ displayVariant }: LeftSidebarProps) {
         aria-label="Main navigation"
         className="flex-1 space-y-1 overflow-y-auto p-3"
       >
-        <SidebarNavItem
-          href="/"
-          label="Home"
-          icon={Home}
-          isActive={isHomeActive}
-          isCollapsed={isCollapsed}
-          showTooltip={isCollapsed}
-        />
+        {NAV_ITEMS.map((item) => (
+          <SidebarNavItem
+            key={item.href}
+            href={item.href}
+            label={item.label}
+            icon={item.icon}
+            isActive={item.isActive(pathname)}
+            isCollapsed={isCollapsed}
+            showTooltip={isCollapsed}
+          />
+        ))}
       </nav>
     </div>
   );

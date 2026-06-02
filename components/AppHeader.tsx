@@ -5,7 +5,8 @@ import { useMemo, useState } from "react";
 
 import { useAppShell } from "@/components/app-shell/AppShellProvider";
 import { SHELL_HEADER_HEIGHT_CLASS } from "@/components/app-shell/constants";
-import Breadcrumbs, { type BreadcrumbItem } from "@/components/Breadcrumbs";
+import { getBreadcrumbItems } from "@/components/app-shell/route-config";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -52,20 +53,10 @@ export default function AppHeader() {
   const canStopMeeting =
     isLiveRoute && Boolean(meetingId) && meeting?.status === "live";
 
-  const breadcrumbItems = useMemo<BreadcrumbItem[]>(() => {
-    if (pathname === "/") {
-      return [{ label: "Meetings" }];
-    }
-
-    if (isMeetingRoute) {
-      return [
-        { label: "Meetings", href: "/" },
-        { label: meeting?.title ?? "Meeting" },
-      ];
-    }
-
-    return [{ label: "Meetings", href: "/" }];
-  }, [isMeetingRoute, meeting?.title, pathname]);
+  const breadcrumbItems = useMemo(
+    () => getBreadcrumbItems(pathname, meeting?.title),
+    [meeting?.title, pathname],
+  );
 
   async function handleCapture() {
     if (!meetingLink.trim()) {

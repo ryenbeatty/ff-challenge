@@ -12,7 +12,14 @@ import {
   type ReactNode,
 } from "react";
 
-import { SIDEBAR_WIDTH_EXPANDED_PX } from "./constants";
+import {
+  SIDEBAR_WIDTH_COLLAPSED_PX,
+  SIDEBAR_WIDTH_EXPANDED_PX,
+} from "./constants";
+import {
+  getInlineSidebarVariant,
+  isMeetingDetailRoute,
+} from "./route-config";
 
 export type SidebarVariant = "hidden" | "collapsed" | "expanded";
 export type SidebarMode = "inline" | "overlay";
@@ -31,13 +38,10 @@ type AppShellContextValue = {
 
 const AppShellContext = createContext<AppShellContextValue | null>(null);
 
-function isMeetingPath(pathname: string) {
-  return pathname.startsWith("/live/") || pathname.startsWith("/view/");
-}
-
 export function AppShellProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname();
-  const isMeetingRoute = isMeetingPath(pathname);
+  const isMeetingRoute = isMeetingDetailRoute(pathname);
+  const inlineSidebarVariant = getInlineSidebarVariant(pathname);
   const [overlaySession, setOverlaySession] = useState<{
     path: string;
     open: boolean;
@@ -52,10 +56,14 @@ export function AppShellProvider({ children }: { children: ReactNode }) {
     ? isOverlayOpen
       ? "expanded"
       : "hidden"
-    : "expanded";
+    : inlineSidebarVariant;
 
   const inlineSidebarWidthPx =
-    mode === "inline" ? SIDEBAR_WIDTH_EXPANDED_PX : 0;
+    mode === "inline"
+      ? inlineSidebarVariant === "collapsed"
+        ? SIDEBAR_WIDTH_COLLAPSED_PX
+        : SIDEBAR_WIDTH_EXPANDED_PX
+      : 0;
 
   const cancelCloseOverlay = useCallback(() => {
     if (closeTimerRef.current) {

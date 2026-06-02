@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 
+import { getMeetingHref } from "@/lib/get-meeting-href";
 import { useMeetingsQuery } from "@/lib/meetings-query";
 
 export default function MeetingList() {
@@ -25,14 +26,10 @@ export default function MeetingList() {
 
   return (
     <ul className="space-y-2.5">
-      {meetings.map((meeting) => {
-        const href =
-          meeting.status === "live" ? `/live/${meeting.id}` : `/view/${meeting.id}`;
-
-        return (
+      {meetings.map((meeting) => (
           <li key={meeting.id}>
             <Link
-              href={href}
+              href={getMeetingHref(meeting)}
               className="block rounded-xl border border-slate-200/90 bg-white px-4 py-3.5 transition hover:border-violet-200 hover:bg-violet-50/30"
             >
               <div className="flex items-center justify-between gap-3">
@@ -52,8 +49,7 @@ export default function MeetingList() {
               </p>
             </Link>
           </li>
-        );
-      })}
+        ))}
     </ul>
   );
 }
