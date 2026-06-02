@@ -1,0 +1,132 @@
+"use client";
+
+import { usePathname } from "next/navigation";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
+
+import { SIDEBAR_WIDTH_EXPANDED_PX } from "./constants";
+
+export type SidebarVariant = "hidden" | "collapsed" | "expanded";
+export type SidebarMode = "inline" | "overlay";
+
+type AppShellContextValue = {
+  variant: SidebarVariant;
+  mode: SidebarMode;
+  isOverlayOpen: boolean;
+  isMeetingRoute: boolean;
+  inlineSidebarWidthPx: number;
+  overlaySidebarWidthPx: number;
+  openOverlay: () => void;
+  scheduleCloseOverlay: () => void;
+  cancelCloseOverlay: () => void;
+};
+
+const AppShellContext = createContext<AppShellContextValue | null>(null);
+
+function isMeetingPath(pathname: string) {
+  return pathname.startsWith("/live/") || pathname.startsWith("/view/");
+}
+
+export function AppShellProvider({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
+  const isMeetingRoute = isMeetingPath(pathname);
+  const [overlaySession, setOverlaySession] = useState<{
+    path: string;
+    open: boolean;
+  }>({ path: "", open: false });
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const isOverlayOpen =
+    isMeetingRoute && overlaySession.open && overlaySession.path === pathname;
+
+  const mode: SidebarMode = isMeetingRoute ? "overlay" : "inline";
+  const variant: SidebarVariant = isMeetingRoute
+    ? isOverlayOpen
+      ? "expanded"
+      : "hidden"
+    : "expanded";
+
+  const inlineSidebarWidthPx =
+    mode === "inline" ? SIDEBAR_WIDTH_EXPANDED_PX : 0;
+
+  const cancelCloseOverlay = useCallback(() => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+  }, []);
+
+  const openOverlay = useCallback(() => {
+    cancelCloseOverlay();
+    if (mode === "overlay") {
+      setOverlaySession({ path: pathname, open: true });
+    }
+  }, [cancelCloseOverlay, mode, pathname]);
+
+  const scheduleCloseOverlay = useCallback(() => {
+    cancelCloseOverlay();
+    closeTimerRef.current = setTimeout(() => {
+      setOverlaySession((current) =>
+        current.path === pathname ? { path: pathname, open: false } : current,
+      );
+      closeTimerRef.current = null;
+    }, 120);
+  }, [cancelCloseOverlay, pathname]);
+
+  useEffect(() => {
+    if (mode !== "overlay" || !isOverlayOpen) {
+      return;
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setOverlaySession({ path: pathname, open: false });
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOverlayOpen, mode, pathname]);
+
+  const value = useMemo<AppShellContextValue>(
+    () => ({
+      variant,
+      mode,
+      isOverlayOpen,
+      isMeetingRoute,
+      inlineSidebarWidthPx,
+      overlaySidebarWidthPx: SIDEBAR_WIDTH_EXPANDED_PX,
+      openOverlay,
+      scheduleCloseOverlay,
+      cancelCloseOverlay,
+    }),
+    [
+      variant,
+      mode,
+      isOverlayOpen,
+      isMeetingRoute,
+      inlineSidebarWidthPx,
+      openOverlay,
+      scheduleCloseOverlay,
+      cancelCloseOverlay,
+    ],
+  );
+
+  return <AppShellContext.Provider value={value}>{children}</AppShellContext.Provider>;
+}
+
+export function useAppShell() {
+  const context = useContext(AppShellContext);
+  if (!context) {
+    throw new Error("useAppShell must be used within AppShellProvider");
+  }
+  return context;
+}

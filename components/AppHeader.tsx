@@ -1,9 +1,11 @@
 "use client";
 
-import Link from "next/link";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
+import { useAppShell } from "@/components/app-shell/AppShellProvider";
+import { SHELL_HEADER_HEIGHT_CLASS } from "@/components/app-shell/constants";
+import Breadcrumbs, { type BreadcrumbItem } from "@/components/Breadcrumbs";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -29,13 +31,14 @@ import {
   useMeetingQuery,
   useStopMeetingMutation,
 } from "@/lib/meetings-query";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, PanelLeft } from "lucide-react";
 
 export default function AppHeader() {
   const router = useRouter();
   const pathname = usePathname();
   const params = useParams<{ meetingId?: string }>();
   const meetingId = params?.meetingId ?? "";
+  const { isMeetingRoute, isOverlayOpen, openOverlay, scheduleCloseOverlay } = useAppShell();
 
   const createMeetingMutation = useCreateMeetingMutation();
   const stopMeetingMutation = useStopMeetingMutation();
@@ -49,17 +52,32 @@ export default function AppHeader() {
   const canStopMeeting =
     isLiveRoute && Boolean(meetingId) && meeting?.status === "live";
 
+  const breadcrumbItems = useMemo<BreadcrumbItem[]>(() => {
+    if (pathname === "/") {
+      return [{ label: "Meetings" }];
+    }
+
+    if (isMeetingRoute) {
+      return [
+        { label: "Meetings", href: "/" },
+        { label: meeting?.title ?? "Meeting" },
+      ];
+    }
+
+    return [{ label: "Meetings", href: "/" }];
+  }, [isMeetingRoute, meeting?.title, pathname]);
+
   async function handleCapture() {
     if (!meetingLink.trim()) {
       return;
     }
 
-    const meeting = await createMeetingMutation.mutateAsync();
+    const createdMeeting = await createMeetingMutation.mutateAsync();
     setIsCaptureOpen(false);
     setMeetingTitle("");
     setMeetingLink("");
     setMeetingLanguage("English (Global)");
-    router.push(`/live/${meeting.id}`);
+    router.push(`/live/${createdMeeting.id}`);
   }
 
   async function handleStop() {
@@ -71,15 +89,29 @@ export default function AppHeader() {
   }
 
   return (
-    <header className="sticky top-0 z-10 border-b border-slate-200/90 bg-white/95 backdrop-blur">
-      <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-5 py-3 sm:px-6">
-        <Link
-          href="/"
-          className="text-base font-semibold tracking-tight text-slate-900"
-        >
-          fireflies.ai
-        </Link>
-        <div className="flex items-center gap-2.5">
+    <header className="shrink-0 border-b border-slate-200/90 bg-white/95 backdrop-blur">
+      <div
+        className={`flex w-full items-center justify-between gap-4 px-5 sm:px-6 ${SHELL_HEADER_HEIGHT_CLASS}`}
+      >
+        <div className="flex min-w-0 flex-1 items-center gap-3">
+          {isMeetingRoute ? (
+            <button
+              type="button"
+              aria-label="Open navigation"
+              aria-expanded={isOverlayOpen}
+              onMouseEnter={openOverlay}
+              onMouseLeave={scheduleCloseOverlay}
+              onFocus={openOverlay}
+              className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
+            >
+              <PanelLeft className="h-4 w-4" />
+            </button>
+          ) : null}
+          <div className="min-w-0">
+            <Breadcrumbs items={breadcrumbItems} />
+          </div>
+        </div>
+        <div className="flex shrink-0 items-center gap-2.5">
           {canStopMeeting ? (
             <button
               type="button"
