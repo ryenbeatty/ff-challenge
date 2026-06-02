@@ -1,4 +1,4 @@
-import MeetingDetailView from "@/components/MeetingDetailView";
+import MeetingDetailView from "@/components/view/MeetingDetailView";
 
 type MeetingViewPageProps = {
   params: Promise<{ meetingId: string }>;

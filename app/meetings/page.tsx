@@ -1,4 +1,4 @@
-import MeetingList from "@/components/MeetingList";
+import MeetingList from "@/components/home/MeetingList";
 
 export default function MeetingsPage() {
   return (

@@ -2,9 +2,9 @@ import {
   getSpeakerInitial,
   getSpeakerThemeClass,
   TRANSCRIPT_AVATAR_SIZE_CLASS,
-} from "@/lib/transcript-speaker-theme";
-import type { Speaker } from "@/lib/meetings-types";
-import { cn } from "@/lib/utils";
+} from "@/lib/transcript/speaker-theme";
+import type { Speaker } from "@/lib/meetings/types";
+import { cn } from "@/lib/shared/utils";
 
 type TranscriptSpeakerAvatarProps = {
   speakerId: string;

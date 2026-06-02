@@ -1,0 +1,64 @@
+"use client";
+
+import { Suspense } from "react";
+
+import LiveMeetingSummarisingState from "@/components/live/LiveMeetingSummarisingState";
+import LoadingText from "@/components/states/LoadingText";
+import MeetingNotFoundState from "@/components/states/MeetingNotFoundState";
+import TranscriptList from "@/components/transcript/TranscriptList";
+import TranscriptListSlot from "@/components/transcript/TranscriptListSlot";
+import TranscriptLoadingState from "@/components/transcript/TranscriptLoadingState";
+import { useLiveMeetingStop } from "@/components/live/LiveMeetingStopProvider";
+import { useMeetingQuery } from "@/lib/meetings/query";
+import { TRANSCRIPT_PANEL_HEIGHT_CLASS } from "@/lib/transcript/layout";
+import { useSimulatedTranscript } from "@/lib/transcript/use-simulated-transcript";
+
+type LiveMeetingViewProps = {
+  meetingId: string;
+};
+
+export default function LiveMeetingView({ meetingId }: LiveMeetingViewProps) {
+  const { isStoppingMeeting } = useLiveMeetingStop();
+  const { data: meeting, isLoading } = useMeetingQuery(meetingId);
+  const isLive = meeting?.status === "live";
+  const { streamedTranscript, activeSentenceId } = useSimulatedTranscript({
+    transcript: meeting?.transcript ?? [],
+    anchorTime: meeting?.createdAt ?? new Date().toISOString(),
+    enabled: isLive,
+  });
+
+  if (isLoading) {
+    return <LoadingText>Loading meeting...</LoadingText>;
+  }
+
+  if (!meeting) {
+    return (
+      <section className="bg-white p-6">
+        <MeetingNotFoundState />
+      </section>
+    );
+  }
+
+  return (
+    <section
+      className={`flex ${TRANSCRIPT_PANEL_HEIGHT_CLASS} min-h-0 flex-col overflow-hidden bg-white p-6`}
+    >
+      <TranscriptListSlot className="min-h-0 flex-1">
+        {isStoppingMeeting ? (
+          <LiveMeetingSummarisingState meeting={meeting} />
+        ) : (
+          <Suspense fallback={<TranscriptLoadingState />}>
+            <TranscriptList
+              transcript={isLive ? streamedTranscript : meeting.transcript}
+              speakers={meeting.speakers}
+              className="h-full min-h-0"
+              variant={isLive ? ("live" as const) : ("default" as const)}
+              activeSentenceId={activeSentenceId}
+              showSearchBar={false}
+            />
+          </Suspense>
+        )}
+      </TranscriptListSlot>
+    </section>
+  );
+}

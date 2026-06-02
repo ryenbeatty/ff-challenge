@@ -1,6 +1,6 @@
 import MeetingMetadata from "@/components/meeting/MeetingMetadata";
 import MeetingTitle from "@/components/meeting/MeetingTitle";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/shared/utils";
 
 type MeetingHeaderProps = {
   title: string;

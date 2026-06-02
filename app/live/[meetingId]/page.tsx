@@ -1,4 +1,4 @@
-import LiveMeetingView from "@/components/LiveMeetingView";
+import LiveMeetingView from "@/components/live/LiveMeetingView";
 
 type LiveMeetingPageProps = {
   params: Promise<{ meetingId: string }>;

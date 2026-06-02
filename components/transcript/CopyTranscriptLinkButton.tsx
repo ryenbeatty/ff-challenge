@@ -3,6 +3,8 @@
 import { usePathname } from "next/navigation";
 import { Copy } from "lucide-react";
 
+import { buildTimestampedTranscriptUrl, copyText } from "@/lib/shared/clipboard";
+
 type CopyTranscriptLinkButtonProps = {
   startTime: number;
 };
@@ -15,13 +17,8 @@ export default function CopyTranscriptLinkButton({ startTime }: CopyTranscriptLi
       return;
     }
 
-    const url = `${window.location.origin}${pathname}?t=${startTime}`;
-
-    try {
-      await navigator.clipboard.writeText(url);
-    } catch {
-      console.warn("Unable to copy transcript link.");
-    }
+    const url = buildTimestampedTranscriptUrl(window.location.origin, pathname, startTime);
+    await copyText(url);
   }
 
   return (

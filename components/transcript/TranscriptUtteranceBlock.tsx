@@ -2,11 +2,11 @@
 
 import CopyTranscriptLinkButton from "@/components/transcript/CopyTranscriptLinkButton";
 import TranscriptSpeakerAvatar from "@/components/transcript/TranscriptSpeakerAvatar";
-import { formatSecondsToTimestamp } from "@/lib/format-transcript-time";
-import type { TranscriptUtterance } from "@/lib/group-transcript-utterances";
-import { TRANSCRIPT_TEXT_INDENT_CLASS } from "@/lib/transcript-speaker-theme";
-import type { Speaker } from "@/lib/meetings-types";
-import { cn } from "@/lib/utils";
+import { formatSecondsToTimestamp } from "@/lib/formatting/transcript-time";
+import type { TranscriptUtterance } from "@/lib/transcript/group-utterances";
+import { TRANSCRIPT_TEXT_INDENT_CLASS } from "@/lib/transcript/speaker-theme";
+import type { Speaker } from "@/lib/meetings/types";
+import { cn } from "@/lib/shared/utils";
 
 type TranscriptUtteranceBlockProps = {
   utterance: TranscriptUtterance;

@@ -1,6 +1,7 @@
 import { CalendarDays, Globe, UserCircle2 } from "lucide-react";
 
-import { cn } from "@/lib/utils";
+import { formatMeetingMetadataDate } from "@/lib/formatting/date-formatters";
+import { cn } from "@/lib/shared/utils";
 
 type MeetingMetadataProps = {
   ownerName: string;
@@ -28,7 +29,7 @@ export default function MeetingMetadata({
       </div>
       <div className="flex items-center gap-1.5">
         <CalendarDays className="h-4 w-4 text-slate-500" aria-hidden="true" />
-        <time dateTime={createdAt}>{new Date(createdAt).toLocaleString()}</time>
+        <time dateTime={createdAt}>{formatMeetingMetadataDate(createdAt)}</time>
       </div>
       <div className="flex items-center gap-1.5">
         <Globe className="h-4 w-4 text-slate-500" aria-hidden="true" />

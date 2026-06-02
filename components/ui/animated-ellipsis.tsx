@@ -1,7 +1,7 @@
 import type { ComponentProps } from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/shared/utils";
 
 const animatedEllipsisVariants = cva("inline-flex items-center", {
   variants: {

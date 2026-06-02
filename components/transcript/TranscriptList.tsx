@@ -1,17 +1,15 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Search } from "lucide-react";
 
 import TranscriptFeed from "@/components/transcript/TranscriptFeed";
 import { Input } from "@/components/ui/input";
-import {
-  findUtteranceForTimestamp,
-  groupTranscriptUtterances,
-} from "@/lib/group-transcript-utterances";
-import type { Speaker, TranscriptSentence } from "@/lib/meetings-types";
-import { cn } from "@/lib/utils";
+import { findUtteranceForTimestamp } from "@/lib/transcript/group-utterances";
+import type { Speaker, TranscriptSentence } from "@/lib/meetings/types";
+import { useGroupedTranscript } from "@/lib/transcript/use-grouped-transcript";
+import { cn } from "@/lib/shared/utils";
 
 type TranscriptListProps = {
   transcript: TranscriptSentence[];
@@ -47,7 +45,7 @@ export default function TranscriptList({
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [highlightedUtteranceId, setHighlightedUtteranceId] = useState<string | null>(null);
 
-  const utterances = useMemo(() => groupTranscriptUtterances(transcript), [transcript]);
+  const utterances = useGroupedTranscript(transcript);
 
   useEffect(() => {
     const timestampParam = searchParams.get("t");
@@ -116,7 +114,7 @@ export default function TranscriptList({
         className="h-full min-h-0 flex-1 overflow-y-auto overscroll-contain pr-1"
       >
         <TranscriptFeed
-          transcript={transcript}
+          utterances={utterances}
           speakers={speakers}
           highlightedUtteranceId={highlightedUtteranceId}
           variant={variant}

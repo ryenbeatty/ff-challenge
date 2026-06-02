@@ -1,13 +1,11 @@
 "use client";
 
-import { useMemo } from "react";
-
 import TranscriptUtteranceBlock from "@/components/transcript/TranscriptUtteranceBlock";
-import { groupTranscriptUtterances } from "@/lib/group-transcript-utterances";
-import type { Speaker, TranscriptSentence } from "@/lib/meetings-types";
+import type { TranscriptUtterance } from "@/lib/transcript/group-utterances";
+import type { Speaker } from "@/lib/meetings/types";
 
 type TranscriptFeedProps = {
-  transcript: TranscriptSentence[];
+  utterances: TranscriptUtterance[];
   speakers: Speaker[];
   highlightedUtteranceId?: string | null;
   variant?: "default" | "live";
@@ -15,14 +13,12 @@ type TranscriptFeedProps = {
 };
 
 export default function TranscriptFeed({
-  transcript,
+  utterances,
   speakers,
   highlightedUtteranceId = null,
   variant = "default",
   activeSentenceId,
 }: TranscriptFeedProps) {
-  const utterances = useMemo(() => groupTranscriptUtterances(transcript), [transcript]);
-
   return (
     <div
       className="space-y-6"
@@ -35,7 +31,7 @@ export default function TranscriptFeed({
           speakers={speakers}
           highlighted={highlightedUtteranceId === utterance.id}
           isInProgress={
-            Boolean(activeSentenceId) &&
+            activeSentenceId !== undefined &&
             utterance.sentenceIds.includes(activeSentenceId)
           }
         />
