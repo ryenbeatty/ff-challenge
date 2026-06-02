@@ -6,3 +6,6 @@ export const SIDEBAR_WIDTH_EXPANDED = `${SIDEBAR_WIDTH_EXPANDED_PX}px`;
 
 /** Shared height for AppHeader and sidebar brand row */
 export const SHELL_HEADER_HEIGHT_CLASS = "h-14";
+
+/** Width of the right panel on `/view/*` meeting pages */
+export const MEETING_VIEW_PANEL_WIDTH = "650px";

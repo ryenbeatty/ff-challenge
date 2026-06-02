@@ -1,8 +1,10 @@
 "use client";
 
 import type { CSSProperties, ReactNode } from "react";
+import { usePathname } from "next/navigation";
 
 import AppHeader from "@/components/AppHeader";
+import { isMeetingViewRoute } from "@/components/app-shell/route-config";
 import LeftSidebar from "@/components/LeftSidebar";
 import {
   AppShellProvider,
@@ -20,6 +22,8 @@ type AppShellProps = {
 };
 
 function AppShellInner({ children }: AppShellProps) {
+  const pathname = usePathname();
+  const isViewRoute = isMeetingViewRoute(pathname);
   const { mode, variant, isOverlayOpen, openOverlay, scheduleCloseOverlay } = useAppShell();
   const inlineDisplayVariant = variant === "expanded" ? "expanded" : "collapsed";
 
@@ -54,8 +58,22 @@ function AppShellInner({ children }: AppShellProps) {
 
       <div className="flex min-h-0 min-w-0 flex-1 flex-col">
         <AppHeader />
-        <main id="main-content" className="min-h-0 flex-1 overflow-y-auto">
-          <div className="mx-auto w-full max-w-6xl px-5 py-6 sm:px-6">{children}</div>
+        <main
+          id="main-content"
+          className={cn(
+            "min-h-0 flex-1",
+            isViewRoute ? "flex flex-col overflow-hidden" : "overflow-y-auto",
+          )}
+        >
+          <div
+            className={cn(
+              isViewRoute
+                ? "flex min-h-0 flex-1 flex-col"
+                : "mx-auto w-full max-w-6xl px-5 py-6 sm:px-6",
+            )}
+          >
+            {children}
+          </div>
         </main>
       </div>
 

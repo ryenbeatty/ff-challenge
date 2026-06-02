@@ -27,6 +27,10 @@ export function isMeetingDetailRoute(pathname: string): boolean {
   return getShellRouteKind(pathname) === "meetingDetail";
 }
 
+export function isMeetingViewRoute(pathname: string): boolean {
+  return pathname.startsWith("/view/");
+}
+
 export function getInlineSidebarVariant(pathname: string): InlineSidebarVariant {
   const kind = getShellRouteKind(pathname);
 
