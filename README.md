@@ -22,7 +22,8 @@ A small app for browsing meetings, viewing transcripts, and chatting with the Fi
 
 3. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-### Other commands
+<details>
+<summary><strong>Other commands</strong></summary>
 
 | Command           | Description              |
 | ----------------- | ------------------------ |
@@ -30,6 +31,8 @@ A small app for browsing meetings, viewing transcripts, and chatting with the Fi
 | `npm run start`   | Run the production build |
 | `npm run lint`    | Run ESLint               |
 | `npm test`        | Run tests (Vitest)       |
+
+</details>
 
 ## Project assumptions
 
