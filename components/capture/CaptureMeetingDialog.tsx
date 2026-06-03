@@ -68,35 +68,38 @@ function CaptureDialogFormStep({
         <DialogTitle>Add to live meeting</DialogTitle>
       </DialogHeader>
 
-      <div className="mt-4 space-y-4">
-        <div className="space-y-2">
+      <div className="mt-6 space-y-5">
+        <div className="space-y-1.5">
           <Label htmlFor="meeting-title">Title</Label>
           <Input
             id="meeting-title"
-            placeholder="name your meeting (optional)"
+            placeholder="Name your meeting..."
             value={meetingTitle}
             onChange={(event) => onMeetingTitleChange(event.target.value)}
           />
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="meeting-link">Meeting link</Label>
-          <DialogDescription>
-            capture meetings from GMeet, Zoom, MS teams and more
-          </DialogDescription>
+        <div className="space-y-1.5">
+          <div className="space-y-1">
+            <Label htmlFor="meeting-link">Meeting link</Label>
+            <DialogDescription className="leading-snug">
+              Capture meetings from GMeet, Zoom, MS teams and more
+            </DialogDescription>
+          </div>
           <Input
             id="meeting-link"
+            placeholder="https://meet.google.com/abc-defg-hij"
             value={meetingLink}
             onChange={(event) => onMeetingLinkChange(event.target.value)}
           />
-          <div aria-live="polite">
-            {submitError ? (
-              <p className="text-sm text-rose-600">{submitError}</p>
-            ) : null}
-          </div>
+          {submitError ? (
+            <p className="text-sm text-rose-600" aria-live="polite">
+              {submitError}
+            </p>
+          ) : null}
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           <Label htmlFor="meeting-language">Meeting Language</Label>
           <Select value={meetingLanguage} onValueChange={onMeetingLanguageChange}>
             <SelectTrigger id="meeting-language">

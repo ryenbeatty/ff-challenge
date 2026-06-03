@@ -15,7 +15,7 @@ import { SHELL_HEADER_HEIGHT_CLASS } from "@/components/shell/constants";
 import { getBreadcrumbItems } from "@/components/shell/route-config";
 import Breadcrumbs from "@/components/shell/Breadcrumbs";
 import InviteButton from "@/components/shell/InviteButton";
-import NotificationBellButton from "@/components/shell/NotificationBellButton";
+import NotificationsPopover from "@/components/shell/NotificationsPopover";
 import UserAccountMenu from "@/components/shell/UserAccountMenu";
 import { isLiveMeetingPath } from "@/lib/meetings/routes";
 import { useMeetingQuery } from "@/lib/meetings/query";
@@ -87,7 +87,7 @@ export default function AppHeader() {
           <InviteButton />
           <CaptureMeetingDialog open={isCaptureOpen} onOpenChange={setIsCaptureOpen} />
           <div className="mx-0.5 h-5 w-px shrink-0 bg-slate-200" aria-hidden="true" />
-          <NotificationBellButton />
+          <NotificationsPopover />
           <UserAccountMenu />
         </div>
       </div>
