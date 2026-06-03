@@ -22,6 +22,22 @@ export function formatMeetingListSecondaryLine(meeting: Pick<Meeting, "createdAt
   return `${formatMeetingMetadataDate(meeting.createdAt)} · ${meeting.durationLabel}`;
 }
 
+export function formatMeetingListMetadata(
+  meeting: Pick<Meeting, "createdAt" | "durationLabel" | "ownerName">,
+): string {
+  const date = new Date(meeting.createdAt);
+  const datePart = date.toLocaleDateString(METADATA_LOCALE, {
+    month: "short",
+    day: "numeric",
+  });
+  const timePart = date.toLocaleTimeString(METADATA_LOCALE, {
+    hour: "numeric",
+    minute: "2-digit",
+  });
+
+  return `${datePart} · ${timePart} · ${meeting.durationLabel} · ${meeting.ownerName}`;
+}
+
 function formatMeetingTitleDateTime(date: Date): string {
   const weekday = new Intl.DateTimeFormat("en-GB", { weekday: "short" }).format(date);
   const day = String(date.getDate()).padStart(2, "0");

@@ -16,6 +16,9 @@ const buttonVariants = cva(
         secondary:
           "border border-slate-200 bg-slate-50 text-violet-700 shadow-none hover:border-slate-300 hover:bg-slate-100 hover:text-violet-800",
         ghost: "text-slate-700 hover:bg-slate-100 hover:text-slate-900",
+        dark: "border border-transparent bg-slate-900 text-white shadow-[0_2px_8px_rgba(15,23,42,0.2)] hover:bg-slate-800",
+        stress:
+          "border border-amber-500/80 bg-amber-400 text-amber-950 shadow-[0_1px_2px_rgba(180,83,9,0.2)] hover:bg-amber-300",
         bare: "group w-fit justify-start border-0 bg-transparent font-normal text-slate-700 shadow-none hover:bg-transparent hover:text-slate-800",
       },
       size: {

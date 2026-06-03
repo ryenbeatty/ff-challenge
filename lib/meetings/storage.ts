@@ -2,9 +2,12 @@ import {
   applyDemoMeetingContent,
   buildCanonicalMeetingContent,
   buildDefaultMeetings,
+  buildStressTestMeetings,
   CANONICAL_OWNER_NAME,
   getDemoMeetingPartner,
+  getStressMeetingPartnerFromId,
   isDemoMeetingId,
+  isStressMeetingId,
 } from "@/demo/meetings";
 import { getCurrentUser } from "@/lib/shared/user-avatars";
 
@@ -66,6 +69,15 @@ function normalizeStoredMeeting(raw: Partial<Meeting> & Record<string, unknown>)
   const demoPartner = isDemoMeetingId(id) ? getDemoMeetingPartner(id) : undefined;
   if (demoPartner) {
     return applyDemoMeetingContent(shell, demoPartner);
+  }
+
+  const stressPartner = getStressMeetingPartnerFromId(id);
+  if (stressPartner) {
+    return applyDemoMeetingContent(shell, stressPartner);
+  }
+
+  if (isStressMeetingId(id)) {
+    return shell;
   }
 
   return applyCanonicalMeetingContent(shell);
@@ -172,4 +184,41 @@ export function stopMeeting(meetingId: string): Meeting | undefined {
 
   writeMeetings(meetings);
   return updated;
+}
+
+export function deleteMeetings(meetingIds: string[]): void {
+  if (!meetingIds.length) {
+    return;
+  }
+
+  const ids = new Set(meetingIds);
+  const meetings = getAllMeetings().filter((meeting) => !ids.has(meeting.id));
+  writeMeetings(meetings);
+}
+
+export function addStressTestMeetings(count = 10): Meeting[] {
+  const newMeetings = buildStressTestMeetings(count);
+  const meetings = getAllMeetings();
+  writeMeetings([...newMeetings, ...meetings]);
+  return newMeetings;
+}
+
+export function renameMeeting(meetingId: string, title: string): Meeting | undefined {
+  const meetings = getAllMeetings();
+  const target = meetings.find((meeting) => meeting.id === meetingId);
+
+  if (!target) {
+    return undefined;
+  }
+
+  const trimmed = title.trim();
+  target.title = trimmed || "Untitled";
+
+  const index = meetings.findIndex((meeting) => meeting.id === meetingId);
+  if (index !== -1) {
+    meetings[index] = target;
+  }
+
+  writeMeetings(meetings);
+  return target;
 }

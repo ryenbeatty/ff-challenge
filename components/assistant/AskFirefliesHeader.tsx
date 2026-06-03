@@ -21,7 +21,7 @@ export default function AskFirefliesHeader({
     >
       <div className="flex min-w-0 items-center gap-2">
         <AskFirefliesIcon size="sm" />
-        <p className="text-base font-light text-slate-900">Ask Fireflies</p>
+        <p className="text-base text-slate-900">Ask Fireflies</p>
       </div>
       {trailing}
     </div>

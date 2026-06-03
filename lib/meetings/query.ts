@@ -9,9 +9,12 @@ import {
 import type { Meeting } from "./types";
 
 import {
+  addStressTestMeetings,
   createMeeting,
+  deleteMeetings,
   getAllMeetings,
   getMeetingById,
+  renameMeeting,
   stopMeeting,
 } from "./storage";
 import type { CreateMeetingInput } from "./types";
@@ -64,6 +67,46 @@ export function useStopMeetingMutation() {
       }
 
       syncMeetingInCache(queryClient, meeting);
+    },
+  });
+}
+
+export function useDeleteMeetingsMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (meetingIds: string[]) => {
+      deleteMeetings(meetingIds);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: meetingsQueryKey });
+    },
+  });
+}
+
+export function useRenameMeetingMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ meetingId, title }: { meetingId: string; title: string }) =>
+      renameMeeting(meetingId, title),
+    onSuccess: (meeting) => {
+      if (!meeting) {
+        return;
+      }
+
+      syncMeetingInCache(queryClient, meeting);
+    },
+  });
+}
+
+export function useAddStressTestMeetingsMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation<Meeting[], Error, { count: number }>({
+    mutationFn: async ({ count }) => addStressTestMeetings(count),
+    onSuccess: () => {
+      queryClient.setQueryData(meetingsQueryKey, getAllMeetings());
     },
   });
 }

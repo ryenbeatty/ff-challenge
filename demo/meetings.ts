@@ -476,6 +476,24 @@ export function getDemoMeetingPartner(meetingId: string): DemoMeetingPartner | u
   return DEMO_PARTNER_BY_ID[meetingId];
 }
 
+export function isStressMeetingId(meetingId: string): boolean {
+  return meetingId.startsWith("stress-");
+}
+
+export function getStressMeetingPartnerFromId(meetingId: string): DemoMeetingPartner | undefined {
+  if (!isStressMeetingId(meetingId)) {
+    return undefined;
+  }
+
+  const index = Number(meetingId.split("-").at(-1));
+  if (Number.isNaN(index)) {
+    return undefined;
+  }
+
+  const def = SEED_DEFINITIONS[index % SEED_DEFINITIONS.length];
+  return getDemoMeetingPartner(def.id);
+}
+
 function buildDemoSpeakers(meetingId: string, partner: DemoMeetingPartner): Speaker[] {
   const maxSpeaker: Speaker = {
     id: `${meetingId}-speaker-max`,
@@ -601,6 +619,45 @@ export function buildDefaultMeetings(): Meeting[] {
   return SEED_DEFINITIONS.map((def) => {
     const shell = buildSeedShell(def);
     const partner = getDemoMeetingPartner(def.id);
+
+    if (!partner) {
+      return shell;
+    }
+
+    return applyDemoMeetingContent(shell, partner);
+  });
+}
+
+const PAST_MONTH_MS = 30 * 24 * 60 * 60 * 1000;
+
+function randomCreatedAtInPastMonth(): Date {
+  const offsetMs = Math.floor(Math.random() * PAST_MONTH_MS);
+  return new Date(Date.now() - offsetMs);
+}
+
+/** Generates completed dummy meetings from seed templates (stress testing / demos). */
+export function buildStressTestMeetings(count = 10): Meeting[] {
+  const batchId = Date.now();
+
+  return Array.from({ length: count }, (_, index) => {
+    const def = SEED_DEFINITIONS[index % SEED_DEFINITIONS.length];
+    const partner = getDemoMeetingPartner(def.id);
+    const createdAt = randomCreatedAtInPastMonth();
+    const stoppedAt = new Date(createdAt.getTime() + 5 * 60 * 1000);
+
+    const shell: Meeting = {
+      id: `stress-${batchId}-${index}`,
+      title: buildMeetingTitle({ customTitle: def.customTitle }),
+      ownerName: DEMO_OWNER_NAME,
+      meetingLanguage: "English (Global)",
+      status: "completed",
+      createdAt: createdAt.toISOString(),
+      stoppedAt: stoppedAt.toISOString(),
+      durationLabel: COMPLETED_DURATION_LABEL,
+      speakers: [],
+      summary: EMPTY_SUMMARY,
+      transcript: [],
+    };
 
     if (!partner) {
       return shell;
