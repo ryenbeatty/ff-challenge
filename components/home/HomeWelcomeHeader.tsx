@@ -1,7 +1,8 @@
 "use client";
 
-import { Diamond, ListChecks, MessageCircle, Users } from "lucide-react";
+import { Diamond, ListChecks, Users } from "lucide-react";
 
+import ShareFeedbackButton from "@/components/home/ShareFeedbackButton";
 import { CardButton } from "@/components/ui/card-button";
 import { getTimeOfDayGreeting } from "@/lib/shared/greeting";
 import { getCurrentUser, getFirstName } from "@/lib/shared/user-avatars";
@@ -33,20 +34,7 @@ export default function HomeWelcomeHeader() {
               {greeting}, {firstName}
             </h1>
 
-            <button
-              type="button"
-              className={cn(
-                "inline-flex w-fit items-center gap-1.5 rounded-md text-left",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/35",
-              )}
-            >
-              <MessageCircle
-                className="h-5 w-5 shrink-0 text-slate-600"
-                strokeWidth={1.75}
-                aria-hidden="true"
-              />
-              <span className="text-sm text-slate-700">Share feedback</span>
-            </button>
+            <ShareFeedbackButton />
           </div>
 
           <div className="grid grid-cols-3 gap-3">

@@ -16,6 +16,7 @@ const buttonVariants = cva(
         secondary:
           "border border-slate-200 bg-slate-50 text-violet-700 shadow-none hover:border-slate-300 hover:bg-slate-100 hover:text-violet-800",
         ghost: "text-slate-700 hover:bg-slate-100 hover:text-slate-900",
+        bare: "group w-fit justify-start border-0 bg-transparent font-normal text-slate-700 shadow-none hover:bg-transparent hover:text-slate-800",
       },
       size: {
         default: "h-10 px-4 py-2",
@@ -35,6 +36,11 @@ const buttonVariants = cva(
         variant: "ghost",
         size: "iconSm",
         class: "text-slate-500 hover:bg-slate-200/80 hover:text-slate-700",
+      },
+      {
+        variant: "bare",
+        class:
+          "h-auto min-h-0 gap-1.5 p-0 [&_span]:underline-offset-2 group-hover:[&_span]:underline [&_svg]:size-5 [&_svg]:shrink-0 [&_svg]:text-slate-600 group-hover:[&_svg]:text-slate-700",
       },
     ],
     defaultVariants: {
