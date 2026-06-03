@@ -3,6 +3,7 @@
 import { Bell, Check } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { StatusMarker } from "@/components/ui/status-marker";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -49,21 +50,24 @@ function NotificationAlertRow({ alert }: { alert: DemoAlert }) {
 export default function NotificationsPopover() {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          aria-label="Notifications, unread"
-          className="relative focus-visible:ring-offset-2"
-        >
-          <Bell aria-hidden="true" />
-          <span className="absolute right-1.5 top-1.5 flex h-2 w-2" aria-hidden="true">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75 motion-reduce:animate-none" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
-          </span>
-        </Button>
-      </DropdownMenuTrigger>
+      <span className="relative inline-flex">
+        <DropdownMenuTrigger asChild>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            aria-label="Notifications, unread"
+            className="focus-visible:ring-offset-2"
+          >
+            <Bell aria-hidden="true" />
+          </Button>
+        </DropdownMenuTrigger>
+        <StatusMarker
+          variant="destructive"
+          size="sm"
+          className="pointer-events-none absolute right-1.5 top-1.5"
+        />
+      </span>
       <DropdownMenuContent align="end" side="bottom" className="w-[380px] p-0">
         <div className="border-b border-slate-200 px-4 py-3">
           <p className="text-sm font-semibold text-slate-900">
