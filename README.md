@@ -40,7 +40,10 @@ A small app for browsing meetings, viewing transcripts, and chatting with the Fi
 
 ### Time spent
 
-~8.5h total
+~9h total
+- ~1h planning
+- ~7h implementation
+- ~1h deployment & submission
 
 ### Tech stack
 - Next.js, React, Typescript, Tailwind
@@ -69,4 +72,5 @@ When evaluating the prototype I suggest you start with:
 - `localStorage`: All meeting data is stored offline in the browser, with no auth or server connection
 - Canned responses: Ask Fireflies assistant uses canned responses, no LLM connection
 - Demo code: Fixtures/simulation code scoped to `demo/` directory, in case this prototype gets hooked up to data sources later on
+- Accessibility: basic accessibility requirements should be fulfilled (colour palette and HTML semantics)
 
