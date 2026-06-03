@@ -1,5 +1,7 @@
 # Fireflies Challenge
 
+### 🎥 [Watch the intro Loom](https://www.loom.com/share/a6da8e660a7f41e4947a2502f562a67d) 👀 
+
 **Live demo:** https://firefliesdotfun.vercel.app
 
 ![fireflies.fun app screenshot](./firefliesdotfun.png)
@@ -46,6 +48,8 @@ A small app for browsing meetings, viewing transcripts, and chatting with the Fi
 - ~1h deployment & submission
 
 ### Tech stack
+[Architecture](./ARCHITECTURE.md)
+
 - Next.js, React, Typescript, Tailwind
 - Radix UI, TanStack Query, Lucide icons, Sonner, Vitest
 - *AI tools*: Cursor
