@@ -14,18 +14,57 @@ type TranscriptUtteranceBlockProps = {
   speakers: Speaker[];
   highlighted?: boolean;
   isInProgress?: boolean;
+  searchQuery?: string;
+  isActiveSearchResult?: boolean;
 };
+
+function renderTranscriptText(
+  text: string,
+  searchQuery?: string,
+  isActiveSearchResult = false,
+) {
+  if (!searchQuery) {
+    return text;
+  }
+
+  const normalizedQuery = searchQuery.toLowerCase();
+  const matchIndex = text.toLowerCase().indexOf(normalizedQuery);
+
+  if (matchIndex === -1) {
+    return text;
+  }
+
+  const matchEnd = matchIndex + searchQuery.length;
+
+  return (
+    <>
+      {text.slice(0, matchIndex)}
+      <mark
+        className={cn(
+          "rounded-sm",
+          isActiveSearchResult ? "bg-red-200 text-red-950" : "bg-blue-100 text-blue-900",
+        )}
+      >
+        {text.slice(matchIndex, matchEnd)}
+      </mark>
+      {text.slice(matchEnd)}
+    </>
+  );
+}
 
 export default function TranscriptUtteranceBlock({
   utterance,
   speakers,
   highlighted = false,
   isInProgress = false,
+  searchQuery,
+  isActiveSearchResult = false,
 }: TranscriptUtteranceBlockProps) {
   return (
     <article
       id={`utterance-${utterance.id}`}
       data-start-time={utterance.startTime}
+      aria-current={isActiveSearchResult ? "true" : undefined}
       className={cn(
         "group/utterance scroll-mt-3 rounded-md transition-colors",
         highlighted && "bg-violet-50/80 ring-1 ring-violet-200/80",
@@ -60,7 +99,7 @@ export default function TranscriptUtteranceBlock({
         </div>
       </div>
       <p className={cn(TRANSCRIPT_TEXT_INDENT_CLASS, "mt-2 text-base leading-7 text-slate-800")}>
-        {utterance.text}
+        {renderTranscriptText(utterance.text, searchQuery, isActiveSearchResult)}
         {isInProgress ? (
           <span
             className="ml-0.5 inline-block h-4 w-0.5 animate-pulse bg-slate-400 align-middle"

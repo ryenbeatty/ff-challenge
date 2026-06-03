@@ -10,6 +10,8 @@ type TranscriptFeedProps = {
   highlightedUtteranceId?: string | null;
   variant?: "default" | "live";
   activeSentenceId?: string;
+  searchQuery?: string;
+  activeSearchUtteranceId?: string | null;
 };
 
 export default function TranscriptFeed({
@@ -18,6 +20,8 @@ export default function TranscriptFeed({
   highlightedUtteranceId = null,
   variant = "default",
   activeSentenceId,
+  searchQuery,
+  activeSearchUtteranceId = null,
 }: TranscriptFeedProps) {
   return (
     <div
@@ -34,6 +38,8 @@ export default function TranscriptFeed({
             activeSentenceId !== undefined &&
             utterance.sentenceIds.includes(activeSentenceId)
           }
+          searchQuery={searchQuery}
+          isActiveSearchResult={activeSearchUtteranceId === utterance.id}
         />
       ))}
     </div>
