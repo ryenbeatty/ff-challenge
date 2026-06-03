@@ -5,7 +5,7 @@ import {
   getDefaultStoredOwnerName,
   normalizeStoredMeeting,
   seedMeetings,
-} from "@/lib/demo-bindings";
+} from "@/demo/bindings";
 import { getCurrentUser } from "@/lib/shared/user-avatars";
 
 import { buildMeetingTitle } from "./build-title";

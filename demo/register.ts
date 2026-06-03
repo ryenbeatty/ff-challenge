@@ -1,4 +1,4 @@
-import { registerDemo } from "@/lib/demo-bindings";
+import { registerDemo } from "@/demo/bindings";
 import { normalizeActionItems } from "@/lib/meetings/resolve-action-item-assignee";
 import type { Meeting } from "@/lib/meetings/types";
 

@@ -1,5 +1,7 @@
 # Fireflies Challenge
 
+**Live demo:** https://firefliesdotfun.vercel.app
+
 ![fireflies.fun app screenshot](./firefliesdotfun.png)
 
 A small app for browsing meetings, viewing transcripts, and chatting with the Fireflies assistant.
@@ -34,7 +36,16 @@ A small app for browsing meetings, viewing transcripts, and chatting with the Fi
 
 </details>
 
-## Project description
+## Submission write-up
+
+### Time spent
+
+~8.5h total
+
+### Tech stack
+- Next.js, React, Typescript, Tailwind
+- Radix UI, TanStack Query, Lucide icons, Sonner, Vitest
+- *AI tools*: Cursor
 
 ### Approach
 I approached this challenge with the mindset that it's a prototype to demonstrate the core Fireflies product loop of recording a meeting on an external platform.
@@ -47,7 +58,7 @@ When evaluating the prototype I suggest you start with:
 - Capture a new meeting, enter any text as the URL, and check out the live notes page
 - Ask the assistant a couple of questions on the live notes page
 - Stop the meeting, and then check out the meeting summary page
-- Finish with the meetings overview page and use the stress-test button to add sample meetings
+- Finish with the meetings overview page and use the stress-test button to add sample meetings (note that is a demo only feature)
 
 ### Assumptions
 

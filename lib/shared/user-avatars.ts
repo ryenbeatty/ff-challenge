@@ -2,7 +2,7 @@ import {
   getCurrentUserEmail,
   getDemoUsers,
   type AppUser,
-} from "@/lib/demo-bindings";
+} from "@/demo/bindings";
 
 export type { AppUser };
 
