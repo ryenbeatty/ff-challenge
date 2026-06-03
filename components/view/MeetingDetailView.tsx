@@ -1,8 +1,11 @@
 "use client";
 
 import MeetingHeader from "@/components/meeting/MeetingHeader";
-import MeetingViewSidebar from "@/components/view/MeetingViewSidebar";
+import MeetingPanelSidebar from "@/components/meeting/MeetingPanelSidebar";
 import LoadingText from "@/components/states/LoadingText";
+import TranscriptList from "@/components/transcript/TranscriptList";
+import TranscriptListSlot from "@/components/transcript/TranscriptListSlot";
+import TranscriptLoadingState from "@/components/transcript/TranscriptLoadingState";
 import MeetingNotFoundState from "@/components/states/MeetingNotFoundState";
 import { Button } from "@/components/ui/button";
 import { UserAvatar } from "@/components/ui/user-avatar";
@@ -26,7 +29,7 @@ import {
   SUMMARY_TEXT_CLASS,
 } from "@/lib/formatting/ui-classes";
 import { ChevronDown, Copy } from "lucide-react";
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 
 type MeetingDetailViewProps = {
   meetingId: string;
@@ -207,9 +210,19 @@ export default function MeetingDetailView({
         </div>
       </article>
 
-      <MeetingViewSidebar
-        transcript={meeting.transcript}
-        speakers={meeting.speakers}
+      <MeetingPanelSidebar
+        meetingId={meeting.id}
+        transcript={
+          <TranscriptListSlot>
+            <Suspense fallback={<TranscriptLoadingState />}>
+              <TranscriptList
+                transcript={meeting.transcript}
+                speakers={meeting.speakers}
+                className="h-full min-h-0"
+              />
+            </Suspense>
+          </TranscriptListSlot>
+        }
       />
     </div>
   );

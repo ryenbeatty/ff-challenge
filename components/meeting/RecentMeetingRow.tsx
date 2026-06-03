@@ -3,7 +3,10 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Link2, MoreHorizontal } from "lucide-react";
+import { useState } from "react";
 
+import AskFirefliesIconButton from "@/components/assistant/AskFirefliesIconButton";
+import AskFirefliesPopover from "@/components/assistant/AskFirefliesPopover";
 import HeaderTooltip from "@/components/shell/HeaderTooltip";
 import { Button } from "@/components/ui/button";
 import { UserAvatar } from "@/components/ui/user-avatar";
@@ -27,6 +30,7 @@ type RecentMeetingRowProps = {
 
 export default function RecentMeetingRow({ meeting, isActive = false }: RecentMeetingRowProps) {
   const router = useRouter();
+  const [askOpen, setAskOpen] = useState(false);
   const meetingHref = getMeetingHref(meeting);
 
   async function copyMeetingLink() {
@@ -130,7 +134,24 @@ export default function RecentMeetingRow({ meeting, isActive = false }: RecentMe
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+
+        <HeaderTooltip label="Ask Fireflies">
+          <AskFirefliesIconButton
+            aria-label="Ask Fireflies"
+            onClick={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              setAskOpen(true);
+            }}
+          />
+        </HeaderTooltip>
       </div>
+
+      <AskFirefliesPopover
+        open={askOpen}
+        onOpenChange={setAskOpen}
+        meetingId={meeting.id}
+      />
     </li>
   );
 }

@@ -32,6 +32,10 @@ export function isMeetingViewRoute(pathname: string): boolean {
   return isViewMeetingPath(pathname);
 }
 
+export function isFullHeightShellRoute(pathname: string): boolean {
+  return isMeetingDetailPath(pathname) || pathname === MEETINGS_PATH;
+}
+
 export function getInlineSidebarVariant(pathname: string): InlineSidebarVariant {
   const kind = getShellRouteKind(pathname);
 

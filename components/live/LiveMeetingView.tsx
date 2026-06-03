@@ -3,6 +3,7 @@
 import { Suspense } from "react";
 
 import LiveMeetingSummarisingState from "@/components/live/LiveMeetingSummarisingState";
+import MeetingPanelSidebar from "@/components/meeting/MeetingPanelSidebar";
 import LoadingText from "@/components/states/LoadingText";
 import MeetingNotFoundState from "@/components/states/MeetingNotFoundState";
 import TranscriptList from "@/components/transcript/TranscriptList";
@@ -10,7 +11,6 @@ import TranscriptListSlot from "@/components/transcript/TranscriptListSlot";
 import TranscriptLoadingState from "@/components/transcript/TranscriptLoadingState";
 import { useLiveMeetingStop } from "@/components/live/LiveMeetingStopProvider";
 import { useMeetingQuery } from "@/lib/meetings/query";
-import { TRANSCRIPT_PANEL_HEIGHT_CLASS } from "@/lib/transcript/layout";
 import { useSimulatedTranscript } from "@/lib/transcript/use-simulated-transcript";
 
 type LiveMeetingViewProps = {
@@ -39,26 +39,36 @@ export default function LiveMeetingView({ meetingId }: LiveMeetingViewProps) {
     );
   }
 
+  const transcriptContent = (
+    <TranscriptListSlot className="min-h-0 flex-1">
+      {isStoppingMeeting ? (
+        <LiveMeetingSummarisingState meeting={meeting} />
+      ) : (
+        <Suspense fallback={<TranscriptLoadingState />}>
+          <TranscriptList
+            transcript={isLive ? streamedTranscript : meeting.transcript}
+            speakers={meeting.speakers}
+            className="h-full min-h-0"
+            variant={isLive ? ("live" as const) : ("default" as const)}
+            activeSentenceId={activeSentenceId}
+            showSearchBar={false}
+          />
+        </Suspense>
+      )}
+    </TranscriptListSlot>
+  );
+
   return (
-    <section
-      className={`flex ${TRANSCRIPT_PANEL_HEIGHT_CLASS} min-h-0 flex-col overflow-hidden bg-white p-6`}
-    >
-      <TranscriptListSlot className="min-h-0 flex-1">
-        {isStoppingMeeting ? (
-          <LiveMeetingSummarisingState meeting={meeting} />
-        ) : (
-          <Suspense fallback={<TranscriptLoadingState />}>
-            <TranscriptList
-              transcript={isLive ? streamedTranscript : meeting.transcript}
-              speakers={meeting.speakers}
-              className="h-full min-h-0"
-              variant={isLive ? ("live" as const) : ("default" as const)}
-              activeSentenceId={activeSentenceId}
-              showSearchBar={false}
-            />
-          </Suspense>
-        )}
-      </TranscriptListSlot>
-    </section>
+    <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
+      <section className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-white p-6">
+        {transcriptContent}
+      </section>
+
+      <MeetingPanelSidebar
+        meetingId={meeting.id}
+        transcript={transcriptContent}
+        askFirefliesChrome="header"
+      />
+    </div>
   );
 }

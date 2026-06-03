@@ -1,8 +1,10 @@
 "use client";
 
+import AskFirefliesSidebar from "@/components/meeting/AskFirefliesSidebar";
+import { MEETINGS_PAGE_ASSISTANT_CONTENT } from "@/components/assistant/meetings-page-content";
+import MeetingListRow from "@/components/meeting/MeetingListRow";
 import EmptyMeetingsState from "@/components/states/EmptyMeetingsState";
 import LoadingText from "@/components/states/LoadingText";
-import MeetingListRow from "@/components/meeting/MeetingListRow";
 import ListSection from "@/components/ui/list-section";
 import { selectCompletedMeetings } from "@/lib/meetings/selectors";
 import { useMeetingsQuery } from "@/lib/meetings/query";
@@ -25,10 +27,22 @@ export default function MeetingList() {
   }
 
   return (
-    <ListSection title="Recent meetings">
-      {recentMeetings.map((meeting) => (
-        <MeetingListRow key={meeting.id} meeting={meeting} />
-      ))}
-    </ListSection>
+    <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
+      <main className="min-h-0 flex-1 overflow-y-auto px-5 py-6 sm:px-6">
+        <div className="mx-auto w-full max-w-3xl">
+          <ListSection title="Recent meetings">
+            {recentMeetings.map((meeting) => (
+              <MeetingListRow key={meeting.id} meeting={meeting} />
+            ))}
+          </ListSection>
+        </div>
+      </main>
+
+      <AskFirefliesSidebar
+        meetingId=""
+        content={MEETINGS_PAGE_ASSISTANT_CONTENT}
+        className="hidden lg:flex"
+      />
+    </div>
   );
 }
