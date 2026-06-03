@@ -25,12 +25,12 @@ export default function ListSection({
         <h2
           className={cn(
             icon
-              ? "flex items-center gap-2 text-sm text-slate-400"
+              ? "flex items-center gap-2 text-sm text-muted-foreground"
               : "text-sm text-slate-700",
             titleClassName,
           )}
         >
-          {icon}
+          {icon ? <span aria-hidden="true">{icon}</span> : null}
           {title}
         </h2>
       ) : null}

@@ -11,6 +11,7 @@ import {
   useAppShell,
 } from "@/components/shell/AppShellProvider";
 import {
+  OVERLAY_NAV_ID,
   SIDEBAR_WIDTH_COLLAPSED,
   SIDEBAR_WIDTH_EXPANDED,
 } from "@/components/shell/constants";
@@ -44,8 +45,8 @@ function AppShellInner({ children }: AppShellProps) {
 
       {mode === "inline" ? (
         <aside
-          aria-label="Primary navigation"
-          className="h-full shrink-0 border-r border-slate-200/90"
+          aria-label="Main navigation"
+          className="h-full shrink-0 border-r border-slate-300/90"
           style={{
             width:
               inlineDisplayVariant === "expanded"
@@ -78,12 +79,14 @@ function AppShellInner({ children }: AppShellProps) {
 
       {mode === "overlay" ? (
         <aside
-          aria-label="Primary navigation"
+          id={OVERLAY_NAV_ID}
+          aria-label="Main navigation"
           aria-hidden={!isOverlayOpen}
+          inert={!isOverlayOpen ? true : undefined}
           onMouseEnter={openOverlay}
           onMouseLeave={scheduleCloseOverlay}
           className={cn(
-            "fixed inset-y-0 left-0 z-30 border-r border-slate-200/90 bg-white shadow-lg transition-transform duration-200 ease-out",
+            "fixed inset-y-0 left-0 z-30 border-r border-slate-300/90 bg-white shadow-lg transition-transform duration-200 ease-out",
             isOverlayOpen
               ? "translate-x-0 pointer-events-auto"
               : "-translate-x-full pointer-events-none",

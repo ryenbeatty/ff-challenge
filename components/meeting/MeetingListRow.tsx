@@ -58,7 +58,7 @@ export default function MeetingListRow({
     <li className="group flex items-stretch gap-3 rounded-xl border border-slate-200/90 bg-white px-3 py-3 transition hover:border-slate-300">
       <label
         className={cn(
-          "relative block h-9 w-9 shrink-0 cursor-pointer self-center rounded-sm focus-within:outline-none focus-within:ring-2 focus-within:ring-violet-500/35",
+          "relative block h-9 w-9 shrink-0 cursor-pointer self-center rounded-sm focus-within:outline-none focus-within:ring-2 focus-within:ring-ring",
           selected && "ring-2 ring-violet-600 ring-offset-1",
         )}
         onClick={(event) => event.stopPropagation()}
@@ -95,7 +95,7 @@ export default function MeetingListRow({
         >
           <span className="truncate">{meeting.title}</span>
           <ChevronRight
-            className="h-4 w-4 shrink-0 text-slate-400 transition group-hover/title:text-violet-600"
+            className="h-4 w-4 shrink-0 text-muted-foreground transition group-hover/title:text-violet-600"
             aria-hidden="true"
           />
         </Link>

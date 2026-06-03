@@ -11,7 +11,10 @@ import LiveMeetingTimer from "@/components/live/LiveMeetingTimer";
 import RecordingBadge from "@/components/live/RecordingBadge";
 import StopMeetingButton from "@/components/live/StopMeetingButton";
 import { useAppShell } from "@/components/shell/AppShellProvider";
-import { SHELL_HEADER_HEIGHT_CLASS } from "@/components/shell/constants";
+import {
+  OVERLAY_NAV_ID,
+  SHELL_HEADER_HEIGHT_CLASS,
+} from "@/components/shell/constants";
 import { getBreadcrumbItems } from "@/components/shell/route-config";
 import Breadcrumbs from "@/components/shell/Breadcrumbs";
 import InviteButton from "@/components/shell/InviteButton";
@@ -26,7 +29,7 @@ export default function AppHeader() {
   const pathname = usePathname();
   const params = useParams<{ meetingId?: string }>();
   const meetingId = params?.meetingId ?? "";
-  const { isMeetingRoute, isOverlayOpen, openOverlay, scheduleCloseOverlay } = useAppShell();
+  const { isMeetingRoute, isOverlayOpen, toggleOverlay } = useAppShell();
 
   const { data: meeting } = useMeetingQuery(meetingId);
   const [isCaptureOpen, setIsCaptureOpen] = useState(false);
@@ -48,7 +51,7 @@ export default function AppHeader() {
   );
 
   return (
-    <header className="shrink-0 border-b border-slate-200/90 bg-white/95 backdrop-blur">
+    <header className="shrink-0 border-b border-border bg-white/95 backdrop-blur">
       <div
         className={`flex w-full items-center justify-between gap-4 px-5 sm:px-6 ${SHELL_HEADER_HEIGHT_CLASS}`}
       >
@@ -58,11 +61,10 @@ export default function AppHeader() {
               type="button"
               variant="ghost"
               size="icon"
-              aria-label="Open navigation"
+              aria-label={isOverlayOpen ? "Close navigation" : "Open navigation"}
               aria-expanded={isOverlayOpen}
-              onMouseEnter={openOverlay}
-              onMouseLeave={scheduleCloseOverlay}
-              onFocus={openOverlay}
+              aria-controls={OVERLAY_NAV_ID}
+              onClick={toggleOverlay}
             >
               <PanelLeft aria-hidden="true" />
             </Button>

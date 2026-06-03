@@ -19,12 +19,8 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
     <nav aria-label="Breadcrumb">
       <ol className="flex items-center gap-2 text-sm text-slate-500">
         {items.map((item, index) => {
-          const isCurrent = index === items.length - 1 || !item.href;
-          let content: ReactNode = (
-            <span aria-current="page" className="max-w-[32ch] truncate text-slate-700">
-              {item.label}
-            </span>
-          );
+          const isCurrent = index === items.length - 1;
+          let content: ReactNode;
 
           if (item.href && !isCurrent) {
             const href: string = item.href;
@@ -32,6 +28,16 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
               <Link href={href} className="max-w-[24ch] truncate hover:text-slate-700">
                 {item.label}
               </Link>
+            );
+          } else if (isCurrent) {
+            content = (
+              <span aria-current="page" className="max-w-[32ch] truncate text-slate-700">
+                {item.label}
+              </span>
+            );
+          } else {
+            content = (
+              <span className="max-w-[32ch] truncate text-slate-700">{item.label}</span>
             );
           }
 

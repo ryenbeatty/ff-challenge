@@ -11,7 +11,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { UserAvatar } from "@/components/ui/user-avatar";
 import { getCurrentUser, getFirstName } from "@/lib/shared/user-avatars";
-import { cn } from "@/lib/shared/utils";
 
 const avatarTriggerClass =
   "box-border border border-transparent transition-[transform,border-color] duration-300 ease-spring-subtle group-hover:scale-[1.06] group-hover:border-slate-300/80 group-active:scale-100 group-active:duration-150 group-active:ease-out group-data-[state=open]:scale-[1.06] group-data-[state=open]:border-slate-300/80 group-data-[state=open]:group-active:scale-100";
@@ -37,12 +36,12 @@ export default function UserAccountMenu() {
         <DropdownMenuLabel className="text-md font-normal">Hi {firstName}</DropdownMenuLabel>
         <DropdownMenuLabel className="font-normal text-slate-500">{user.email}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Refer and earn $5</DropdownMenuItem>
+        <DropdownMenuItem disabled>Refer and earn $5</DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Settings</DropdownMenuItem>
-        <DropdownMenuItem>Manage Devices</DropdownMenuItem>
-        <DropdownMenuItem>Platform Rules</DropdownMenuItem>
-        <DropdownMenuItem>Logout</DropdownMenuItem>
+        <DropdownMenuItem disabled>Settings</DropdownMenuItem>
+        <DropdownMenuItem disabled>Manage Devices</DropdownMenuItem>
+        <DropdownMenuItem disabled>Platform Rules</DropdownMenuItem>
+        <DropdownMenuItem disabled>Logout</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

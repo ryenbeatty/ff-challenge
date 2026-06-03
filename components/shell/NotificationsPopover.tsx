@@ -37,7 +37,7 @@ function NotificationAlertRow({ alert }: { alert: DemoAlert }) {
         href={href}
         className={cn(
           "flex items-center gap-3 px-4 py-3 transition-colors hover:bg-slate-50",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-violet-500/35",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
         )}
       >
         <div className="relative shrink-0">

@@ -32,6 +32,7 @@ type AppShellContextValue = {
   inlineSidebarWidthPx: number;
   overlaySidebarWidthPx: number;
   openOverlay: () => void;
+  toggleOverlay: () => void;
   scheduleCloseOverlay: () => void;
   cancelCloseOverlay: () => void;
 };
@@ -79,6 +80,19 @@ export function AppShellProvider({ children }: { children: ReactNode }) {
     }
   }, [cancelCloseOverlay, mode, pathname]);
 
+  const toggleOverlay = useCallback(() => {
+    cancelCloseOverlay();
+    if (mode !== "overlay") {
+      return;
+    }
+    setOverlaySession((current) => {
+      if (current.path === pathname && current.open) {
+        return { path: pathname, open: false };
+      }
+      return { path: pathname, open: true };
+    });
+  }, [cancelCloseOverlay, mode, pathname]);
+
   const scheduleCloseOverlay = useCallback(() => {
     cancelCloseOverlay();
     closeTimerRef.current = setTimeout(() => {
@@ -113,6 +127,7 @@ export function AppShellProvider({ children }: { children: ReactNode }) {
       inlineSidebarWidthPx,
       overlaySidebarWidthPx: SIDEBAR_WIDTH_EXPANDED_PX,
       openOverlay,
+      toggleOverlay,
       scheduleCloseOverlay,
       cancelCloseOverlay,
     }),
@@ -123,6 +138,7 @@ export function AppShellProvider({ children }: { children: ReactNode }) {
       isMeetingRoute,
       inlineSidebarWidthPx,
       openOverlay,
+      toggleOverlay,
       scheduleCloseOverlay,
       cancelCloseOverlay,
     ],

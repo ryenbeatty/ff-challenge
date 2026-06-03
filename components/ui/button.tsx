@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/shared/utils";
 
 const buttonVariants = cva(
-  "inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/35 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
+  "inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
   {
     variants: {
       variant: {
@@ -14,7 +14,7 @@ const buttonVariants = cva(
         outline:
           "border border-slate-300 bg-white text-slate-900 shadow-[0_1px_2px_rgba(15,23,42,0.04)] hover:border-slate-400 hover:bg-slate-50",
         secondary:
-          "border border-slate-200 bg-slate-50 text-violet-700 shadow-none hover:border-slate-300 hover:bg-slate-100 hover:text-violet-800",
+          "border border-border bg-slate-50 text-violet-700 shadow-none hover:border-slate-300 hover:bg-slate-100 hover:text-violet-800",
         ghost: "text-slate-700 hover:bg-slate-100 hover:text-slate-900",
         dark: "border border-transparent bg-slate-900 text-white shadow-[0_2px_8px_rgba(15,23,42,0.2)] hover:bg-slate-800",
         stress:
@@ -59,14 +59,17 @@ const Button = React.forwardRef<
     VariantProps<typeof buttonVariants> & {
       asChild?: boolean;
     }
->(function Button({ className, variant, size, asChild = false, ...props }, ref) {
+>(function Button(
+  { className, variant, size, asChild = false, type = "button", ...props },
+  ref,
+) {
   const Comp = asChild ? Slot : "button";
 
   return (
     <Comp
       ref={ref}
       className={cn(buttonVariants({ variant, size, className }))}
-      {...props}
+      {...(asChild ? props : { type, ...props })}
     />
   );
 });

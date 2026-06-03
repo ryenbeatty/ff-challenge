@@ -4,14 +4,19 @@
   --background: #ffffff;
   --foreground: #0f172a;
   --surface: #ffffff;
-  --muted-foreground: #64748b;
-  --border: #e2e8f0;
+  --muted-foreground: #475569;
+  --border: #cbd5e1;
   --accent: #7c3aed;
+  --ring: #7c3aed;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-ring: var(--ring);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --text-md: 1rem;

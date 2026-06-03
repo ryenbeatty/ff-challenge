@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { CircleCheck, Video } from "lucide-react";
 
 import LiveNotesButton from "@/components/meeting/LiveNotesButton";
@@ -62,10 +62,19 @@ function CaptureDialogFormStep({
   onMeetingLanguageChange,
   onStartCapturing,
 }: CaptureDialogFormStepProps) {
+  const meetingLinkHintId = useId();
+  const meetingLinkErrorId = useId();
+  const meetingLinkDescribedBy = submitError
+    ? `${meetingLinkHintId} ${meetingLinkErrorId}`
+    : meetingLinkHintId;
+
   return (
     <>
       <DialogHeader>
         <DialogTitle>Add to live meeting</DialogTitle>
+        <DialogDescription className="sr-only">
+          Add Fireflies to a live meeting by entering a meeting link.
+        </DialogDescription>
       </DialogHeader>
 
       <div className="mt-6 space-y-5">
@@ -80,20 +89,24 @@ function CaptureDialogFormStep({
         </div>
 
         <div className="space-y-1.5">
-          <div className="space-y-1">
-            <Label htmlFor="meeting-link">Meeting link</Label>
-            <DialogDescription className="leading-snug">
-              Capture meetings from GMeet, Zoom, MS teams and more
-            </DialogDescription>
-          </div>
+          <Label htmlFor="meeting-link">Meeting link</Label>
+          <p id={meetingLinkHintId} className="text-sm leading-snug text-muted-foreground">
+            Capture meetings from GMeet, Zoom, MS teams and more
+          </p>
           <Input
             id="meeting-link"
             placeholder="https://meet.google.com/abc-defg-hij"
             value={meetingLink}
             onChange={(event) => onMeetingLinkChange(event.target.value)}
+            aria-describedby={meetingLinkDescribedBy}
+            aria-invalid={submitError ? true : undefined}
           />
           {submitError ? (
-            <p className="text-sm text-rose-600" aria-live="polite">
+            <p
+              id={meetingLinkErrorId}
+              role="alert"
+              className="text-sm text-rose-600"
+            >
               {submitError}
             </p>
           ) : null}

@@ -51,7 +51,10 @@ function SidebarBrand({ isCollapsed }: { isCollapsed: boolean }) {
       )}
     >
       {isCollapsed ? (
-        <span aria-label="fireflies.fun">ff</span>
+        <>
+          <span aria-hidden="true">ff</span>
+          <span className="sr-only">fireflies.fun</span>
+        </>
       ) : (
         "fireflies.fun"
       )}

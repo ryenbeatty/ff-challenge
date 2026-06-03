@@ -46,7 +46,7 @@ const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(function Che
       disabled={disabled}
       onClick={handleClick}
       className={cn(
-        "inline-flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center rounded border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/35 disabled:cursor-not-allowed disabled:opacity-50",
+        "inline-flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center rounded border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
         isActive
           ? "border-violet-600 bg-violet-600 text-white"
           : "border-slate-300 bg-white text-transparent",

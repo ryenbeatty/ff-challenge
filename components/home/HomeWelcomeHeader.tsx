@@ -3,7 +3,7 @@
 import { Diamond, ListChecks, Users } from "lucide-react";
 
 import ShareFeedbackButton from "@/components/home/ShareFeedbackButton";
-import { CardButton } from "@/components/ui/card-button";
+import { CardPlaceholder } from "@/components/ui/card-button";
 import { getTimeOfDayGreeting } from "@/lib/shared/greeting";
 import { getCurrentUser, getFirstName } from "@/lib/shared/user-avatars";
 import { cn } from "@/lib/shared/utils";
@@ -38,18 +38,18 @@ export default function HomeWelcomeHeader() {
           </div>
 
           <div className="grid grid-cols-3 gap-3">
-            <CardButton
+            <CardPlaceholder
               icon={<ListChecks className="h-5 w-5" />}
               iconClassName="bg-emerald-50 text-emerald-600"
               primaryLabel="Tasks"
               secondaryLabel="Last 7 days"
             />
-            <CardButton
+            <CardPlaceholder
               icon={<Diamond className="h-5 w-5" />}
               iconClassName="bg-amber-50 text-amber-600"
               primaryLabel="AI skills"
             />
-            <CardButton
+            <CardPlaceholder
               icon={<Users className="h-5 w-5" />}
               iconClassName="bg-pink-50 text-pink-600"
               primaryLabel="5 contacts"

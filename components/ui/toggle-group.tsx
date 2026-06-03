@@ -13,7 +13,7 @@ const toggleGroupVariants = cva(
 );
 
 const toggleGroupItemVariants = cva(
-  "inline-flex h-full cursor-pointer items-center justify-center rounded-sm px-3 text-sm font-medium text-slate-600 transition-colors hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/35 disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-white data-[state=on]:text-slate-900 data-[state=on]:shadow-sm",
+  "inline-flex h-full cursor-pointer items-center justify-center rounded-sm px-3 text-sm font-medium text-slate-600 transition-colors hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-white data-[state=on]:text-slate-900 data-[state=on]:shadow-sm",
 );
 
 function ToggleGroup({
