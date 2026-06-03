@@ -3,7 +3,8 @@
 import { Suspense } from "react";
 
 import LiveMeetingSummarisingState from "@/components/live/LiveMeetingSummarisingState";
-import MeetingPanelSidebar from "@/components/meeting/MeetingPanelSidebar";
+import { LIVE_MEETING_ASSISTANT_CONTENT } from "@/components/assistant/live-meeting-content";
+import AskFirefliesSidebar from "@/components/meeting/AskFirefliesSidebar";
 import LoadingText from "@/components/states/LoadingText";
 import MeetingNotFoundState from "@/components/states/MeetingNotFoundState";
 import TranscriptList from "@/components/transcript/TranscriptList";
@@ -64,10 +65,9 @@ export default function LiveMeetingView({ meetingId }: LiveMeetingViewProps) {
         {transcriptContent}
       </section>
 
-      <MeetingPanelSidebar
+      <AskFirefliesSidebar
         meetingId={meeting.id}
-        transcript={transcriptContent}
-        askFirefliesChrome="header"
+        content={LIVE_MEETING_ASSISTANT_CONTENT}
       />
     </div>
   );
