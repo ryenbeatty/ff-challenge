@@ -1,17 +1,13 @@
 import {
-  applyDemoMeetingContent,
-  buildCanonicalMeetingContent,
-  buildDefaultMeetings,
+  applyCanonicalMeetingContent,
+  buildCanonicalContent,
   buildStressTestMeetings,
-  CANONICAL_OWNER_NAME,
-  getDemoMeetingPartner,
-  getStressMeetingPartnerFromId,
-  isDemoMeetingId,
-  isStressMeetingId,
-} from "@/demo/meetings";
+  getDefaultStoredOwnerName,
+  normalizeStoredMeeting,
+  seedMeetings,
+} from "@/lib/demo-bindings";
 import { getCurrentUser } from "@/lib/shared/user-avatars";
 
-import { applyCanonicalMeetingContent } from "./apply-canonical-content";
 import { buildMeetingTitle } from "./build-title";
 import { CreateMeetingInput, Meeting } from "./types";
 
@@ -37,7 +33,7 @@ function readRawMeetings(): string | null {
   return window.localStorage.getItem(LEGACY_STORAGE_KEY);
 }
 
-function normalizeStoredMeeting(raw: Partial<Meeting> & Record<string, unknown>): Meeting {
+function normalizeStoredMeetingFromRaw(raw: Partial<Meeting> & Record<string, unknown>): Meeting {
   const id = String(raw.id ?? `meeting-${Date.now()}`);
   const status = raw.status === "live" ? "live" : "completed";
   const durationLabel =
@@ -50,7 +46,7 @@ function normalizeStoredMeeting(raw: Partial<Meeting> & Record<string, unknown>)
   const shell: Meeting = {
     id,
     title: String(raw.title ?? "Untitled meeting"),
-    ownerName: String(raw.ownerName ?? CANONICAL_OWNER_NAME),
+    ownerName: String(raw.ownerName ?? getDefaultStoredOwnerName()),
     meetingLanguage: String(raw.meetingLanguage ?? "English (Global)"),
     status,
     createdAt: String(raw.createdAt ?? new Date().toISOString()),
@@ -60,27 +56,13 @@ function normalizeStoredMeeting(raw: Partial<Meeting> & Record<string, unknown>)
     summary:
       raw.summary && typeof raw.summary === "object"
         ? (raw.summary as Meeting["summary"])
-        : buildCanonicalMeetingContent(id).summary,
+        : buildCanonicalContent(id).summary,
     transcript: Array.isArray(raw.transcript)
       ? (raw.transcript as Meeting["transcript"])
       : [],
   };
 
-  const demoPartner = isDemoMeetingId(id) ? getDemoMeetingPartner(id) : undefined;
-  if (demoPartner) {
-    return applyDemoMeetingContent(shell, demoPartner);
-  }
-
-  const stressPartner = getStressMeetingPartnerFromId(id);
-  if (stressPartner) {
-    return applyDemoMeetingContent(shell, stressPartner);
-  }
-
-  if (isStressMeetingId(id)) {
-    return shell;
-  }
-
-  return applyCanonicalMeetingContent(shell);
+  return normalizeStoredMeeting(shell);
 }
 
 function parseMeetings(raw: string | null): Meeting[] {
@@ -94,7 +76,7 @@ function parseMeetings(raw: string | null): Meeting[] {
       return [];
     }
 
-    return parsed.map((raw) => normalizeStoredMeeting(raw));
+    return parsed.map((entry) => normalizeStoredMeetingFromRaw(entry));
   } catch {
     return [];
   }
@@ -114,7 +96,7 @@ function ensureDefaultMeetings(meetings: Meeting[]): Meeting[] {
     return meetings;
   }
 
-  const seeded = buildDefaultMeetings();
+  const seeded = seedMeetings();
   writeMeetings(seeded);
   return seeded;
 }
@@ -138,7 +120,7 @@ export function createMeeting(input: CreateMeetingInput = {}): Meeting {
   const id = `meeting-${Date.now()}`;
   const createdAt = new Date().toISOString();
   const createdDate = new Date(createdAt);
-  const canonical = buildCanonicalMeetingContent(id);
+  const canonical = buildCanonicalContent(id);
 
   const meeting: Meeting = applyCanonicalMeetingContent({
     id,

@@ -1,4 +1,5 @@
 import { buildMeetingTitle, DEFAULT_USER_EMAIL } from "@/lib/meetings/build-title";
+import { JORDAN_EMAIL, MAYA_EMAIL } from "@/lib/meetings/speaker-emails";
 import type {
   ActionItem,
   Meeting,
@@ -10,8 +11,7 @@ import type {
 
 export const CANONICAL_OWNER_NAME = "Maya Chen";
 
-export const MAYA_EMAIL = "maya.chen@fireflies.fun";
-export const JORDAN_EMAIL = "jordan.park@fireflies.fun";
+export { JORDAN_EMAIL, MAYA_EMAIL };
 
 export const CANONICAL_SPEAKERS: Speaker[] = [
   { id: "speaker-1", name: "Maya Chen", email: MAYA_EMAIL },

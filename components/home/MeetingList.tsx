@@ -1,7 +1,7 @@
 "use client";
 
 import { FolderInput, PartyPopper, Trash2 } from "lucide-react";
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { toast } from "sonner";
 
 import AskFirefliesSidebar from "@/components/meeting/AskFirefliesSidebar";
@@ -44,6 +44,22 @@ function filterMeetingsByTab(meetings: Meeting[], filter: MeetingsFilter): Meeti
   }
 
   return meetings.filter((meeting) => meeting.ownerName !== currentUserName);
+}
+
+function getMeetingsFilterForAvailability(
+  currentFilter: MeetingsFilter,
+  hostedCount: number,
+  sharedCount: number,
+): MeetingsFilter | null {
+  if (currentFilter === "hosted" && hostedCount === 0 && sharedCount > 0) {
+    return "shared";
+  }
+
+  if (currentFilter === "shared" && sharedCount === 0 && hostedCount > 0) {
+    return "hosted";
+  }
+
+  return null;
 }
 
 type DateGroup = {
@@ -142,10 +158,16 @@ export default function MeetingList() {
   const [renameTitle, setRenameTitle] = useState("");
 
   const recentMeetings = selectCompletedMeetings(meetings ?? []);
-  const visibleMeetings = useMemo(
-    () => filterMeetingsByTab(recentMeetings, meetingsFilter),
-    [recentMeetings, meetingsFilter],
+  const hostedMeetings = useMemo(
+    () => filterMeetingsByTab(recentMeetings, "hosted"),
+    [recentMeetings],
   );
+  const sharedMeetings = useMemo(
+    () => filterMeetingsByTab(recentMeetings, "shared"),
+    [recentMeetings],
+  );
+  const visibleMeetings =
+    meetingsFilter === "hosted" ? hostedMeetings : sharedMeetings;
   const visibleMeetingIds = useMemo(
     () => visibleMeetings.map((meeting) => meeting.id),
     [visibleMeetings],
@@ -157,6 +179,25 @@ export default function MeetingList() {
     visibleMeetingIds.length > 0 &&
     visibleMeetingIds.every((id) => selectedIds.has(id));
   const isSelectionIndeterminate = hasSelection && !allVisibleSelected;
+
+  useEffect(() => {
+    if (isLoading) {
+      return;
+    }
+
+    const preferredFilter = getMeetingsFilterForAvailability(
+      meetingsFilter,
+      hostedMeetings.length,
+      sharedMeetings.length,
+    );
+
+    if (!preferredFilter) {
+      return;
+    }
+
+    setMeetingsFilter(preferredFilter);
+    setSelectedIds(new Set());
+  }, [isLoading, meetingsFilter, hostedMeetings.length, sharedMeetings.length]);
 
   function toggleMeetingSelection(meetingId: string) {
     setSelectedIds((current) => toggleSetMember(current, meetingId));

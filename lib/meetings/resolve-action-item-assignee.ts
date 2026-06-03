@@ -1,12 +1,14 @@
 import { DEFAULT_USER_EMAIL } from "./build-title";
-import { JORDAN_EMAIL, MAYA_EMAIL } from "@/demo/meetings";
 import type { ActionItem } from "./types";
+import { getUserByName } from "@/lib/shared/user-avatars";
 
-const LEGACY_ASSIGNEE_EMAIL: Record<string, string> = {
-  Max: DEFAULT_USER_EMAIL,
-  "Maya Chen": MAYA_EMAIL,
-  "Jordan Park": JORDAN_EMAIL,
-};
+function resolveLegacyAssigneeEmail(name: string): string | undefined {
+  if (name === "Max") {
+    return DEFAULT_USER_EMAIL;
+  }
+
+  return getUserByName(name)?.email;
+}
 
 type ActionItemWithLegacyAssignee = ActionItem & {
   assigneeName?: string;
@@ -19,8 +21,11 @@ export function resolveActionItemAssignee(item: ActionItemWithLegacyAssignee): s
   }
 
   const legacyName = item.assigneeName?.trim();
-  if (legacyName && LEGACY_ASSIGNEE_EMAIL[legacyName]) {
-    return LEGACY_ASSIGNEE_EMAIL[legacyName];
+  if (legacyName) {
+    const resolved = resolveLegacyAssigneeEmail(legacyName);
+    if (resolved) {
+      return resolved;
+    }
   }
 
   return legacyName ?? "unknown@fireflies.fun";

@@ -1,13 +1,22 @@
-import { APP_USERS, CURRENT_USER_EMAIL } from "@/demo/users";
+import {
+  getCurrentUserEmail,
+  getDemoUsers,
+  type AppUser,
+} from "@/lib/demo-bindings";
 
-export type { AppUser } from "@/demo/users";
-export { APP_USERS, CURRENT_USER_EMAIL } from "@/demo/users";
+export type { AppUser };
 
-const USERS_BY_EMAIL = new Map(APP_USERS.map((user) => [user.email.toLowerCase(), user]));
-const USERS_BY_NAME = new Map(APP_USERS.map((user) => [user.name.toLowerCase(), user]));
+function getUsersByEmail() {
+  return new Map(getDemoUsers().map((user) => [user.email.toLowerCase(), user]));
+}
+
+function getUsersByName() {
+  return new Map(getDemoUsers().map((user) => [user.name.toLowerCase(), user]));
+}
 
 export function getCurrentUser() {
-  return getUserByEmail(CURRENT_USER_EMAIL) ?? APP_USERS[0];
+  const users = getDemoUsers();
+  return getUserByEmail(getCurrentUserEmail()) ?? users[0];
 }
 
 export function getFirstName(fullName: string): string {
@@ -20,11 +29,11 @@ export function getFirstName(fullName: string): string {
 }
 
 export function getUserByEmail(email: string) {
-  return USERS_BY_EMAIL.get(email.trim().toLowerCase());
+  return getUsersByEmail().get(email.trim().toLowerCase());
 }
 
 export function getUserByName(name: string) {
-  return USERS_BY_NAME.get(name.trim().toLowerCase());
+  return getUsersByName().get(name.trim().toLowerCase());
 }
 
 /** Public URL for a user's avatar image, or null if the email is unknown. */

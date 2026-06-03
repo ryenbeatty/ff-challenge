@@ -1,6 +1,5 @@
 import { DEFAULT_USER_EMAIL } from "@/lib/meetings/build-title";
-
-import { JORDAN_EMAIL, MAYA_EMAIL } from "./meetings";
+import { JORDAN_EMAIL, MAYA_EMAIL } from "@/lib/meetings/speaker-emails";
 
 export type AppUser = {
   email: string;
