@@ -1,39 +1,12 @@
-import { DEFAULT_USER_EMAIL } from "@/lib/meetings/build-title";
-import { JORDAN_EMAIL, MAYA_EMAIL } from "@/lib/meetings/canonical-content";
+import { APP_USERS, CURRENT_USER_EMAIL } from "@/demo/users";
 
-export type AppUser = {
-  email: string;
-  name: string;
-  /** Filename under `public/avatars/` (e.g. `max.jpg`) */
-  avatarFile: string;
-};
-
-/** Demo accounts for this challenge — avatar images live in `public/avatars/`. */
-export const APP_USERS: AppUser[] = [
-  {
-    email: DEFAULT_USER_EMAIL,
-    name: "Max",
-    avatarFile: "max.jpg",
-  },
-  {
-    email: MAYA_EMAIL,
-    name: "Maya Chen",
-    avatarFile: "maya.jpg",
-  },
-  {
-    email: JORDAN_EMAIL,
-    name: "Jordan Park",
-    avatarFile: "jordan.jpg",
-  },
-];
-
-/** Logged-in user for shell chrome (capture titles, header menu). */
-export const CURRENT_USER_EMAIL = DEFAULT_USER_EMAIL;
+export type { AppUser } from "@/demo/users";
+export { APP_USERS, CURRENT_USER_EMAIL } from "@/demo/users";
 
 const USERS_BY_EMAIL = new Map(APP_USERS.map((user) => [user.email.toLowerCase(), user]));
 const USERS_BY_NAME = new Map(APP_USERS.map((user) => [user.name.toLowerCase(), user]));
 
-export function getCurrentUser(): AppUser {
+export function getCurrentUser() {
   return getUserByEmail(CURRENT_USER_EMAIL) ?? APP_USERS[0];
 }
 
@@ -46,11 +19,11 @@ export function getFirstName(fullName: string): string {
   return trimmed.split(/\s+/)[0] ?? trimmed;
 }
 
-export function getUserByEmail(email: string): AppUser | undefined {
+export function getUserByEmail(email: string) {
   return USERS_BY_EMAIL.get(email.trim().toLowerCase());
 }
 
-export function getUserByName(name: string): AppUser | undefined {
+export function getUserByName(name: string) {
   return USERS_BY_NAME.get(name.trim().toLowerCase());
 }
 

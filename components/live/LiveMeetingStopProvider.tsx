@@ -12,7 +12,7 @@ import {
   type ReactNode,
 } from "react";
 
-export const LIVE_MEETING_STOP_DELAY_MS = 15_000;
+export const LIVE_MEETING_STOP_DELAY_MS = 5_000;
 
 type LiveMeetingStopContextValue = {
   isStoppingMeeting: boolean;

@@ -3,7 +3,7 @@
 import { Suspense } from "react";
 
 import LiveMeetingSummarisingState from "@/components/live/LiveMeetingSummarisingState";
-import { LIVE_MEETING_ASSISTANT_CONTENT } from "@/components/assistant/live-meeting-content";
+import { DEMO_LIVE_MEETING_ASSISTANT } from "@/demo/assistant";
 import AskFirefliesSidebar from "@/components/meeting/AskFirefliesSidebar";
 import LoadingText from "@/components/states/LoadingText";
 import MeetingNotFoundState from "@/components/states/MeetingNotFoundState";
@@ -53,6 +53,7 @@ export default function LiveMeetingView({ meetingId }: LiveMeetingViewProps) {
             variant={isLive ? ("live" as const) : ("default" as const)}
             activeSentenceId={activeSentenceId}
             showSearchBar={false}
+            scrollContainerClassName="pb-[140px]"
           />
         </Suspense>
       )}
@@ -67,7 +68,7 @@ export default function LiveMeetingView({ meetingId }: LiveMeetingViewProps) {
 
       <AskFirefliesSidebar
         meetingId={meeting.id}
-        content={LIVE_MEETING_ASSISTANT_CONTENT}
+        content={DEMO_LIVE_MEETING_ASSISTANT}
       />
     </div>
   );

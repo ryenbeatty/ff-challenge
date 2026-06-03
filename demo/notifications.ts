@@ -1,7 +1,7 @@
 import { formatMeetingCardDate } from "@/lib/formatting/date-formatters";
 import { DEFAULT_USER_EMAIL } from "@/lib/meetings/build-title";
-import { JORDAN_EMAIL, MAYA_EMAIL } from "@/lib/meetings/canonical-content";
-import { buildDefaultMeetings } from "@/lib/meetings/seed-meetings";
+
+import { buildDefaultMeetings, JORDAN_EMAIL, MAYA_EMAIL } from "./meetings";
 
 const SEED_MEETINGS = buildDefaultMeetings();
 

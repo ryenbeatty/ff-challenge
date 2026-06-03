@@ -1,13 +1,15 @@
-import { applyCanonicalMeetingContent } from "./apply-canonical-content";
-import { buildCanonicalMeetingContent, CANONICAL_OWNER_NAME } from "./canonical-content";
 import {
   applyDemoMeetingContent,
+  buildCanonicalMeetingContent,
+  buildDefaultMeetings,
+  CANONICAL_OWNER_NAME,
   getDemoMeetingPartner,
   isDemoMeetingId,
-} from "./demo-meeting-content";
-import { buildMeetingTitle } from "./build-title";
+} from "@/demo/meetings";
 import { getCurrentUser } from "@/lib/shared/user-avatars";
-import { buildDefaultMeetings } from "./seed-meetings";
+
+import { applyCanonicalMeetingContent } from "./apply-canonical-content";
+import { buildMeetingTitle } from "./build-title";
 import { CreateMeetingInput, Meeting } from "./types";
 
 const STORAGE_KEY = "fireflies-meetings-v2";

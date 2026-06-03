@@ -1,4 +1,5 @@
-import { buildCanonicalMeetingContent, CANONICAL_OWNER_NAME } from "./canonical-content";
+import { buildCanonicalMeetingContent, CANONICAL_OWNER_NAME } from "@/demo/meetings";
+
 import { normalizeActionItems } from "./resolve-action-item-assignee";
 import type { Meeting } from "./types";
 

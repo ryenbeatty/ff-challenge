@@ -1,9 +1,9 @@
 "use client";
 
 import AssistantFeed from "@/components/assistant/AssistantFeed";
-import { DEFAULT_ASSISTANT_CONTENT } from "@/components/assistant/defaults";
 import type { AssistantContentConfig } from "@/components/assistant/types";
 import { useAssistantChat } from "@/components/assistant/useAssistantChat";
+import { DEMO_DEFAULT_ASSISTANT } from "@/demo/assistant";
 import { getCurrentUser, getFirstName } from "@/lib/shared/user-avatars";
 import { cn } from "@/lib/shared/utils";
 
@@ -16,7 +16,7 @@ type AskFirefliesPanelProps = {
 export default function AskFirefliesPanel({
   meetingId,
   className,
-  content = DEFAULT_ASSISTANT_CONTENT,
+  content = DEMO_DEFAULT_ASSISTANT,
 }: AskFirefliesPanelProps) {
   const user = getCurrentUser();
   const firstName = getFirstName(user.name);

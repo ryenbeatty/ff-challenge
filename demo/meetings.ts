@@ -1,10 +1,12 @@
+import { buildMeetingTitle, DEFAULT_USER_EMAIL } from "@/lib/meetings/build-title";
 import type {
   ActionItem,
+  Meeting,
   MeetingSummary,
   OutlineSection,
   Speaker,
   TranscriptSentence,
-} from "./types";
+} from "@/lib/meetings/types";
 
 export const CANONICAL_OWNER_NAME = "Maya Chen";
 
@@ -451,4 +453,159 @@ export function buildCanonicalMeetingContent(meetingId: string) {
     summary: buildCanonicalSummary(meetingId),
     transcript: buildCanonicalTranscript(meetingId),
   };
+}
+
+export const DEMO_OWNER_NAME = "Max";
+
+const CANONICAL_MAYA_SPEAKER_ID = "speaker-1";
+const CANONICAL_JORDAN_SPEAKER_ID = "speaker-2";
+
+export type DemoMeetingPartner = "maya" | "jordan";
+
+const DEMO_PARTNER_BY_ID: Record<string, DemoMeetingPartner> = {
+  "demo-meeting-1": "maya",
+  "demo-meeting-2": "jordan",
+  "demo-meeting-3": "maya",
+};
+
+export function isDemoMeetingId(meetingId: string): boolean {
+  return meetingId in DEMO_PARTNER_BY_ID;
+}
+
+export function getDemoMeetingPartner(meetingId: string): DemoMeetingPartner | undefined {
+  return DEMO_PARTNER_BY_ID[meetingId];
+}
+
+function buildDemoSpeakers(meetingId: string, partner: DemoMeetingPartner): Speaker[] {
+  const maxSpeaker: Speaker = {
+    id: `${meetingId}-speaker-max`,
+    name: DEMO_OWNER_NAME,
+    email: DEFAULT_USER_EMAIL,
+  };
+
+  const partnerSpeaker: Speaker =
+    partner === "maya"
+      ? { id: `${meetingId}-speaker-maya`, name: "Maya Chen", email: MAYA_EMAIL }
+      : { id: `${meetingId}-speaker-jordan`, name: "Jordan Park", email: JORDAN_EMAIL };
+
+  return [maxSpeaker, partnerSpeaker];
+}
+
+function remapDemoTranscript(
+  meetingId: string,
+  partner: DemoMeetingPartner,
+  speakers: Speaker[],
+): TranscriptSentence[] {
+  const [maxSpeaker, partnerSpeaker] = speakers;
+  const canonical = buildCanonicalMeetingContent(meetingId);
+
+  const speakerIdByCanonical: Record<string, string> = {
+    [CANONICAL_MAYA_SPEAKER_ID]: maxSpeaker.id,
+    [CANONICAL_JORDAN_SPEAKER_ID]: partnerSpeaker.id,
+  };
+
+  const speakerNameByCanonical: Record<string, string> = {
+    [CANONICAL_MAYA_SPEAKER_ID]: maxSpeaker.name,
+    [CANONICAL_JORDAN_SPEAKER_ID]: partnerSpeaker.name,
+  };
+
+  return canonical.transcript.map((line) => ({
+    ...line,
+    speakerId: speakerIdByCanonical[line.speakerId] ?? line.speakerId,
+    speakerName: speakerNameByCanonical[line.speakerId] ?? line.speakerName,
+  }));
+}
+
+function remapDemoSummary(
+  meetingId: string,
+  partner: DemoMeetingPartner,
+  speakers: Speaker[],
+): MeetingSummary {
+  const [, partnerSpeaker] = speakers;
+  const canonical = buildCanonicalMeetingContent(meetingId);
+
+  const assigneeEmailByCanonical: Record<string, string> = {
+    [MAYA_EMAIL]: DEFAULT_USER_EMAIL,
+    [JORDAN_EMAIL]: partnerSpeaker.email,
+  };
+
+  return {
+    ...canonical.summary,
+    actionItems: canonical.summary.actionItems.map((item) => ({
+      ...item,
+      assigneeEmail: assigneeEmailByCanonical[item.assigneeEmail] ?? item.assigneeEmail,
+    })),
+  };
+}
+
+export function applyDemoMeetingContent(meeting: Meeting, partner: DemoMeetingPartner): Meeting {
+  const speakers = buildDemoSpeakers(meeting.id, partner);
+  const summary = remapDemoSummary(meeting.id, partner, speakers);
+
+  return {
+    ...meeting,
+    ownerName: DEMO_OWNER_NAME,
+    speakers,
+    summary,
+    transcript: remapDemoTranscript(meeting.id, partner, speakers),
+  };
+}
+
+const COMPLETED_DURATION_LABEL = "5 min";
+
+/** Fixed anchor for reproducible demo dates in tests and screenshots. */
+const SEED_ANCHOR = new Date("2026-06-02T14:00:00.000Z");
+
+const SEED_DEFINITIONS = [
+  { id: "demo-meeting-1", customTitle: "Analytics dashboard review", daysBeforeAnchor: 3 },
+  { id: "demo-meeting-2", customTitle: "Weekly product sync", daysBeforeAnchor: 2 },
+  { id: "demo-meeting-3", customTitle: "Customer discovery call", daysBeforeAnchor: 1 },
+] as const;
+
+const EMPTY_SUMMARY: Meeting["summary"] = {
+  keywords: [],
+  overview: "",
+  bulletGist: [],
+  outline: [],
+  notes: [],
+  actionItems: [],
+};
+
+function createdAtForSeed(daysBeforeAnchor: number): Date {
+  const date = new Date(SEED_ANCHOR);
+  date.setUTCDate(date.getUTCDate() - daysBeforeAnchor);
+  return date;
+}
+
+function buildSeedShell(def: (typeof SEED_DEFINITIONS)[number]): Meeting {
+  const createdAt = createdAtForSeed(def.daysBeforeAnchor);
+  const stoppedAt = new Date(createdAt.getTime() + 5 * 60 * 1000);
+
+  return {
+    id: def.id,
+    title: buildMeetingTitle({ customTitle: def.customTitle }),
+    ownerName: DEMO_OWNER_NAME,
+    meetingLanguage: "English (Global)",
+    status: "completed",
+    createdAt: createdAt.toISOString(),
+    stoppedAt: stoppedAt.toISOString(),
+    durationLabel: COMPLETED_DURATION_LABEL,
+    speakers: [],
+    summary: EMPTY_SUMMARY,
+    transcript: [],
+  };
+}
+
+/** Demo meetings written when localStorage is empty (first visit). */
+export function buildDefaultMeetings(): Meeting[] {
+  return SEED_DEFINITIONS.map((def) => {
+    const shell = buildSeedShell(def);
+    const partner = getDemoMeetingPartner(def.id);
+
+    if (!partner) {
+      return shell;
+    }
+
+    return applyDemoMeetingContent(shell, partner);
+  });
 }

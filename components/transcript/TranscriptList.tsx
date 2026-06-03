@@ -19,6 +19,7 @@ type TranscriptListProps = {
   variant?: "default" | "live";
   activeSentenceId?: string;
   showSearchBar?: boolean;
+  scrollContainerClassName?: string;
 };
 
 function scrollUtteranceIntoContainer(
@@ -41,6 +42,7 @@ export default function TranscriptList({
   variant = "default",
   activeSentenceId,
   showSearchBar = true,
+  scrollContainerClassName,
 }: TranscriptListProps) {
   const searchParams = useSearchParams();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -236,7 +238,10 @@ export default function TranscriptList({
       ) : null}
       <div
         ref={scrollContainerRef}
-        className="h-full min-h-0 flex-1 overflow-y-auto overscroll-contain pr-1"
+        className={cn(
+          "h-full min-h-0 flex-1 overflow-y-auto overscroll-contain pr-1",
+          scrollContainerClassName,
+        )}
       >
         <TranscriptFeed
           utterances={visibleUtterances}

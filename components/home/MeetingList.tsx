@@ -1,7 +1,7 @@
 "use client";
 
 import AskFirefliesSidebar from "@/components/meeting/AskFirefliesSidebar";
-import { MEETINGS_PAGE_ASSISTANT_CONTENT } from "@/components/assistant/meetings-page-content";
+import { DEMO_MEETINGS_PAGE_ASSISTANT } from "@/demo/assistant";
 import MeetingListRow from "@/components/meeting/MeetingListRow";
 import EmptyMeetingsState from "@/components/states/EmptyMeetingsState";
 import LoadingText from "@/components/states/LoadingText";
@@ -40,7 +40,7 @@ export default function MeetingList() {
 
       <AskFirefliesSidebar
         meetingId=""
-        content={MEETINGS_PAGE_ASSISTANT_CONTENT}
+        content={DEMO_MEETINGS_PAGE_ASSISTANT}
         className="hidden lg:flex"
       />
     </div>

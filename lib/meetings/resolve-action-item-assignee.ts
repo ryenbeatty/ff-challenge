@@ -1,5 +1,5 @@
 import { DEFAULT_USER_EMAIL } from "./build-title";
-import { JORDAN_EMAIL, MAYA_EMAIL } from "./canonical-content";
+import { JORDAN_EMAIL, MAYA_EMAIL } from "@/demo/meetings";
 import type { ActionItem } from "./types";
 
 const LEGACY_ASSIGNEE_EMAIL: Record<string, string> = {

@@ -15,7 +15,7 @@ import {
   DEMO_NOTIFICATION_COUNT,
   DEMO_NOTIFICATION_SECTIONS,
   type DemoAlert,
-} from "@/lib/notifications/demo-alerts";
+} from "@/demo/notifications";
 import { getMeetingHref } from "@/lib/meetings/get-href";
 import { useMeetingsQuery } from "@/lib/meetings/query";
 import { getViewMeetingHref } from "@/lib/meetings/routes";
