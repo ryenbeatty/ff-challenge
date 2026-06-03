@@ -19,7 +19,7 @@ export default function CopyTranscriptLinkButton({ startTime }: CopyTranscriptLi
     }
 
     const url = buildTimestampedTranscriptUrl(window.location.origin, pathname, startTime);
-    await copyText(url);
+    await copyText(url, { successMessage: "Transcript link copied" });
   }
 
   return (

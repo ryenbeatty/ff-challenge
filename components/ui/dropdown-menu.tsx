@@ -46,7 +46,7 @@ function DropdownMenuLabel({
   return (
     <DropdownMenuPrimitive.Label
       className={cn(
-        "px-2 py-1.5 text-xs font-medium text-slate-900",
+        "px-2 py-1.5 text-sm font-medium text-slate-900",
         inset && "pl-8",
         className,
       )}
@@ -77,7 +77,7 @@ function DropdownMenuItem({
   return (
     <DropdownMenuPrimitive.Item
       className={cn(
-        "relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-xs text-slate-700 outline-none transition-colors focus:bg-slate-50 data-[highlighted]:bg-slate-50 data-[disabled]:pointer-events-none data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50",
+        "relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm text-slate-700 outline-none transition-colors focus:bg-slate-50 data-[highlighted]:bg-slate-50 data-[disabled]:pointer-events-none data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50",
         inset && "pl-8",
         className,
       )}

@@ -1,10 +1,44 @@
+import { formatMeetingCardDate } from "@/lib/formatting/date-formatters";
 import { DEFAULT_USER_EMAIL } from "@/lib/meetings/build-title";
 import { JORDAN_EMAIL, MAYA_EMAIL } from "@/lib/meetings/canonical-content";
+import { buildDefaultMeetings } from "@/lib/meetings/seed-meetings";
+
+const SEED_MEETINGS = buildDefaultMeetings();
+
+function meetingLabelFor(meetingId: string): string {
+  const meeting = SEED_MEETINGS.find((entry) => entry.id === meetingId);
+  if (!meeting) {
+    throw new Error(`Unknown demo meeting id: ${meetingId}`);
+  }
+
+  return formatMeetingCardDate(meeting.createdAt);
+}
+
+function buildAlert({
+  id,
+  actorEmail,
+  meetingId,
+  timeLabel,
+}: {
+  id: string;
+  actorEmail: string;
+  meetingId: string;
+  timeLabel: string;
+}): DemoAlert {
+  return {
+    id,
+    actorEmail,
+    meetingId,
+    meetingLabel: meetingLabelFor(meetingId),
+    timeLabel,
+  };
+}
 
 export type DemoAlert = {
   id: string;
   actorEmail: string;
-  /** Shown quoted in title, e.g. June 02, 04:47PM */
+  meetingId: string;
+  /** Shown quoted in title, from the linked meeting's createdAt. */
   meetingLabel: string;
   /** Right-rail time, e.g. 5:05 PM */
   timeLabel: string;
@@ -19,63 +53,63 @@ export const DEMO_NOTIFICATION_SECTIONS: DemoAlertSection[] = [
   {
     label: "Today",
     alerts: [
-      {
+      buildAlert({
         id: "alert-today-1",
         actorEmail: MAYA_EMAIL,
-        meetingLabel: "June 03, 10:30AM",
+        meetingId: "demo-meeting-3",
         timeLabel: "10:45 AM",
-      },
-      {
+      }),
+      buildAlert({
         id: "alert-today-2",
         actorEmail: JORDAN_EMAIL,
-        meetingLabel: "June 03, 02:15PM",
+        meetingId: "demo-meeting-3",
         timeLabel: "2:28 PM",
-      },
+      }),
     ],
   },
   {
     label: "Yesterday",
     alerts: [
-      {
+      buildAlert({
         id: "alert-yesterday-1",
         actorEmail: DEFAULT_USER_EMAIL,
-        meetingLabel: "June 02, 09:12AM",
+        meetingId: "demo-meeting-2",
         timeLabel: "9:20 AM",
-      },
-      {
+      }),
+      buildAlert({
         id: "alert-yesterday-2",
         actorEmail: MAYA_EMAIL,
-        meetingLabel: "June 02, 04:47PM",
+        meetingId: "demo-meeting-3",
         timeLabel: "5:05 PM",
-      },
+      }),
     ],
   },
   {
     label: "June 1",
     alerts: [
-      {
+      buildAlert({
         id: "alert-june-1-1",
         actorEmail: JORDAN_EMAIL,
-        meetingLabel: "June 01, 11:00AM",
+        meetingId: "demo-meeting-3",
         timeLabel: "11:18 AM",
-      },
-      {
+      }),
+      buildAlert({
         id: "alert-june-1-2",
         actorEmail: DEFAULT_USER_EMAIL,
-        meetingLabel: "June 01, 03:30PM",
+        meetingId: "demo-meeting-2",
         timeLabel: "3:42 PM",
-      },
+      }),
     ],
   },
   {
     label: "May 28",
     alerts: [
-      {
+      buildAlert({
         id: "alert-may-28-1",
         actorEmail: MAYA_EMAIL,
-        meetingLabel: "May 28, 01:05PM",
+        meetingId: "demo-meeting-1",
         timeLabel: "1:12 PM",
-      },
+      }),
     ],
   },
 ];

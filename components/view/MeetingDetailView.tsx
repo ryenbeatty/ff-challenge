@@ -71,12 +71,14 @@ export default function MeetingDetailView({
   const meetingSummary = meeting.summary;
 
   async function copyActionItemsOnly() {
-    await copyText(actionItemsContent);
+    await copyText(actionItemsContent, { successMessage: "Action items copied" });
     setCopyMenuOpen(false);
   }
 
   async function copyEntireSummary() {
-    await copyText(formatMeetingSummaryForCopy(meetingSummary));
+    await copyText(formatMeetingSummaryForCopy(meetingSummary), {
+      successMessage: "Summary copied",
+    });
     setCopyMenuOpen(false);
   }
 
@@ -136,12 +138,7 @@ export default function MeetingDetailView({
             <div className="flex items-center justify-between gap-3">
               <h2 className="text-lg text-slate-900">Action items</h2>
               <div className="flex items-center gap-1">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  className="h-8 px-3 text-xs"
-                >
+                <Button type="button" variant="ghost" size="sm">
                   Edit
                 </Button>
 
@@ -153,20 +150,20 @@ export default function MeetingDetailView({
                     <Button
                       type="button"
                       variant="ghost"
-                      size="sm"
+                      size="iconSm"
                       aria-label="Copy options"
-                      className="h-8 px-2"
+                      className="w-auto gap-1 px-1.5"
                     >
-                      <Copy className="h-3.5 w-3.5" />
-                      <ChevronDown className="h-3 w-3" />
+                      <Copy aria-hidden="true" />
+                      <ChevronDown aria-hidden="true" />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem onClick={copyActionItemsOnly}>
-                      copy action items
+                      Copy action items
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={copyEntireSummary}>
-                      copy entire summary
+                      Copy entire summary
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>

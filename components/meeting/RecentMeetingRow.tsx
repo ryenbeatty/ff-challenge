@@ -34,7 +34,9 @@ export default function RecentMeetingRow({ meeting, isActive = false }: RecentMe
       return;
     }
 
-    await copyText(buildMeetingUrl(window.location.origin, meeting));
+    await copyText(buildMeetingUrl(window.location.origin, meeting), {
+      successMessage: "Meeting link copied",
+    });
   }
 
   function handleOpen() {

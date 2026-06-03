@@ -1,6 +1,7 @@
 "use client";
 
 import { Bell, Check } from "lucide-react";
+import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { StatusMarker } from "@/components/ui/status-marker";
@@ -15,15 +16,30 @@ import {
   DEMO_NOTIFICATION_SECTIONS,
   type DemoAlert,
 } from "@/lib/notifications/demo-alerts";
+import { getMeetingHref } from "@/lib/meetings/get-href";
+import { useMeetingsQuery } from "@/lib/meetings/query";
+import { getViewMeetingHref } from "@/lib/meetings/routes";
 import { getUserByEmail } from "@/lib/shared/user-avatars";
+import { cn } from "@/lib/shared/utils";
 
 function NotificationAlertRow({ alert }: { alert: DemoAlert }) {
+  const { data: meetings } = useMeetingsQuery();
   const actor = getUserByEmail(alert.actorEmail);
   const actorName = actor?.name ?? "Teammate";
+  const meeting = meetings?.find((entry) => entry.id === alert.meetingId);
+  const href = meeting
+    ? getMeetingHref(meeting)
+    : getViewMeetingHref(alert.meetingId);
 
   return (
-    <li className="cursor-pointer transition-colors hover:bg-slate-50">
-      <div className="flex items-center gap-3 px-4 py-3">
+    <li>
+      <Link
+        href={href}
+        className={cn(
+          "flex items-center gap-3 px-4 py-3 transition-colors hover:bg-slate-50",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-violet-500/35",
+        )}
+      >
         <div className="relative shrink-0">
           <UserAvatar name={actorName} email={alert.actorEmail} size="md" />
           <span
@@ -42,7 +58,7 @@ function NotificationAlertRow({ alert }: { alert: DemoAlert }) {
         <span className="shrink-0 text-xs tabular-nums text-slate-500">
           {alert.timeLabel}
         </span>
-      </div>
+      </Link>
     </li>
   );
 }
