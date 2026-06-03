@@ -20,11 +20,13 @@ export default function ListSection({
   className,
 }: ListSectionProps) {
   return (
-    <section className={cn(title ? "space-y-3" : undefined, className)}>
+    <section className={cn(title ? "space-y-4" : undefined, className)}>
       {title ? (
         <h2
           className={cn(
-            icon ? "flex items-center gap-2 text-sm text-slate-500" : "text-sm text-slate-900",
+            icon
+              ? "flex items-center gap-2 text-sm text-slate-400"
+              : "text-sm text-slate-700",
             titleClassName,
           )}
         >

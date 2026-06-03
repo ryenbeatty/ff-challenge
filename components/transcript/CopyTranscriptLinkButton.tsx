@@ -1,8 +1,9 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { Copy } from "lucide-react";
+import { Link2 } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
 import { buildTimestampedTranscriptUrl, copyText } from "@/lib/shared/clipboard";
 
 type CopyTranscriptLinkButtonProps = {
@@ -22,13 +23,14 @@ export default function CopyTranscriptLinkButton({ startTime }: CopyTranscriptLi
   }
 
   return (
-    <button
+    <Button
       type="button"
+      variant="ghost"
+      size="iconSm"
       aria-label="Copy link to this moment"
       onClick={handleCopy}
-      className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-slate-500 transition hover:bg-slate-100 hover:text-slate-700"
     >
-      <Copy className="h-3.5 w-3.5" aria-hidden="true" />
-    </button>
+      <Link2 strokeWidth={1.75} aria-hidden="true" />
+    </Button>
   );
 }

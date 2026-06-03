@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <>
       <HomeWelcomeHeader />
-      <PageContainer className="pt-0">
+      <PageContainer className="max-w-5xl pt-0">
         <RecentMeetingsList />
       </PageContainer>
     </>

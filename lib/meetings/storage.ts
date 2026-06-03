@@ -1,6 +1,13 @@
 import { applyCanonicalMeetingContent } from "./apply-canonical-content";
 import { buildCanonicalMeetingContent, CANONICAL_OWNER_NAME } from "./canonical-content";
+import {
+  applyDemoMeetingContent,
+  getDemoMeetingPartner,
+  isDemoMeetingId,
+} from "./demo-meeting-content";
 import { buildMeetingTitle } from "./build-title";
+import { getCurrentUser } from "@/lib/shared/user-avatars";
+import { buildDefaultMeetings } from "./seed-meetings";
 import { CreateMeetingInput, Meeting } from "./types";
 
 const STORAGE_KEY = "fireflies-meetings-v2";
@@ -35,9 +42,7 @@ function normalizeStoredMeeting(raw: Partial<Meeting> & Record<string, unknown>)
         ? String(raw.durationLabel)
         : COMPLETED_DURATION_LABEL;
 
-  const placeholder = buildCanonicalMeetingContent(id);
-
-  return applyCanonicalMeetingContent({
+  const shell: Meeting = {
     id,
     title: String(raw.title ?? "Untitled meeting"),
     ownerName: String(raw.ownerName ?? CANONICAL_OWNER_NAME),
@@ -46,10 +51,22 @@ function normalizeStoredMeeting(raw: Partial<Meeting> & Record<string, unknown>)
     createdAt: String(raw.createdAt ?? new Date().toISOString()),
     stoppedAt: raw.stoppedAt ? String(raw.stoppedAt) : null,
     durationLabel,
-    speakers: placeholder.speakers,
-    summary: placeholder.summary,
-    transcript: placeholder.transcript,
-  });
+    speakers: Array.isArray(raw.speakers) ? (raw.speakers as Meeting["speakers"]) : [],
+    summary:
+      raw.summary && typeof raw.summary === "object"
+        ? (raw.summary as Meeting["summary"])
+        : buildCanonicalMeetingContent(id).summary,
+    transcript: Array.isArray(raw.transcript)
+      ? (raw.transcript as Meeting["transcript"])
+      : [],
+  };
+
+  const demoPartner = isDemoMeetingId(id) ? getDemoMeetingPartner(id) : undefined;
+  if (demoPartner) {
+    return applyDemoMeetingContent(shell, demoPartner);
+  }
+
+  return applyCanonicalMeetingContent(shell);
 }
 
 function parseMeetings(raw: string | null): Meeting[] {
@@ -78,12 +95,22 @@ function writeMeetings(meetings: Meeting[]) {
   window.localStorage.removeItem(LEGACY_STORAGE_KEY);
 }
 
+function ensureDefaultMeetings(meetings: Meeting[]): Meeting[] {
+  if (meetings.length > 0) {
+    return meetings;
+  }
+
+  const seeded = buildDefaultMeetings();
+  writeMeetings(seeded);
+  return seeded;
+}
+
 export function getAllMeetings(): Meeting[] {
   if (!hasWindow()) {
     return [];
   }
 
-  const meetings = parseMeetings(readRawMeetings());
+  const meetings = ensureDefaultMeetings(parseMeetings(readRawMeetings()));
   return meetings.sort((a, b) => {
     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
   });
@@ -106,7 +133,7 @@ export function createMeeting(input: CreateMeetingInput = {}): Meeting {
       createdAt: createdDate,
       customTitle: input.customTitle,
     }),
-    ownerName: CANONICAL_OWNER_NAME,
+    ownerName: getCurrentUser().name,
     meetingLanguage: input.meetingLanguage ?? "English (Global)",
     status: "live",
     createdAt,

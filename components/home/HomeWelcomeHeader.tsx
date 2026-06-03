@@ -25,47 +25,49 @@ export default function HomeWelcomeHeader() {
 
         <div
           className={cn(
-            "relative z-10 mx-auto flex w-full max-w-6xl flex-col gap-3 px-5 pt-6 pb-7 sm:px-6 sm:pb-8",
+            "relative z-10 mx-auto flex w-full max-w-5xl flex-col px-5 pt-12 pb-7 sm:px-6 sm:pb-8",
           )}
         >
-        <h1 className="text-4xl font-light tracking-tight text-slate-900">
-          {greeting}, {firstName}
-        </h1>
+          <div className="mb-10 flex flex-col gap-3">
+            <h1 className="text-2xl font-regular tracking-tight text-slate-900">
+              {greeting}, {firstName}
+            </h1>
 
-        <button
-          type="button"
-          className={cn(
-            "inline-flex w-fit items-center gap-2.5 rounded-md text-left",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/35",
-          )}
-        >
-          <MessageCircle
-            className="h-5 w-5 shrink-0 text-slate-600"
-            strokeWidth={1.75}
-            aria-hidden="true"
-          />
-          <span className="text-sm text-slate-700">Share feedback</span>
-        </button>
+            <button
+              type="button"
+              className={cn(
+                "inline-flex w-fit items-center gap-1.5 rounded-md text-left",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/35",
+              )}
+            >
+              <MessageCircle
+                className="h-5 w-5 shrink-0 text-slate-600"
+                strokeWidth={1.75}
+                aria-hidden="true"
+              />
+              <span className="text-sm text-slate-700">Share feedback</span>
+            </button>
+          </div>
 
-        <div className="grid grid-cols-3 gap-3 pt-1">
-          <CardButton
-            icon={<ListChecks className="h-5 w-5" />}
-            iconClassName="bg-emerald-50 text-emerald-600"
-            primaryLabel="Tasks"
-            secondaryLabel="Last 7 days"
-          />
-          <CardButton
-            icon={<Diamond className="h-5 w-5" />}
-            iconClassName="bg-amber-50 text-amber-600"
-            primaryLabel="AI skills"
-          />
-          <CardButton
-            icon={<Users className="h-5 w-5" />}
-            iconClassName="bg-pink-50 text-pink-600"
-            primaryLabel="5 contacts"
-          />
+          <div className="grid grid-cols-3 gap-3">
+            <CardButton
+              icon={<ListChecks className="h-5 w-5" />}
+              iconClassName="bg-emerald-50 text-emerald-600"
+              primaryLabel="Tasks"
+              secondaryLabel="Last 7 days"
+            />
+            <CardButton
+              icon={<Diamond className="h-5 w-5" />}
+              iconClassName="bg-amber-50 text-amber-600"
+              primaryLabel="AI skills"
+            />
+            <CardButton
+              icon={<Users className="h-5 w-5" />}
+              iconClassName="bg-pink-50 text-pink-600"
+              primaryLabel="5 contacts"
+            />
+          </div>
         </div>
-      </div>
       </div>
     </header>
   );

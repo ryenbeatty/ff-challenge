@@ -8,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { SHELL_BUTTON_SIZE_CLASS } from "@/components/shell/constants";
+import { Button } from "@/components/ui/button";
 import { UserAvatar } from "@/components/ui/user-avatar";
 import { getCurrentUser, getFirstName } from "@/lib/shared/user-avatars";
 import { cn } from "@/lib/shared/utils";
@@ -23,16 +23,15 @@ export default function UserAccountMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button
+        <Button
           type="button"
+          variant="ghost"
+          size="icon"
           aria-label="Account menu"
-          className={cn(
-            "group inline-flex shrink-0 cursor-pointer items-center justify-center rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2",
-            SHELL_BUTTON_SIZE_CLASS,
-          )}
+          className="group rounded-sm focus-visible:ring-offset-2"
         >
           <UserAvatar name={user.name} email={user.email} size="md" className={avatarTriggerClass} />
-        </button>
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-56">
         <DropdownMenuLabel className="text-md font-normal">Hi {firstName}</DropdownMenuLabel>

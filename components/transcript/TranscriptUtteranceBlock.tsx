@@ -27,7 +27,7 @@ export default function TranscriptUtteranceBlock({
       id={`utterance-${utterance.id}`}
       data-start-time={utterance.startTime}
       className={cn(
-        "scroll-mt-3 rounded-md transition-colors",
+        "group/utterance scroll-mt-3 rounded-md transition-colors",
         highlighted && "bg-violet-50/80 ring-1 ring-violet-200/80",
       )}
     >
@@ -39,14 +39,23 @@ export default function TranscriptUtteranceBlock({
           size="xs"
         />
         <div className="min-w-0 flex-1">
-          <div className="flex items-center justify-between gap-2">
-            <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-0.5">
-              <span className="text-sm text-slate-900">{utterance.speakerName}</span>
+          <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-0.5">
+            <span className="text-sm text-slate-900">{utterance.speakerName}</span>
+            <span className="flex items-center gap-1.5">
               <span className="text-sm text-slate-500">
                 {formatSecondsToTimestamp(utterance.startTime)}
               </span>
-            </div>
-            <CopyTranscriptLinkButton startTime={utterance.startTime} />
+              <span
+                className={cn(
+                  "opacity-0 transition-opacity pointer-events-none",
+                  "group-hover/utterance:opacity-100 group-hover/utterance:pointer-events-auto",
+                  "group-focus-within/utterance:opacity-100 group-focus-within/utterance:pointer-events-auto",
+                  highlighted && "opacity-100 pointer-events-auto",
+                )}
+              >
+                <CopyTranscriptLinkButton startTime={utterance.startTime} />
+              </span>
+            </span>
           </div>
         </div>
       </div>

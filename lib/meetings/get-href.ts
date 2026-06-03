@@ -9,3 +9,7 @@ type MeetingLinkTarget = {
 export function getMeetingHref(meeting: MeetingLinkTarget): string {
   return getMeetingHrefForStatus(meeting.id, meeting.status);
 }
+
+export function buildMeetingUrl(origin: string, meeting: MeetingLinkTarget): string {
+  return `${origin}${getMeetingHref(meeting)}`;
+}

@@ -1,7 +1,9 @@
+import { DEFAULT_USER_EMAIL } from "./build-title";
 import { JORDAN_EMAIL, MAYA_EMAIL } from "./canonical-content";
 import type { ActionItem } from "./types";
 
 const LEGACY_ASSIGNEE_EMAIL: Record<string, string> = {
+  Max: DEFAULT_USER_EMAIL,
   "Maya Chen": MAYA_EMAIL,
   "Jordan Park": JORDAN_EMAIL,
 };

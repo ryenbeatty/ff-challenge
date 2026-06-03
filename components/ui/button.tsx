@@ -20,8 +20,23 @@ const buttonVariants = cva(
       size: {
         default: "h-10 px-4 py-2",
         sm: "h-9 px-3",
+        icon: "h-9 w-9 shrink-0 p-0 transition-all duration-150 ease-out active:scale-95 disabled:active:scale-100 [&_svg]:pointer-events-none [&_svg]:size-5 [&_svg]:shrink-0",
+        iconSm:
+          "h-8 w-8 shrink-0 p-0 [&_svg]:pointer-events-none [&_svg]:size-3.5 [&_svg]:shrink-0",
       },
     },
+    compoundVariants: [
+      {
+        variant: "ghost",
+        size: "icon",
+        class: "text-slate-600 hover:bg-slate-100 hover:text-slate-900",
+      },
+      {
+        variant: "ghost",
+        size: "iconSm",
+        class: "text-slate-500 hover:bg-slate-200/80 hover:text-slate-700",
+      },
+    ],
     defaultVariants: {
       variant: "default",
       size: "default",

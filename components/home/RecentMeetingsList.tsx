@@ -49,8 +49,12 @@ export default function RecentMeetingsList() {
             icon={<CalendarDays className="h-4 w-4 shrink-0" aria-hidden="true" />}
             listClassName="space-y-2"
           >
-            {visibleMeetings.map((meeting) => (
-              <RecentMeetingRow key={meeting.id} meeting={meeting} />
+            {visibleMeetings.map((meeting, index) => (
+              <RecentMeetingRow
+                key={meeting.id}
+                meeting={meeting}
+                isActive={index === 0}
+              />
             ))}
           </ListSection>
           {hasMore ? (

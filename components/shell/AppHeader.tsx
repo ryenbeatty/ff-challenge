@@ -19,6 +19,7 @@ import NotificationBellButton from "@/components/shell/NotificationBellButton";
 import UserAccountMenu from "@/components/shell/UserAccountMenu";
 import { isLiveMeetingPath } from "@/lib/meetings/routes";
 import { useMeetingQuery } from "@/lib/meetings/query";
+import { Button } from "@/components/ui/button";
 import { PanelLeft } from "lucide-react";
 
 export default function AppHeader() {
@@ -53,17 +54,18 @@ export default function AppHeader() {
       >
         <div className="flex min-w-0 flex-1 items-center gap-3">
           {isMeetingRoute ? (
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="icon"
               aria-label="Open navigation"
               aria-expanded={isOverlayOpen}
               onMouseEnter={openOverlay}
               onMouseLeave={scheduleCloseOverlay}
               onFocus={openOverlay}
-              className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
             >
-              <PanelLeft className="h-4 w-4" />
-            </button>
+              <PanelLeft aria-hidden="true" />
+            </Button>
           ) : null}
           <div className="flex min-w-0 items-center gap-2.5">
             <Breadcrumbs items={breadcrumbItems} />
