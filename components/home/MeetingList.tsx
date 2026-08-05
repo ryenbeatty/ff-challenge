@@ -4,7 +4,7 @@ import { FolderInput, PartyPopper, Trash2 } from "lucide-react";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { toast } from "sonner";
 
-import AskFirefliesSidebar from "@/components/meeting/AskFirefliesSidebar";
+import AskScribeSidebar from "@/components/meeting/AskScribeSidebar";
 import { DEMO_MEETINGS_PAGE_ASSISTANT } from "@/demo/assistant";
 import MeetingListRow from "@/components/meeting/MeetingListRow";
 import EmptyMeetingsState from "@/components/states/EmptyMeetingsState";
@@ -137,7 +137,7 @@ function MeetingListShell({
         </div>
       </section>
 
-      <AskFirefliesSidebar
+      <AskScribeSidebar
         meetingId=""
         content={DEMO_MEETINGS_PAGE_ASSISTANT}
         className="hidden shrink-0 lg:flex lg:min-h-0"

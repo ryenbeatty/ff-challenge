@@ -27,7 +27,7 @@ function DropdownMenuContent({
       <DropdownMenuPrimitive.Content
         sideOffset={sideOffset}
         className={cn(
-          "z-50 min-w-48 rounded-md border border-border bg-white p-1 shadow-[0_8px_20px_rgba(15,23,42,0.08)]",
+          "surface-enter z-50 min-w-48 rounded-md border border-border bg-white p-1 shadow-[0_8px_20px_rgba(15,23,42,0.08)]",
           className,
         )}
         {...props}

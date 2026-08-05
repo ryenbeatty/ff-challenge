@@ -14,6 +14,8 @@ export type CardStatProps = {
 export type CardButtonProps = CardStatProps & {
   onClick?: () => void;
   disabled?: boolean;
+  /** Hover lift — off for high-frequency lists like assistant suggestions. */
+  lift?: boolean;
 };
 
 const cardStatBaseClass =
@@ -57,7 +59,7 @@ function CardStatContent({
 /** Static demo/stat card — same look as CardButton, not focusable or clickable. */
 export function CardPlaceholder({ className, ...props }: CardStatProps) {
   return (
-    <div className={cn(cardStatBaseClass, "card-button-lift", className)}>
+    <div className={cn(cardStatBaseClass, className)}>
       <CardStatContent {...props} />
     </div>
   );
@@ -67,6 +69,7 @@ export function CardButton({
   className,
   onClick,
   disabled = false,
+  lift = true,
   ...props
 }: CardButtonProps) {
   return (
@@ -76,9 +79,10 @@ export function CardButton({
       disabled={disabled}
       className={cn(
         cardStatBaseClass,
-        "card-button-lift cursor-pointer",
+        lift ? "card-button-lift" : "card-button-press",
+        "cursor-pointer",
         "hover:border-slate-300 hover:shadow-sm",
-        "active:translate-y-0 active:border-slate-200 active:shadow-sm",
+        "active:border-slate-200 active:shadow-sm",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
         className,

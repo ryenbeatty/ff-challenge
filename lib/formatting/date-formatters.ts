@@ -18,6 +18,12 @@ export function formatMeetingCardDate(iso: string): string {
   return `${month} ${day} , ${hours12}:${minutes}${period}`;
 }
 
+export function formatMeetingRecentSecondaryLine(
+  meeting: Pick<Meeting, "createdAt" | "ownerName">,
+): string {
+  return `${meeting.ownerName} · ${formatMeetingCardDate(meeting.createdAt)}`;
+}
+
 export function formatMeetingListSecondaryLine(meeting: Pick<Meeting, "createdAt" | "durationLabel">): string {
   return `${formatMeetingMetadataDate(meeting.createdAt)} · ${meeting.durationLabel}`;
 }

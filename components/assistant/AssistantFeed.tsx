@@ -9,6 +9,7 @@ import { AnimatedEllipsis } from "@/components/ui/animated-ellipsis";
 import { Button } from "@/components/ui/button";
 import { CardButton } from "@/components/ui/card-button";
 import { Input } from "@/components/ui/input";
+import { getAutoScrollBehavior } from "@/lib/shared/scroll-behavior";
 import { cn } from "@/lib/shared/utils";
 
 type AssistantFeedProps = {
@@ -35,7 +36,10 @@ export default function AssistantFeed({
   const suggestionsLabel = content.suggestionsLabel ?? "Try asking...";
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    bottomRef.current?.scrollIntoView({
+      behavior: getAutoScrollBehavior(),
+      block: "end",
+    });
   }, [messages]);
 
   function handleSubmit(event: FormEvent) {
@@ -73,6 +77,7 @@ export default function AssistantFeed({
                   return (
                     <CardButton
                       key={suggestion.id}
+                      lift={false}
                       icon={<Icon className="h-5 w-5" />}
                       iconClassName={suggestion.iconClassName}
                       primaryLabel={suggestion.label}
@@ -137,7 +142,7 @@ export default function AssistantFeed({
             placeholder={content.inputPlaceholder}
             disabled={isStreaming}
             className="min-w-0 flex-1 text-base"
-            aria-label="Ask Fireflies"
+            aria-label="Ask Scribe"
           />
           <Button
             type="submit"

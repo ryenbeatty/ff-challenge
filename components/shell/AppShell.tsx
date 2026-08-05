@@ -86,7 +86,7 @@ function AppShellInner({ children }: AppShellProps) {
           onMouseEnter={openOverlay}
           onMouseLeave={scheduleCloseOverlay}
           className={cn(
-            "fixed inset-y-0 left-0 z-30 border-r border-slate-300/90 bg-white shadow-lg transition-transform duration-200 ease-out",
+            "overlay-nav fixed inset-y-0 left-0 z-30 border-r border-slate-300/90 bg-white shadow-lg",
             isOverlayOpen
               ? "translate-x-0 pointer-events-auto"
               : "-translate-x-full pointer-events-none",
@@ -104,7 +104,7 @@ export default function AppShell({ children }: AppShellProps) {
   return (
     <AppShellProvider>
       <LiveMeetingStopProvider>
-        <TooltipProvider delayDuration={200}>
+        <TooltipProvider delayDuration={400} skipDelayDuration={300}>
           <AppShellInner>{children}</AppShellInner>
         </TooltipProvider>
       </LiveMeetingStopProvider>

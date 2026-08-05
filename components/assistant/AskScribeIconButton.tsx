@@ -4,20 +4,20 @@ import { Bot } from "lucide-react";
 import type { ComponentProps } from "react";
 
 import {
-  askFirefliesIconButtonHoverClassName,
-  askFirefliesIconSurfaceClassName,
-} from "@/components/assistant/AskFirefliesIcon";
+  askScribeIconButtonHoverClassName,
+  askScribeIconSurfaceClassName,
+} from "@/components/assistant/AskScribeIcon";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/shared/utils";
 
-type AskFirefliesIconButtonProps = Omit<ComponentProps<typeof Button>, "children">;
+type AskScribeIconButtonProps = Omit<ComponentProps<typeof Button>, "children">;
 
-export default function AskFirefliesIconButton({
+export default function AskScribeIconButton({
   className,
   variant = "ghost",
   size = "icon",
   ...props
-}: AskFirefliesIconButtonProps) {
+}: AskScribeIconButtonProps) {
   return (
     <Button
       type="button"
@@ -25,9 +25,9 @@ export default function AskFirefliesIconButton({
       size={size}
       className={cn(
         "border-0 shadow-none",
-        askFirefliesIconSurfaceClassName,
+        askScribeIconSurfaceClassName,
         "hover:text-violet-700",
-        askFirefliesIconButtonHoverClassName,
+        askScribeIconButtonHoverClassName,
         className,
       )}
       {...props}

@@ -7,17 +7,17 @@ import { DEMO_DEFAULT_ASSISTANT } from "@/demo/assistant";
 import { getCurrentUser, getFirstName } from "@/lib/shared/user-avatars";
 import { cn } from "@/lib/shared/utils";
 
-type AskFirefliesPanelProps = {
+type AskScribePanelProps = {
   meetingId: string;
   className?: string;
   content?: AssistantContentConfig;
 };
 
-export default function AskFirefliesPanel({
+export default function AskScribePanel({
   meetingId,
   className,
   content = DEMO_DEFAULT_ASSISTANT,
-}: AskFirefliesPanelProps) {
+}: AskScribePanelProps) {
   const user = getCurrentUser();
   const firstName = getFirstName(user.name);
   const { messages, isStreaming, submit, submitSuggestion } = useAssistantChat(

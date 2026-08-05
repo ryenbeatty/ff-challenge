@@ -6,7 +6,7 @@ Edit challenge copy and fixtures here. App bootstrap wires this folder into `lib
 
 | File | What to edit |
 |------|----------------|
-| `assistant.ts` | Ask Fireflies subtitles, suggestions, and canned responses (default, `/meetings`, live) |
+| `assistant.ts` | Ask Scribe subtitles, suggestions, and canned responses (default, `/meetings`, live) |
 | `meetings.ts` | Canonical transcript/summary, seed meetings, demo partner remaps |
 | `users.ts` | Demo user accounts and logged-in user email |
 | `notifications.ts` | Notification popover alerts |

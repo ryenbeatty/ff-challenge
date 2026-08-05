@@ -2,10 +2,10 @@ import { Bot } from "lucide-react";
 
 import { cn } from "@/lib/shared/utils";
 
-export const askFirefliesIconSurfaceClassName =
+export const askScribeIconSurfaceClassName =
   "bg-[linear-gradient(rgba(153,125,255,0.44)_0%,rgba(216,154,255,0.44)_100%)] text-violet-700";
 
-export const askFirefliesIconButtonHoverClassName =
+export const askScribeIconButtonHoverClassName =
   "hover:!bg-[color-mix(in_srgb,var(--color-gray-600,_#4b5563)_3%,transparent),linear-gradient(rgba(153,125,255,0.44)_0%,rgba(216,154,255,0.44)_100%)]";
 
 const iconSizeClasses = {
@@ -26,22 +26,22 @@ const iconSizeClasses = {
   },
 } as const;
 
-type AskFirefliesIconProps = {
+type AskScribeIconProps = {
   size?: keyof typeof iconSizeClasses;
   className?: string;
 };
 
-export default function AskFirefliesIcon({
+export default function AskScribeIcon({
   size = "md",
   className,
-}: AskFirefliesIconProps) {
+}: AskScribeIconProps) {
   const sizes = iconSizeClasses[size];
 
   return (
     <span
       className={cn(
         "inline-flex shrink-0 items-center justify-center rounded-md",
-        askFirefliesIconSurfaceClassName,
+        askScribeIconSurfaceClassName,
         sizes.box,
         className,
       )}

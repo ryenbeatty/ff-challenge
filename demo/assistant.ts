@@ -1,6 +1,6 @@
 import { Diamond, History, ListChecks, MessageSquarePlus, Pin, Target } from "lucide-react";
 
-export const ASSISTANT_PLACEHOLDER = "Ask Fireflies anything about the meeting";
+export const ASSISTANT_PLACEHOLDER = "Ask Scribe anything about the meeting";
 
 const DEFAULT_SUGGESTIONS = [
   {
@@ -31,7 +31,7 @@ const DEFAULT_RESPONSE =
 
 export const DEMO_DEFAULT_ASSISTANT = {
   subtitle:
-    "I am Fireflies your AI Assistant who can help you answer any question from your meeting, generate content and more.",
+    "I am Scribe, your AI assistant who can help you answer any question from your meeting, generate content and more.",
   suggestionsLabel: "Try asking...",
   inputPlaceholder: ASSISTANT_PLACEHOLDER,
   defaultResponse: DEFAULT_RESPONSE,

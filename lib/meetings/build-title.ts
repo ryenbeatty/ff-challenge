@@ -1,4 +1,4 @@
-export const DEFAULT_USER_EMAIL = "max@fireflies.fun";
+export const DEFAULT_USER_EMAIL = "max@scribe.app";
 
 export function buildMeetingTitle({
   customTitle,

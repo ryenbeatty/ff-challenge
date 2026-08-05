@@ -48,7 +48,7 @@ function SelectContent({
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
         className={cn(
-          "z-50 min-w-[8rem] rounded-md border border-border bg-white p-1 shadow-[0_8px_20px_rgba(15,23,42,0.08)]",
+          "surface-enter z-50 min-w-[8rem] rounded-md border border-border bg-white p-1 shadow-[0_8px_20px_rgba(15,23,42,0.08)]",
           className,
         )}
         position="popper"

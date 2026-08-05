@@ -4,7 +4,7 @@ import { Suspense } from "react";
 
 import LiveMeetingSummarisingState from "@/components/live/LiveMeetingSummarisingState";
 import { DEMO_LIVE_MEETING_ASSISTANT } from "@/demo/assistant";
-import AskFirefliesSidebar from "@/components/meeting/AskFirefliesSidebar";
+import AskScribeSidebar from "@/components/meeting/AskScribeSidebar";
 import LoadingText from "@/components/states/LoadingText";
 import MeetingNotFoundState from "@/components/states/MeetingNotFoundState";
 import TranscriptList from "@/components/transcript/TranscriptList";
@@ -66,7 +66,7 @@ export default function LiveMeetingView({ meetingId }: LiveMeetingViewProps) {
         {transcriptContent}
       </section>
 
-      <AskFirefliesSidebar
+      <AskScribeSidebar
         meetingId={meeting.id}
         content={DEMO_LIVE_MEETING_ASSISTANT}
       />

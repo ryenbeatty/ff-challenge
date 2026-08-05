@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { findUtteranceForTimestamp } from "@/lib/transcript/group-utterances";
 import type { Speaker, TranscriptSentence } from "@/lib/meetings/types";
 import { useGroupedTranscript } from "@/lib/transcript/use-grouped-transcript";
+import { getAutoScrollBehavior } from "@/lib/shared/scroll-behavior";
 import { cn } from "@/lib/shared/utils";
 
 type TranscriptListProps = {
@@ -153,7 +154,7 @@ export default function TranscriptList({
       return;
     }
 
-    container.scrollTo({ top: container.scrollHeight, behavior: "smooth" });
+    container.scrollTo({ top: container.scrollHeight, behavior: getAutoScrollBehavior() });
   }, [transcript, variant]);
 
   useEffect(() => {

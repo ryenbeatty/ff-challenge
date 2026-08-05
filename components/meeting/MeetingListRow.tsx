@@ -71,10 +71,10 @@ export default function MeetingListRow({
         />
         <span
           className={cn(
-            "absolute inset-0 flex items-center justify-center transition-opacity",
+            "row-checkbox-reveal absolute inset-0 flex items-center justify-center",
             showCheckbox
               ? "pointer-events-auto opacity-100"
-              : "pointer-events-none opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 focus-within:pointer-events-auto focus-within:opacity-100",
+              : "row-checkbox-reveal--hidden pointer-events-auto opacity-100",
           )}
         >
           <Checkbox

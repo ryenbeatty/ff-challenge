@@ -52,11 +52,11 @@ function SidebarBrand({ isCollapsed }: { isCollapsed: boolean }) {
     >
       {isCollapsed ? (
         <>
-          <span aria-hidden="true">ff</span>
-          <span className="sr-only">fireflies.fun</span>
+          <span aria-hidden="true">Sc</span>
+          <span className="sr-only">Scribe</span>
         </>
       ) : (
-        "fireflies.fun"
+        "Scribe"
       )}
     </Link>
   );
@@ -68,7 +68,7 @@ function SidebarBrand({ isCollapsed }: { isCollapsed: boolean }) {
   return (
     <Tooltip>
       <TooltipTrigger asChild>{brand}</TooltipTrigger>
-      <TooltipContent side="right">fireflies.fun</TooltipContent>
+      <TooltipContent side="right">Scribe</TooltipContent>
     </Tooltip>
   );
 }

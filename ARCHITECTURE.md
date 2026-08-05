@@ -56,4 +56,4 @@ flowchart TB
   P --> bind
 ```
 
-**Product flow:** capture (dialog) → live notes (`/live`) → stop & summarise → meeting detail (`/view`) → list (`/meetings`). Simulated transcript, delays, and Ask Fireflies replies come from `demo/` via the bindings registry so `lib/` can stay swappable for real APIs later.
+**Product flow:** capture (dialog) → live notes (`/live`) → stop & summarise → meeting detail (`/view`) → list (`/meetings`). Simulated transcript, delays, and Ask Scribe replies come from `demo/` via the bindings registry so `lib/` can stay swappable for real APIs later.

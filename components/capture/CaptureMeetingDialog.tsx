@@ -73,7 +73,7 @@ function CaptureDialogFormStep({
       <DialogHeader>
         <DialogTitle>Add to live meeting</DialogTitle>
         <DialogDescription className="sr-only">
-          Add Fireflies to a live meeting by entering a meeting link.
+          Add Scribe to a live meeting by entering a meeting link.
         </DialogDescription>
       </DialogHeader>
 
@@ -170,10 +170,10 @@ function CaptureDialogConfirmedStep({
 
       <DialogHeader className="mt-6 items-center space-y-2">
         <DialogTitle className="max-w-md text-center text-lg">
-          Fireflies assistant has been invited to the meeting
+          Scribe assistant has been invited to the meeting
         </DialogTitle>
         <DialogDescription className="max-w-md text-center">
-          Once joined, Fireflies notetaker assistant will automatically start taking notes.
+          Once joined, Scribe notetaker assistant will automatically start taking notes.
         </DialogDescription>
       </DialogHeader>
 
@@ -277,11 +277,7 @@ export default function CaptureMeetingDialog({
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <HeaderTooltip label="Capture live meeting">
         <DialogTrigger asChild>
-          <Button
-            variant="outline"
-            size="sm"
-            className="border-violet-200 bg-violet-600 text-white hover:bg-violet-700 hover:text-white"
-          >
+          <Button variant="capture" size="sm">
             <Video className="h-4 w-4" aria-hidden="true" />
             Capture
           </Button>

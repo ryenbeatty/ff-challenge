@@ -31,7 +31,7 @@ type TranscriptLineInput = {
 const TRANSCRIPT_LINES: TranscriptLineInput[] = [
   {
     speakerId: MAYA_ID,
-    text: "Thanks for joining. The goal today is to align on the first version of our analytics dashboard for Fireflies users.",
+    text: "Thanks for joining. The goal today is to align on the first version of our analytics dashboard for Scribe users.",
     startTime: 0,
     endTime: 8,
   },
@@ -283,7 +283,7 @@ const TRANSCRIPT_LINES: TranscriptLineInput[] = [
   },
   {
     speakerId: MAYA_ID,
-    text: "Perfect. Thanks Jordan—this gives us a clear MVP path for the Fireflies analytics dashboard.",
+    text: "Perfect. Thanks Jordan—this gives us a clear MVP path for the Scribe analytics dashboard.",
     startTime: 298,
     endTime: 300,
   },

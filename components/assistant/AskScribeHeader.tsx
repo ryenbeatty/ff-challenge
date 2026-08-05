@@ -1,17 +1,17 @@
 import type { ReactNode } from "react";
 
-import AskFirefliesIcon from "@/components/assistant/AskFirefliesIcon";
+import AskScribeIcon from "@/components/assistant/AskScribeIcon";
 import { cn } from "@/lib/shared/utils";
 
-type AskFirefliesHeaderProps = {
+type AskScribeHeaderProps = {
   className?: string;
   trailing?: ReactNode;
 };
 
-export default function AskFirefliesHeader({
+export default function AskScribeHeader({
   className,
   trailing,
-}: AskFirefliesHeaderProps) {
+}: AskScribeHeaderProps) {
   return (
     <div
       className={cn(
@@ -20,8 +20,8 @@ export default function AskFirefliesHeader({
       )}
     >
       <div className="flex min-w-0 items-center gap-2">
-        <AskFirefliesIcon size="sm" />
-        <p className="text-base text-slate-900">Ask Fireflies</p>
+        <AskScribeIcon size="sm" />
+        <p className="text-base text-slate-900">Ask Scribe</p>
       </div>
       {trailing}
     </div>

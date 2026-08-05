@@ -5,12 +5,14 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/shared/utils";
 
 const buttonVariants = cva(
-  "inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
+  "inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[color,background-color,border-color,box-shadow,transform] duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.97] motion-reduce:active:scale-100 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100",
   {
     variants: {
       variant: {
         default:
           "border border-transparent bg-violet-600 text-white shadow-[0_1px_2px_rgba(124,58,237,0.2)] hover:bg-violet-700 hover:shadow-[0_2px_6px_rgba(124,58,237,0.25)]",
+        capture:
+          "border border-violet-200 bg-violet-600 text-white shadow-[0_1px_2px_rgba(124,58,237,0.2)] hover:bg-violet-700 hover:text-white",
         outline:
           "border border-slate-300 bg-white text-slate-900 shadow-[0_1px_2px_rgba(15,23,42,0.04)] hover:border-slate-400 hover:bg-slate-50",
         secondary:
@@ -24,7 +26,7 @@ const buttonVariants = cva(
       size: {
         default: "h-10 px-4 py-2",
         sm: "h-9 px-3",
-        icon: "h-9 w-9 shrink-0 p-0 transition-all duration-150 ease-out active:scale-95 disabled:active:scale-100 [&_svg]:pointer-events-none [&_svg]:size-5 [&_svg]:shrink-0",
+        icon: "h-9 w-9 shrink-0 p-0 [&_svg]:pointer-events-none [&_svg]:size-5 [&_svg]:shrink-0",
         iconSm:
           "h-8 w-8 shrink-0 p-0 [&_svg]:pointer-events-none [&_svg]:size-3.5 [&_svg]:shrink-0",
       },
@@ -43,7 +45,7 @@ const buttonVariants = cva(
       {
         variant: "bare",
         class:
-          "h-auto min-h-0 gap-1.5 p-0 [&_span]:underline-offset-2 group-hover:[&_span]:underline [&_svg]:size-5 [&_svg]:shrink-0 [&_svg]:text-slate-600 group-hover:[&_svg]:text-slate-700",
+          "h-auto min-h-0 gap-1.5 p-0 active:scale-100 [&_span]:underline-offset-2 group-hover:[&_span]:underline [&_svg]:size-5 [&_svg]:shrink-0 [&_svg]:text-slate-600 group-hover:[&_svg]:text-slate-700",
       },
     ],
     defaultVariants: {

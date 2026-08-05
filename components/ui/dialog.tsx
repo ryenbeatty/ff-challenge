@@ -36,7 +36,10 @@ function DialogOverlay({
 }: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
   return (
     <DialogPrimitive.Overlay
-      className={cn("fixed inset-0 z-50 bg-slate-900/25 backdrop-blur-[1px]", className)}
+      className={cn(
+        "dialog-overlay fixed inset-0 z-50 bg-slate-900/25 backdrop-blur-[1px]",
+        className,
+      )}
       {...props}
     />
   );
@@ -55,7 +58,7 @@ function DialogContent({
       <DialogOverlay />
       <DialogPrimitive.Content
         className={cn(
-          "fixed left-1/2 top-1/2 z-50 w-[95vw] max-w-xl -translate-x-1/2 -translate-y-1/2 rounded-xl border border-border bg-white p-6 shadow-[0_20px_45px_rgba(15,23,42,0.12)]",
+          "dialog-content fixed left-1/2 top-1/2 z-50 w-[95vw] max-w-xl rounded-xl border border-border bg-white p-6 shadow-[0_20px_45px_rgba(15,23,42,0.12)]",
           className,
         )}
         {...props}
@@ -63,7 +66,7 @@ function DialogContent({
         {children}
         {showCloseButton ? (
           <DialogPrimitive.Close
-            className="absolute right-3 top-3 z-10 inline-flex h-8 w-8 items-center justify-center rounded-md border border-border bg-white text-slate-700 shadow-sm transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="absolute right-3 top-3 z-10 inline-flex h-8 w-8 items-center justify-center rounded-md border border-border bg-white text-slate-700 shadow-sm transition-[background-color,transform] duration-150 ease-out hover:bg-slate-50 active:scale-[0.97] motion-reduce:active:scale-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             aria-label="Close"
           >
             <X className="h-4 w-4" aria-hidden="true" />

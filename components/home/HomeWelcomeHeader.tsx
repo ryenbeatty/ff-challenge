@@ -41,18 +41,20 @@ export default function HomeWelcomeHeader() {
             <CardPlaceholder
               icon={<ListChecks className="h-5 w-5" />}
               iconClassName="bg-emerald-50 text-emerald-600"
-              primaryLabel="Tasks"
+              primaryLabel="12 tasks"
               secondaryLabel="Last 7 days"
             />
             <CardPlaceholder
               icon={<Diamond className="h-5 w-5" />}
               iconClassName="bg-amber-50 text-amber-600"
-              primaryLabel="AI skills"
+              primaryLabel="3 active"
+              secondaryLabel="AI skills"
             />
             <CardPlaceholder
               icon={<Users className="h-5 w-5" />}
               iconClassName="bg-pink-50 text-pink-600"
               primaryLabel="5 contacts"
+              secondaryLabel="This week"
             />
           </div>
         </div>

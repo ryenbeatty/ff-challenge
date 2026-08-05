@@ -12,8 +12,7 @@ import { Button } from "@/components/ui/button";
 import { UserAvatar } from "@/components/ui/user-avatar";
 import { getCurrentUser, getFirstName } from "@/lib/shared/user-avatars";
 
-const avatarTriggerClass =
-  "box-border border border-transparent transition-[transform,border-color] duration-300 ease-spring-subtle group-hover:scale-[1.06] group-hover:border-slate-300/80 group-active:scale-100 group-active:duration-150 group-active:ease-out group-data-[state=open]:scale-[1.06] group-data-[state=open]:border-slate-300/80 group-data-[state=open]:group-active:scale-100";
+const avatarTriggerClass = "avatar-menu-trigger";
 
 export default function UserAccountMenu() {
   const user = getCurrentUser();

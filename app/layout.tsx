@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Fireflies",
+  title: "Scribe",
   description: "Offline meeting simulator",
 };
 

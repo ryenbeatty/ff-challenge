@@ -12,7 +12,7 @@ Feature-first layout. No feature `.tsx` files at this directory root.
 | `view/` | Completed meeting detail view |
 | `capture/` | Capture meeting dialog |
 | `meeting/` | Shared meeting presentation (rows, header, live notes button, panel sidebar) |
-| `assistant/` | Ask Fireflies AI assistant feed, panel, and popover shells |
+| `assistant/` | Ask Scribe AI assistant feed, panel, and popover shells |
 | `transcript/` | Transcript list and utterance UI |
 | `states/` | Cross-feature async/empty/loading states |
 | `ui/` | shadcn primitives only |

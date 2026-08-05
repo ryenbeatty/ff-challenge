@@ -8,7 +8,7 @@ import {
   renameMeeting,
 } from "@/lib/meetings/storage";
 
-const STORAGE_KEY = "fireflies-meetings-v2";
+const STORAGE_KEY = "scribe-meetings-v2";
 
 function createLocalStorageMock() {
   const store = new Map<string, string>();

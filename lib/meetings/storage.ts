@@ -11,7 +11,7 @@ import { getCurrentUser } from "@/lib/shared/user-avatars";
 import { buildMeetingTitle } from "./build-title";
 import { CreateMeetingInput, Meeting } from "./types";
 
-const STORAGE_KEY = "fireflies-meetings-v2";
+const STORAGE_KEY = "scribe-meetings-v2";
 const LEGACY_STORAGE_KEY = "offline-meetings";
 
 const COMPLETED_DURATION_LABEL = "5 min";

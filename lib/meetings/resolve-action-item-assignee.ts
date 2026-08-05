@@ -28,7 +28,7 @@ export function resolveActionItemAssignee(item: ActionItemWithLegacyAssignee): s
     }
   }
 
-  return legacyName ?? "unknown@fireflies.fun";
+  return legacyName ?? "unknown@scribe.app";
 }
 
 export function normalizeActionItems(

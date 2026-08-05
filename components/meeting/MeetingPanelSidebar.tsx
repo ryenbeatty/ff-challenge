@@ -2,16 +2,16 @@
 
 import type { CSSProperties, ReactNode } from "react";
 
-import AskFirefliesHeader from "@/components/assistant/AskFirefliesHeader";
-import AskFirefliesIcon from "@/components/assistant/AskFirefliesIcon";
-import AskFirefliesPanel from "@/components/assistant/AskFirefliesPanel";
+import AskScribeHeader from "@/components/assistant/AskScribeHeader";
+import AskScribeIcon from "@/components/assistant/AskScribeIcon";
+import AskScribePanel from "@/components/assistant/AskScribePanel";
 import { MEETING_VIEW_PANEL_WIDTH } from "@/components/shell/constants";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/shared/utils";
 
-export type MeetingPanelTab = "transcript" | "ask-fireflies";
+export type MeetingPanelTab = "transcript" | "ask-scribe";
 
-export type AskFirefliesChrome = "tab-icon" | "header";
+export type AskScribeChrome = "tab-icon" | "header";
 
 type MeetingPanelSidebarProps = {
   meetingId: string;
@@ -20,7 +20,7 @@ type MeetingPanelSidebarProps = {
   onTabChange?: (tab: MeetingPanelTab) => void;
   defaultTab?: MeetingPanelTab;
   placeholder?: ReactNode;
-  askFirefliesChrome?: AskFirefliesChrome;
+  askScribeChrome?: AskScribeChrome;
   className?: string;
 };
 
@@ -31,7 +31,7 @@ export default function MeetingPanelSidebar({
   onTabChange,
   defaultTab = "transcript",
   placeholder,
-  askFirefliesChrome = "tab-icon",
+  askScribeChrome = "tab-icon",
   className,
 }: MeetingPanelSidebarProps) {
   const isControlled = activeTab !== undefined && onTabChange !== undefined;
@@ -55,14 +55,14 @@ export default function MeetingPanelSidebar({
       >
         <TabsList className="w-full shrink-0 justify-start bg-white">
           <TabsTrigger value="transcript">Transcript</TabsTrigger>
-          <TabsTrigger value="ask-fireflies">
-            {askFirefliesChrome === "tab-icon" ? (
+          <TabsTrigger value="ask-scribe">
+            {askScribeChrome === "tab-icon" ? (
               <span className="inline-flex items-center gap-2">
-                <AskFirefliesIcon size="sm" />
-                Ask Fireflies
+                <AskScribeIcon size="sm" />
+                Ask Scribe
               </span>
             ) : (
-              "Ask Fireflies"
+              "Ask Scribe"
             )}
           </TabsTrigger>
         </TabsList>
@@ -75,13 +75,13 @@ export default function MeetingPanelSidebar({
         </TabsContent>
 
         <TabsContent
-          value="ask-fireflies"
+          value="ask-scribe"
           className="flex min-h-0 flex-1 flex-col data-[state=inactive]:hidden"
         >
           {placeholder ?? (
             <>
-              {askFirefliesChrome === "header" ? <AskFirefliesHeader /> : null}
-              <AskFirefliesPanel meetingId={meetingId} className="min-h-0 flex-1" />
+              {askScribeChrome === "header" ? <AskScribeHeader /> : null}
+              <AskScribePanel meetingId={meetingId} className="min-h-0 flex-1" />
             </>
           )}
         </TabsContent>
@@ -94,7 +94,7 @@ function MeetingPanelPlaceholder() {
   return (
     <div className="flex flex-1 items-center justify-center px-6 py-8 text-center">
       <p className="text-sm text-slate-500">
-        Select a meeting to ask Fireflies about it.
+        Select a meeting to ask Scribe about it.
       </p>
     </div>
   );

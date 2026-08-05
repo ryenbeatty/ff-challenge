@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { Link2, MoreHorizontal } from "lucide-react";
 import { useState } from "react";
 
-import AskFirefliesIconButton from "@/components/assistant/AskFirefliesIconButton";
-import AskFirefliesPopover from "@/components/assistant/AskFirefliesPopover";
+import AskScribeIconButton from "@/components/assistant/AskScribeIconButton";
+import AskScribePopover from "@/components/assistant/AskScribePopover";
 import HeaderTooltip from "@/components/shell/HeaderTooltip";
 import { Button } from "@/components/ui/button";
 import { UserAvatar } from "@/components/ui/user-avatar";
@@ -17,7 +17,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { formatMeetingCardDate } from "@/lib/formatting/date-formatters";
+import { formatMeetingRecentSecondaryLine } from "@/lib/formatting/date-formatters";
 import { buildMeetingUrl, getMeetingHref } from "@/lib/meetings/get-href";
 import { copyText } from "@/lib/shared/clipboard";
 import type { Meeting } from "@/lib/meetings/types";
@@ -48,106 +48,102 @@ export default function RecentMeetingRow({ meeting, isActive = false }: RecentMe
   }
 
   return (
-    <li
-      className={cn(
-        "group flex items-center rounded-xl transition-colors hover:bg-slate-100",
-        isActive && "bg-slate-100",
-      )}
-    >
-      <Link
-        href={meetingHref}
-        className="flex min-w-0 flex-1 items-center gap-3 px-4 py-3"
-      >
-        <UserAvatar name={meeting.ownerName} ownerName={meeting.ownerName} size="md" />
-        <span className="min-w-0">
-          <span className="block truncate text-sm font-medium text-slate-900">
-            {meeting.ownerName}
-          </span>
-          <span className="mt-0.5 block text-sm text-slate-500">
-            {formatMeetingCardDate(meeting.createdAt)}
-          </span>
-        </span>
-      </Link>
-
+    <li className="group">
       <div
         className={cn(
-          "mr-2 flex shrink-0 items-center gap-0.5",
-          "opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100",
-          isActive && "opacity-100",
+          "flex items-center gap-3 rounded-xl border border-slate-200/90 bg-white px-4 py-3.5 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-[border-color,background-color] hover:border-slate-300",
+          isActive && "border-slate-300 bg-slate-50",
         )}
       >
-        <HeaderTooltip label="Copy meeting link">
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            aria-label="Copy meeting link"
-            onClick={(event) => {
-              event.preventDefault();
-              event.stopPropagation();
-              void copyMeetingLink();
-            }}
-          >
-            <Link2 strokeWidth={1.75} aria-hidden="true" />
-          </Button>
-        </HeaderTooltip>
+        <Link href={meetingHref} className="flex min-w-0 flex-1 items-center gap-3">
+          <UserAvatar name={meeting.ownerName} ownerName={meeting.ownerName} size="md" />
+          <div className="min-w-0 flex-1">
+            <h2 className="truncate text-base font-medium text-slate-900">{meeting.title}</h2>
+            <p className="mt-1 text-sm text-slate-500">
+              {formatMeetingRecentSecondaryLine(meeting)}
+            </p>
+          </div>
+        </Link>
 
-        <DropdownMenu>
-          <HeaderTooltip label="More">
-            <DropdownMenuTrigger asChild>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                aria-label="More"
-                onClick={(event) => {
-                  event.preventDefault();
-                  event.stopPropagation();
-                }}
-              >
-                <MoreHorizontal strokeWidth={1.75} aria-hidden="true" />
-              </Button>
-            </DropdownMenuTrigger>
-          </HeaderTooltip>
-          <DropdownMenuContent align="end" className="min-w-44">
-            <DropdownMenuItem onSelect={handleOpen}>Open</DropdownMenuItem>
-            <DropdownMenuItem onSelect={() => undefined}>Share</DropdownMenuItem>
-            <DropdownMenuItem
-              onSelect={() => {
+        <div
+          className={cn(
+            "row-actions-reveal flex shrink-0 items-center gap-0.5",
+            isActive && "row-actions-reveal--visible",
+          )}
+        >
+          <HeaderTooltip label="Copy meeting link">
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              aria-label="Copy meeting link"
+              onClick={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
                 void copyMeetingLink();
               }}
             >
-              Copy Link
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onSelect={() => undefined}>Move to channel</DropdownMenuItem>
-            <DropdownMenuItem onSelect={() => undefined}>Rename</DropdownMenuItem>
-            <DropdownMenuItem onSelect={() => undefined}>Download</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onSelect={() => undefined}>Info</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              className="text-red-600 focus:bg-red-50 focus:text-red-700"
-              onSelect={() => undefined}
-            >
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+              <Link2 strokeWidth={1.75} aria-hidden="true" />
+            </Button>
+          </HeaderTooltip>
 
-        <HeaderTooltip label="Ask Fireflies">
-          <AskFirefliesIconButton
-            aria-label="Ask Fireflies"
-            onClick={(event) => {
-              event.preventDefault();
-              event.stopPropagation();
-              setAskOpen(true);
-            }}
-          />
-        </HeaderTooltip>
+          <DropdownMenu>
+            <HeaderTooltip label="More">
+              <DropdownMenuTrigger asChild>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  aria-label="More"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                  }}
+                >
+                  <MoreHorizontal strokeWidth={1.75} aria-hidden="true" />
+                </Button>
+              </DropdownMenuTrigger>
+            </HeaderTooltip>
+            <DropdownMenuContent align="end" className="min-w-44">
+              <DropdownMenuItem onSelect={handleOpen}>Open</DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => undefined}>Share</DropdownMenuItem>
+              <DropdownMenuItem
+                onSelect={() => {
+                  void copyMeetingLink();
+                }}
+              >
+                Copy Link
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onSelect={() => undefined}>Move to channel</DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => undefined}>Rename</DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => undefined}>Download</DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onSelect={() => undefined}>Info</DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                className="text-red-600 focus:bg-red-50 focus:text-red-700"
+                onSelect={() => undefined}
+              >
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <HeaderTooltip label="Ask Scribe">
+            <AskScribeIconButton
+              aria-label="Ask Scribe"
+              onClick={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                setAskOpen(true);
+              }}
+            />
+          </HeaderTooltip>
+        </div>
       </div>
 
-      <AskFirefliesPopover
+      <AskScribePopover
         open={askOpen}
         onOpenChange={setAskOpen}
         meetingId={meeting.id}

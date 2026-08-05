@@ -18,7 +18,7 @@ const INVITE_GIF_URL =
 export default function InviteButton() {
   return (
     <Dialog>
-      <HeaderTooltip label="Invite your teammates to Fireflies">
+      <HeaderTooltip label="Invite your teammates to Scribe">
         <DialogTrigger asChild>
           <Button type="button" variant="secondary" size="sm">
             <UserPlus className="h-4 w-4" aria-hidden="true" />
@@ -29,7 +29,7 @@ export default function InviteButton() {
       <DialogContent className="w-auto max-w-md gap-0 overflow-hidden border-0 p-0">
         <DialogTitle className="sr-only">Invite</DialogTitle>
         <DialogDescription className="sr-only">
-          Animated preview for inviting teammates to Fireflies.
+          Animated preview for inviting teammates to Scribe.
         </DialogDescription>
         <img
           src={INVITE_GIF_URL}
